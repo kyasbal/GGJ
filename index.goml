@@ -1,0 +1,19 @@
+<goml width="640" height="480" bgColor="black">
+    <import-material typeName="lambert" src="./index.sort"/>
+    <geometry type="wave" name="wave" margin="0.1" count="20"/>
+    <scene>
+        <object class="whole-container">
+          <object.components>
+          </object.components>
+            <object class="wave-container"></object>
+            <scroll-camera position="0,0,0">
+              <scroll-camera.components>
+                  <MoveCameraForward speed="50"/>
+              </scroll-camera.components>
+            </scroll-camera>
+        </object>
+    </scene>
+    <renderer camera="scroll-camera" >
+        <render-scene/>
+    </renderer>
+</goml>

@@ -1,0 +1,51 @@
+@Technique default{
+  @Pass{
+    @BlendFunc(SRC_ALPHA,ONE_MINUS_SRC_ALPHA)
+    FS_PREC(mediump,float)
+
+    varying vec3 vNormal;
+
+    #ifdef VS
+      attribute vec3 position;
+      attribute vec3 normal;
+      @SEED
+      attribute float seed;
+
+      uniform mat4 _matPVM;
+
+      uniform mat4 _matVM;
+
+      uniform mat4 _matL;
+
+      uniform float _time;
+
+      float rand(vec2 i){
+        float a = fract(dot(i, vec2(2.067390879775102, 12.451168662908249))) - 0.5;
+        float s = a * (6.182785114200511 + a*a * (-38.026512460676566 + a*a * 53.392573080032137));
+        float t = fract(s * 43758.5453);
+        return t;
+      }
+
+      void main(){
+        vec3 p = position;
+        float z = (_matL * vec4(p,1)).z;
+        p.y += rand(vec2(seed,z)) + sin(_time/100. + seed * 100. + z) * 0.2;
+        gl_Position = _matPVM * vec4(p,1);
+        vNormal = normalize((_matVM * vec4(normal,0)).xyz);
+      }
+    #endif
+
+    #ifdef FS
+    @{type:"color",default:"white"}
+    uniform vec3 color;
+
+    @{default:"n(0.5,0.5,1)"}
+    uniform vec3 light;
+
+      void main(){
+        gl_FragColor.xyz = max(dot(vNormal,light),0.) * color;
+        gl_FragColor.w = 0.8;
+      }
+    #endif
+  }
+}

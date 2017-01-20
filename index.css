@@ -1,0 +1,31 @@
+div.gr-container{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+div.header{
+  height: 1000px;
+}
+
+.fix {
+  position: fixed;
+  top: 0;
+  z-index: 9999;
+}
+
+.a {
+  float: left;
+  /*height:1000px;*/
+  min-height: 1500px;
+}
+
+.gr{
+  position:fixed;
+  top:40px;
+}
+
+
+.waveimg{
+  position:absolute;
+  top:800px
+}
