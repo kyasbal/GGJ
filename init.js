@@ -24,6 +24,8 @@ gr(function() {
         if (currentScore >= GM.maxSroreList[GM.currentHina] &&
             GM.currentHina < GM.maxSroreList.length) {
             GM.currentHina++;
+            const img = document.getElementsByClassName('hina hina' + GM.currentHina)[0];
+            img.src = "../img/kamome.png";
             console.log(GM.currentHina + "番目の雛が成長しました！");
         }
         text.innerHTML = currentScore + '/' + GM.maxScore;
