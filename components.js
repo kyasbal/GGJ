@@ -2,10 +2,15 @@ const C = {
     eyeMax: 25,
     eyeMin: 0,
     ampl: 3,
-    focus: 100
+    bigAmpl:2,
+    focus: 70
 };
 let Camera;
-let isDobonPlaying = false;
+
+function resetSpeed(){
+  const moveCamera = Camera.getComponent("MoveCameraForward");
+  moveCamera.resetSpeed();
+}
 const Audios = {
     dobon: new Howl({
         src: ['./audio/dobon.mp3'],
@@ -24,7 +29,7 @@ function waveMain(o) {
     bigWave = bigWave * bigWave;
     bigWave = bigWave * bigWave;
     bigWave = bigWave * bigWave;
-    bigWave = bigWave * bigWave * bigWave * bigWave * 5;
+    bigWave = bigWave * bigWave * bigWave * bigWave * C.bigAmpl;
     // return bigWave
 
     var w1 = Math.sin(o / 57 * Math.PI);
@@ -71,7 +76,7 @@ gr.registerComponent("CameraControl", {
     },
     $update: function() {
         const distance = document.documentElement.getBoundingClientRect().height - window.innerHeight;
-        const heightRatio = 1.0 - $(window).scrollTop() / distance;
+        const heightRatio = $(window).scrollTop() / distance;
         const p = this._transform.getAttribute("position");
         this._transform.setAttribute("position", [p.X, C.eyeMin + (C.eyeMax - C.eyeMin) * heightRatio, p.Z]);
         this._transform.setAttribute("rotation", `x(-${Math.atan(p.Y/C.focus)}rad)`);
@@ -101,32 +106,50 @@ gr.registerComponent("MoveCameraForward", {
             converter: "Number",
             default: 1.0
         },
+        acceralation:{
+           converter:"Number",
+          default:1.0
+        },
         penalty: {
             converter: "Number",
-            default: 800
+            default: 1800
+        },
+        maxSpeed:{
+          converter:"Number",
+          default:300
         }
     },
     $mount: function() {
         Camera = this.node;
         this.getAttributeRaw("speed").boundTo("speed");
         this.getAttributeRaw("penalty").boundTo("penalty");
+        this.getAttributeRaw("acceralation").boundTo("acceralation");
+        this.getAttributeRaw("maxSpeed").boundTo("maxSpeed");
         this.lastTime = Date.now();
         this._transform = this.node.getComponent("Transform");
         this.hold = false;
         this.duration = 0;
         this.backSpeed = 0;
+        document.body.addEventListener("wheel",(function(e){
+          if(this.hold){
+            e.preventDefault();
+          }
+        }).bind(this));
+        this.currentSpeed = this.speed;
+        this.resetTime = Date.now();
     },
     $update: function() {
         const t = Date.now();
+        this.currentSpeed = Math.min(this.maxSpeed,this.speed + (t - this.resetTime)/1000 * this.acceralation);
         const delta = t - this.lastTime;
         this.lastTime = t;
         const p = this._transform.getAttribute("position");
-        const cz = p.Z - delta / 1000. * this.speed;
-        WAVES.forEach(function(w) {
+        const cz = p.Z - delta / 1000. * this.currentSpeed;
+        WAVES.forEach(function (w) {
             if (w.getAttribute("position").Z > cz) {
                 w.sendMessage("resetPosition");
             }
-        })
+        });
 
         var cameraMinHeight = waveMain(cz) + 2;
         if (!this.hold && cameraMinHeight > p.Y) {
@@ -134,11 +157,12 @@ gr.registerComponent("MoveCameraForward", {
             // isDobonPlaying = true;
             Audios.dobon.play();
             $("html,body").animate({
-                scrollTop: $('body').offset().top
+                 scrollTop: $(document).height()
             }, this.penalty);
             this.hold = true;
             this.backSpeed = (C.eyeMax - p.Y) / this.penalty;
             this.duration = Date.now() + this.penalty;
+            this.reset();
         } else {
             var newY = Math.max(p.Y + this.backSpeed, cameraMinHeight);
             this._transform.setAttribute("position", [p.X, newY, cz]);
@@ -146,6 +170,10 @@ gr.registerComponent("MoveCameraForward", {
                 this.hold = false;
             }
         }
+    },
+    reset:function(){
+      this.currentSpeed = this.getAttribute("speed");
+      this.resetTime = Date.now();
     }
 });
 
@@ -175,3 +203,6 @@ gr.registerNode("gull", ["Wave", "Reset"], {
     src: "./models/gull.gltf",
     yOffset: 1.7
 }, "model");
+gr.registerNode("lotusRoot",["Wave","Reset"],{
+    src:"./models/lotusRoot.gltf"
+},"model");

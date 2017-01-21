@@ -11,18 +11,24 @@
     <script src="https://unpkg.com/grimoirejs-fundamental@beta/register/grimoire-fundamental.js" charset="utf-8"></script>
     <script src="https://unpkg.com/grimoirejs-gltf@beta/register/grimoire-gltf.js" charset="utf-8"></script>
     <script src="./timer.js" charset="utf-8"></script>
-    <script src="./gameManager.js" charset="utf-8"></script>
     <script src="./components.js" charset="utf-8"></script>
     <script src="./waveGeometry.js" charset="utf-8"></script>
     <script src="./ItemManager.js" charset="utf-8"></script>
+    <script src="./gameManager.js" charset="utf-8"></script>
     <script src="./init.js" charset="utf-8"></script>
     <link rel="stylesheet" href="./index.css">
 </head>
 
 <body>
     <div>
+      <div class="sea-container">
+        <div class="background">
+        </div>
         <div class="sea">
         </div>
+        <div class="sunset">
+        </div>
+      </div>
         <div class="ui">
             <div class="ui-wrap">
               <div class="ui-inner">
@@ -37,7 +43,11 @@
                     </div>
                 </div>
                 <div class="score-bar-bg">
-                    <div class="score-inner"></div>
+                    <div class="score-inner">
+                      <div class="score-text-container">
+                      <p class="score-text">600/1000</p>
+                    </div>
+                    </div>
                 </div>
                 <div class="time-text-container">
                     <p class="time-text">60</p>

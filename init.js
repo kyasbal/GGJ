@@ -4,7 +4,7 @@ const sound = new Howl({
     volume: 0.5
 });
 const GM = new GameManager();
-gr(function() {
+gr(function () {
     const $$ = gr("#sea");
     const waveContainer = $$(".wave-container").get(0);
     const itemContainer = $$(".item-container").get(0);
@@ -17,7 +17,7 @@ gr(function() {
         const ratio = Math.min(GM.score, GM.maxSroreList[GM.maxSroreList.length - 1]) / GM.maxSroreList[GM.maxSroreList.length - 1];
         bar.style.width = ratio * maxWidth + "px";
     }
-    GM.addOnEndGameHandler(function() {
+    GM.addOnEndGameHandler(function () {
         console.log("end"); //TODO:do something on gameover.
         GM.gameStart();
     })
@@ -29,15 +29,16 @@ gr(function() {
             id: "wave-" + i
         }));
     }
-    var manager = new ItemManager();
-    manager.register("apple", 100);
-    manager.register("gull", 100);
-
-
-    var putting = function() {
-        manager.randomPut()
-        setTimeout(putting, Math.random() * 500);
-    }
-    putting();
+    GM.gameStart();
+    // var manager = new ItemManager();
+    // manager.register("apple", 100);
+    // manager.register("gull", 100);
+    //
+    //
+    // var putting = function() {
+    //     manager.randomPut()
+    //     setTimeout(putting, Math.random() * 500);
+    // }
+    // putting();
 
 });

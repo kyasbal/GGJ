@@ -1,9 +1,11 @@
-function ItemManager(name) {
-    this.name = name;
+function ItemManager() {
     this.items = [];
     this.weights = [];
-    this.$$ = gr("#sea");
     this.waitZ = 100;
+}
+ItemManager.prototype.clear = function () {
+    this.items = [];
+    this.weights = [];
 }
 ItemManager.prototype.register = function (item, weight) {
     this.weights.push({ name: item, w: weight });
@@ -12,7 +14,7 @@ ItemManager.prototype.register = function (item, weight) {
     }
 }
 ItemManager.prototype.addInstance = function (name) {
-    const itemContainer = this.$$(".item-container").first();
+    const itemContainer = gr("#sea")(".item-container").first();
     var node = itemContainer.addChildByName(name, {
         position: [0, 0, this.waitZ]
     });
@@ -40,7 +42,7 @@ ItemManager.prototype.randomPut = function () {
 }
 
 ItemManager.prototype.set = function (itemName, x) {
-    const camera = this.$$("#main-camera").first();
+    const camera = gr("#sea")("#main-camera").first();
     const pos = camera.getAttribute("position");
     const far = camera.getAttribute("far");
     var inst;
