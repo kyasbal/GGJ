@@ -130,7 +130,7 @@ gr.registerNode("wave-cube", ["Wave"], {
 
 gr.registerNode("scroll-camera", ["CameraControl"], {}, "camera");
 gr.registerNode("apple", ["Wave"], {
-    scale: "0.02",
-    src: "./models/apple.gltf",
+    src: "./models/gull.gltf",
+     scale:2,
     yOffset: 1
 }, "model");
