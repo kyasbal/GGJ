@@ -8,6 +8,13 @@ function GameManager() {
     this.maxScoreList = [100, 200, 300, 400, 500];
     this.itemManager = new ItemManager();
     this.currentHina = 0;
+    this.timetable = [];
+}
+GameManager.prototype.addTimetable = function (second, callback) {
+    if (!Array.isArray(this.timetable[second])) {
+        this.timetable[second] = [];
+    }
+    this.timetable[second].push(callback);
 }
 GameManager.prototype.addScore = function (score) {
     this.score = Math.max(0, score + this.score);
@@ -44,6 +51,7 @@ GameManager.prototype.init = function () {
 GameManager.prototype.gameStart = function () {
     this.timer.reset();
     var self = this;
+    var lastLeaveTime = -1;
     var stopId = setInterval(function () {
         var ct = self.timer.getTime();
         var leaveTime = Math.ceil(self.timeLimit - ct / 1000);
@@ -55,6 +63,15 @@ GameManager.prototype.gameStart = function () {
                 h();
             })
             return;
+        }
+        if (lastLeaveTime !== leaveTime) {
+            lastLeaveTime = leaveTime;
+            var timetableEvents = self.timetable[leaveTime];
+            if (timetableEvents) {
+                timetableEvents.forEach(function (e) {
+                    e();
+                });
+            }
         }
         self.onChangeTime(ct, leaveTime);
     }, 100);
