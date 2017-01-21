@@ -90,6 +90,7 @@ body,html{
 }
 .ui-inner{
   position: absolute;
+  left:0px;
 }
 
 .hina{
