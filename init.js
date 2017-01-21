@@ -3,12 +3,14 @@ const sound = new Howl({
     loop: true,
     volume: 0.5
 });
+const GM = new GameManager();
 gr(function () {
     const $$ = gr("#sea");
     const waveContainer = $$(".wave-container").get(0);
     const itemContainer = $$(".item-container").get(0);
     WAVES = [];
     ITEMS = [];
+    GM.gameStart();
     for (let i = 0; i < 110; i++) {
         WAVES.push(waveContainer.addChildByName("wave-cube", {
             position: `${Math.random()*3},0,-${i}`,
