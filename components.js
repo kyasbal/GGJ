@@ -92,7 +92,8 @@ gr.registerComponent("Reset", {
             Math.pow(pos.Y - cameraPos.Y, 2) +
             Math.pow(pos.Z - cameraPos.Z, 2);
         if (distance < 50) {
-            GM.addScore(100);
+            const score = this.node.getComponent("Score").getAttribute("score");
+            GM.addScore(score);
             this.node.emit("reset", this.node);
         }
         if (pos.Z !== 100 && pos.Z - cameraPos.Z > 50) {
@@ -100,6 +101,15 @@ gr.registerComponent("Reset", {
         }
     }
 })
+
+gr.registerComponent("Score", {
+    attributes: {
+        score: {
+            default: 100,
+            converter: "Number"
+        }
+    },
+});
 gr.registerComponent("MoveCameraForward", {
     attributes: {
         speed: {
@@ -130,7 +140,7 @@ gr.registerComponent("MoveCameraForward", {
         this.hold = false;
         this.duration = 0;
         this.backSpeed = 0;
-        document.body.addEventListener("wheel", (function (e) {
+        document.body.addEventListener("wheel", (function(e) {
             if (this.hold) {
                 e.preventDefault();
             }
@@ -145,7 +155,7 @@ gr.registerComponent("MoveCameraForward", {
         this.lastTime = t;
         const p = this._transform.getAttribute("position");
         const cz = p.Z - delta / 1000. * this.currentSpeed;
-        WAVES.forEach(function (w) {
+        WAVES.forEach(function(w) {
             if (w.getAttribute("position").Z > cz) {
                 w.sendMessage("resetPosition");
             }
@@ -183,26 +193,29 @@ gr.registerNode("wave-cube", ["Wave"], {
     material: "new(lambert)"
 }, "mesh");
 
+
+
 gr.registerNode("scroll-camera", ["CameraControl"], {}, "camera");
-gr.registerNode("apple", ["Wave", "Reset"], {
+gr.registerNode("apple", ["Wave", "Reset", "Score"], {
     scale: "0.02",
     src: "./models/apple.gltf",
-    yOffset: 1
+    yOffset: 1,
+    score: 10,
 }, "model");
 
-gr.registerNode("carrot", ["Wave", "Reset"], {
+gr.registerNode("carrot", ["Wave", "Reset", "Score"], {
     src: "./models/carrot.gltf",
     yOffset: 1
 }, "model");
 
-gr.registerNode("fish", ["Wave", "Reset"], {
+gr.registerNode("fish", ["Wave", "Reset", "Score"], {
     src: "./models/fish.gltf",
     yOffset: 1.7
 }, "model");
-gr.registerNode("gull", ["Wave", "Reset"], {
+gr.registerNode("gull", ["Wave", "Reset", "Score"], {
     src: "./models/gull.gltf",
     yOffset: 1.7
 }, "model");
-gr.registerNode("lotusRoot", ["Wave", "Reset"], {
+gr.registerNode("lotusRoot", ["Wave", "Reset", "Score"], {
     src: "./models/lotusRoot.gltf"
 }, "model");
