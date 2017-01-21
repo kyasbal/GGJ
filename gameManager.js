@@ -17,7 +17,6 @@ function GameManager() {
       for(let i = 0; i < colors.length; i++){
         if(colors[i + 1][0] > time){
           const progress = (time - colors[i][0])/(colors[i + 1][0] - colors[i][0]);
-          console.log(progress);
           ac = chroma.mix(colors[i][1],colors[i + 1][1],progress).hex();
           break;
         }

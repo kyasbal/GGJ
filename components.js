@@ -43,16 +43,22 @@ gr.registerComponent("Wave", {
         yOffset: {
             converter: "Number",
             default: 0
+        },
+        smallWave:{
+          converter:"Number",
+          default:1.0
         }
     },
     $mount: function () {
         this.transform = this.node.getComponent("Transform");
         this.initialY = this.transform.getAttribute("position").Y;
         this.getAttributeRaw("yOffset").boundTo("yOffset");
+        this.getAttributeRaw("smallWave").boundTo("smallWave");
+        this.random = Math.random() * 1000;
     },
     $update: function () {
         const p = this.transform.getAttribute("position");
-        p.Y = waveMain(p.Z) + this.yOffset;
+        p.Y = waveMain(p.Z) + this.yOffset + this.smallWave * Math.sin(Date.now()/1000. + this.random);
         this.transform.setAttribute("position", [p.X, p.Y, p.Z]);
     },
     $resetPosition: function () {
@@ -221,9 +227,8 @@ gr.registerNode("lotusRoot", ["Wave", "Reset", "Score"], {
 }, "model");
 gr.registerNode("yacht", ["Wave", "Reset", "Score"], {
     src: "./models/yacht.gltf",
-    scale:"2",
-    rotation:"y(90d)"
-}, "model");
+    scale:"2"
+  }, "model");
 gr.registerNode("turtle", ["Wave", "Reset", "Score"], {
     src: "./models/turtle.gltf"
 }, "model");
