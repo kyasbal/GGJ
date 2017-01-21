@@ -39,7 +39,10 @@ ItemManager.prototype.randomPut = function () {
         }
         k -= this.weights[i].w;
     }
-    this.set(targetName, Math.random() * 40 - 20);
+    var rand = (Math.random() + Math.random() + Math.random() + Math.random() + Math.random()) / 5;
+    var r = 60;
+    this.set(targetName, rand * r - r / 2);
+    // this.set(targetName);
 }
 
 ItemManager.prototype.set = function (itemName, x) {
