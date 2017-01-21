@@ -1,8 +1,3 @@
-const sound = new Howl({
-    src: ['./audio/wind.mp3'],
-    loop: true,
-    volume: 0.5
-});
 const GM = new GameManager();
 gr(function () {
     GM.init();
@@ -49,5 +44,5 @@ gr(function () {
     $("html,body").animate({
         scrollTop: $(document).scrollTop()
     });
-    sound.play();
+    Audios.wind.play();
 });
