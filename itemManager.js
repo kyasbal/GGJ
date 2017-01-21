@@ -10,6 +10,10 @@ ItemManager.prototype.register = function (item, weight) {
         this.addInstance(item);
     }
 }
+ItemManager.prototype.setWeight = function (name, newWeight) {
+    var index = this.weights.findIndex(function (obj) { return obj.name === name });
+    this.weights[index].w = newWeight;
+}
 ItemManager.prototype.addInstance = function (name) {
     const itemContainer = gr("#sea")(".item-container").first();
     var node = itemContainer.addChildByName(name, {
