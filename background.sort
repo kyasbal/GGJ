@@ -22,11 +22,11 @@
 
     #ifdef FS
 
-@{default:"0,0.1a,-1"}
+@{default:"0,0.1,-1"}
 uniform vec3 uSunPos;
 
-#define iSteps 16
-#define jSteps 8
+#define iSteps 8
+#define jSteps 2
 
 vec2 rsi(vec3 r0, vec3 rd, float sr) {
     // ray-sphere intersection that assumes
@@ -71,7 +71,6 @@ vec3 atmosphere(vec3 r, vec3 r0, vec3 pSun, float iSun, float rPlanet, float rAt
     float gg = g * g;
     float pRlh = 3.0 / (16.0 * PI) * (1.0 + mumu);
     float pMie = 3.0 / (8.0 * PI) * ((1.0 - gg) * (mumu + 1.0)) / (pow(1.0 + gg - 2.0 * mu * g, 1.5) * (2.0 + gg));
-
     // Sample the primary ray.
     for (int i = 0; i < iSteps; i++) {
 
@@ -118,7 +117,6 @@ vec3 atmosphere(vec3 r, vec3 r0, vec3 pSun, float iSun, float rPlanet, float rAt
 
         // Calculate attenuation.
         vec3 attn = exp(-(kMie * (iOdMie + jOdMie) + kRlh * (iOdRlh + jOdRlh)));
-
         // Accumulate scattering.
         totalRlh += odStepRlh * attn;
         totalMie += odStepMie * attn;
