@@ -22,5 +22,9 @@ const Audios = {
     timeup: new Howl({
         src: ['./audio/timeup.mp3'],
         volume: 0.5
+    }),
+    countdown: new Howl({
+        src: ['./audio/countdown.mp3'],
+        volume: 0.5
     })
 };

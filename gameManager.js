@@ -3,27 +3,7 @@ function GameManager() {
     this.timer = new Timer();
     this.endGameHandlers = [];
     this.onScoreChangeHandler = function () {};
-    this.onChangeTime = function (t) {
-        const time = t / 1000 / this.timeLimit;
-        const colors = [
-        [-0.0001, "#224483"],
-        [0.5, "#3290D3"],
-        [0.75, "#77ABCC"],
-        [0.80, "#DD806A"],
-        [0.95, "#DE7536"],
-        [1.05, "#DD806A"]
-      ];
-        let ac;
-        for (let i = 0; i < colors.length; i++) {
-            if (colors[i + 1][0] > time) {
-                const progress = (time - colors[i][0]) / (colors[i + 1][0] - colors[i][0]);
-                ac = chroma.mix(colors[i][1], colors[i + 1][1], progress).hex();
-                break;
-            }
-        }
-        $(".background").css("background-color", ac)
-        gr("#sea")("wave-cube").setAttribute("color", ac)
-    };
+    this.onChangeTime = function () {};
     this.score = 0;
     this.maxScoreList = [100, 200, 300, 400, 500];
     this.itemManager = new ItemManager();
@@ -59,7 +39,8 @@ GameManager.prototype.gameStart = function () {
     var self = this;
     var stopId = setInterval(function () {
         var ct = self.timer.getTime();
-        $(".time-text").text(Math.floor(self.timeLimit - ct / 5000));
+        var leaveTime = Math.ceil(self.timeLimit - ct / 1000);
+        $(".time-text").text(leaveTime);
         if (self.timeLimit * 1000 < ct) {
             clearInterval(stopId);
             Audios.timeup.play()
@@ -68,7 +49,7 @@ GameManager.prototype.gameStart = function () {
             })
             return;
         }
-        self.onChangeTime(ct)
+        self.onChangeTime(ct, leaveTime);
     }, 100);
 
     //start gen items.
