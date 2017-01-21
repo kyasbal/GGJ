@@ -18,12 +18,19 @@ GameManager.prototype.addScore = function (score) {
 GameManager.prototype.time = function () {
     return this.timer.getTime()
 }
-
-GameManager.prototype.gameStart = function () {
-    console.log("START!!!");
-    this.itemManager.clear();
+GameManager.prototype.init = function () {
+    console.log("initilize game manager.");
+    if (this._initialized) {
+        console.error("GM init calld twice");
+        return;
+    }
+    this._initialized = true;
     this.itemManager.register("apple", 100);
     this.itemManager.register("gull", 100);
+}
+GameManager.prototype.gameStart = function () {
+    console.log("START!!!");
+
     this.timer.reset();
     var self = this;
     var stopId = setInterval(function () {
