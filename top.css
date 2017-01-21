@@ -1,0 +1,39 @@
+section.wide{
+  width:100%;
+  height:480px;
+  background-size: 100% 100%;
+  display: flex;
+}
+
+.wide > .wide-child{
+  flex-grow: 1;
+  text-align: center;
+}
+
+.bg2d{
+  background-image: url(./bg/2dbg.png);
+}
+
+.bg3d{
+  background-image: url(./bg/3dbg.jpg);
+}
+
+.btn{
+  height:180px;
+  background-color: darkorange;
+  padding: 10px 30px;
+  text-shadow: 1px 1px 1px #000;
+  color:white;
+  font-size: 32px;
+  border-radius: 5px;
+}
+
+.rows{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.grow{
+  flex-grow: 1;
+}
