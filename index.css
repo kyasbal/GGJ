@@ -60,13 +60,14 @@ body,html{
 }
 
 .score-inner{
-  background-color: green;
+  background-color: orange;
   height:32px;
   border-radius: 5px;
+  width: 150px;
 }
 
 .ui-wrap{
-  width:640px;
+  width:544px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -86,6 +87,17 @@ body,html{
   float:left;
   transform: translateY(-256px);
   padding: 60px 180px;
+}
+
+.score-text{
+  color:white;
+  font-weight: bold;
+}
+
+.score-text-container{
+  position: absolute;
+  width: 300px;
+  margin-top: -10px;
 }
 
 .hina1{

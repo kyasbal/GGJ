@@ -2,7 +2,7 @@ const C = {
     eyeMax: 25,
     eyeMin: 0,
     ampl: 3,
-    focus: 100
+    focus: 70
 };
 let Camera;
 let isDobonPlaying = false;
@@ -152,7 +152,6 @@ gr.registerNode("wave-cube", ["Wave"], {
 
 gr.registerNode("scroll-camera", ["CameraControl"], {}, "camera");
 gr.registerNode("apple", ["Wave", "Reset"], {
-    scale: "0.02",
-    src: "./models/apple.gltf",
-    yOffset: 1
+    src: "./models/turtle.gltf",
+    yOffset: 3
 }, "model");

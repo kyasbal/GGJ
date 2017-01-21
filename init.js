@@ -20,7 +20,7 @@ gr(function () {
     const apple = new ItemManager('apple');
     apple.init();
     setInterval(function() {
-        apple.set(3);
+        apple.set(0);
     }, 5000);
 
 });
