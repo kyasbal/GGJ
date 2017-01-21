@@ -25,7 +25,7 @@ function GameManager() {
       gr("#sea")("wave-cube").setAttribute("color",ac)
     };
     this.score = 0;
-    this.maxScoreList = [1000, 2000, 3000, 4000, 5000];
+    this.maxScoreList = [100, 200, 300, 400, 500];
     this.maxScore = this.maxScoreList[0];
     this.maxScoreWidth = 300;
     this.itemManager = new ItemManager();

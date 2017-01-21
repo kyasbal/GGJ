@@ -15,7 +15,7 @@ const Audios = {
     dobon: new Howl({
         src: ['./audio/dobon.mp3'],
         volume: 0.5,
-        onend: function () {
+        onend: function() {
             isDobonPlaying = false;
         }
     })
@@ -44,24 +44,24 @@ gr.registerComponent("Wave", {
             converter: "Number",
             default: 0
         },
-        smallWave:{
-          converter:"Number",
-          default:1.0
+        smallWave: {
+            converter: "Number",
+            default: 1.0
         }
     },
-    $mount: function () {
+    $mount: function() {
         this.transform = this.node.getComponent("Transform");
         this.initialY = this.transform.getAttribute("position").Y;
         this.getAttributeRaw("yOffset").boundTo("yOffset");
         this.getAttributeRaw("smallWave").boundTo("smallWave");
         this.random = Math.random() * 1000;
     },
-    $update: function () {
+    $update: function() {
         const p = this.transform.getAttribute("position");
-        p.Y = waveMain(p.Z) + this.yOffset + this.smallWave * Math.sin(Date.now()/1000. + this.random);
+        p.Y = waveMain(p.Z) + this.yOffset + this.smallWave * Math.sin(Date.now() / 1000. + this.random);
         this.transform.setAttribute("position", [p.X, p.Y, p.Z]);
     },
-    $resetPosition: function () {
+    $resetPosition: function() {
         var count = WAVES.length;
         var d = 1;
         var p = this.node.getAttribute("position");
@@ -76,11 +76,11 @@ gr.registerComponent("CameraControl", {
             default: 1.0
         }
     },
-    $mount: function () {
+    $mount: function() {
         this.__bindAttributes();
         this._transform = this.node.getComponent("Transform");
     },
-    $update: function () {
+    $update: function() {
         const distance = document.documentElement.getBoundingClientRect().height - window.innerHeight;
         const heightRatio = $(window).scrollTop() / distance;
         const p = this._transform.getAttribute("position");
@@ -90,8 +90,8 @@ gr.registerComponent("CameraControl", {
 });
 gr.registerComponent("Reset", {
     attributes: {},
-    $mount: function () {},
-    $update: function () {
+    $mount: function() {},
+    $update: function() {
         const pos = this.node.getAttribute("position");
         const cameraPos = Camera.getAttribute("position");
         const distance = Math.pow(pos.X - cameraPos.X, 2) +
@@ -135,7 +135,7 @@ gr.registerComponent("MoveCameraForward", {
             default: 300
         }
     },
-    $mount: function () {
+    $mount: function() {
         Camera = this.node;
         this.getAttributeRaw("speed").boundTo("speed");
         this.getAttributeRaw("penalty").boundTo("penalty");
@@ -154,7 +154,7 @@ gr.registerComponent("MoveCameraForward", {
         this.currentSpeed = this.speed;
         this.resetTime = Date.now();
     },
-    $update: function () {
+    $update: function() {
         const t = Date.now();
         this.currentSpeed = Math.min(this.maxSpeed, this.speed + (t - this.resetTime) / 1000 * this.acceralation);
         const delta = t - this.lastTime;
@@ -187,7 +187,7 @@ gr.registerComponent("MoveCameraForward", {
             }
         }
     },
-    reset: function () {
+    reset: function() {
         this.currentSpeed = this.getAttribute("speed");
         this.resetTime = Date.now();
     }
@@ -211,26 +211,33 @@ gr.registerNode("apple", ["Wave", "Reset", "Score"], {
 
 gr.registerNode("carrot", ["Wave", "Reset", "Score"], {
     src: "./models/carrot.gltf",
-    yOffset: 1
+    yOffset: 1,
+    score: 10
 }, "model");
 
 gr.registerNode("fish", ["Wave", "Reset", "Score"], {
     src: "./models/fish.gltf",
     yOffset: 1.7,
-    smallWave:10
+    smallWave:10,
+    score:50
 }, "model");
 gr.registerNode("gull", ["Wave", "Reset", "Score"], {
     src: "./models/gull.gltf",
     yOffset: 1.7
 }, "model");
 gr.registerNode("lotusRoot", ["Wave", "Reset", "Score"], {
-    src: "./models/lotusRoot.gltf"
+    src: "./models/lotusRoot.gltf",
+    score: 30,
+    yOffset: 1.5
 }, "model");
 gr.registerNode("yacht", ["Wave", "Reset", "Score"], {
     src: "./models/yacht.gltf",
-    scale:"2"
-  }, "model");
+    scale: "2",
+    score: -20,
+    yOffset: 1.5
+}, "model");
 gr.registerNode("turtle", ["Wave", "Reset", "Score"], {
     src: "./models/turtle.gltf",
-    yOffset:2.0
+    score: -20,
+    yOffset: 1.2
 }, "model");
