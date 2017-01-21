@@ -50,7 +50,7 @@ GameManager.prototype.gameStart = function () {
     var putting = function () {
         self.itemManager.randomPut();
         if (self._itemGen) {
-            setTimeout(putting, Math.random() * 500);
+            setTimeout(putting, Math.random() * 5000);
         }
     }
     putting();
