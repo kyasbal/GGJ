@@ -1,7 +1,8 @@
 const C = {
   eyeMax: 25,
   eyeMin: 0,
-  ampl: 3
+  ampl: 3,
+  focus: 100
 };
 let isDobonPlaying = false;
 const Audios = {
@@ -66,15 +67,13 @@ gr.registerComponent("CameraControl", {
   $mount: function () {
     this.__bindAttributes();
     this._transform = this.node.getComponent("Transform");
-    document.body.addEventListener("wheel", (e) => {
-      const p = this._transform.getAttribute("position");
-      const y = Math.max(C.eyeMin, Math.min(C.eyeMax, p.Y - e.deltaY * this.sensibility / 100.0));
-      this._transform.setAttribute("position", [p.X, y, p.Z]);
-    });
   },
   $update: function () {
+    const distance = document.documentElement.getBoundingClientRect().height - window.innerHeight;
+    const heightRatio = 1.0 - $(window).scrollTop() / distance;
     const p = this._transform.getAttribute("position");
-    this._transform.setAttribute("rotation", `x(-${Math.atan(p.Y/100)}rad)`);
+    this._transform.setAttribute("position", [p.X, C.eyeMin + (C.eyeMax - C.eyeMin) * heightRatio, p.Z]);
+    this._transform.setAttribute("rotation", `x(-${Math.atan(p.Y/C.focus)}rad)`);
   }
 });
 
@@ -101,6 +100,7 @@ gr.registerComponent("MoveCameraForward", {
   $update: function () {
     const t = Date.now();
     const delta = t - this.lastTime;
+    this.lastTime = t;
     const p = this._transform.getAttribute("position");
     const cz = p.Z - delta / 1000. * this.speed;
     WAVES.forEach(function (w) {
@@ -117,7 +117,6 @@ gr.registerComponent("MoveCameraForward", {
       }
     } else {
       this._transform.setAttribute("position", [p.X, p.Y, cz]);
-      this.lastTime = t;
       console.log(waveMain(cz));
       if (waveMain(-cz) > p.Y - 2.0) {
         if (!isDobonPlaying) {
@@ -133,7 +132,7 @@ gr.registerComponent("MoveCameraForward", {
       }
     }
   }
-})
+});
 
 gr.registerNode("wave-cube", ["Wave"], {
   geometry: "wave",

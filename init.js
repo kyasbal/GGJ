@@ -9,10 +9,10 @@ gr(function () {
   const itemContainer = $$(".item-container").get(0);
   WAVES = [];
   ITEMS = [];
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 110; i++) {
     WAVES.push(waveContainer.addChildByName("wave-cube", {
       position: `${Math.random()*3},0,-${i}`,
-      color: "cyan",
+      color: "#0084cf",
       offset: i,
       id: "wave-" + i
     }));
