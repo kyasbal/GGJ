@@ -2,7 +2,7 @@ const C = {
     eyeMax: 25,
     eyeMin: 0,
     ampl: 3,
-    focus:70
+    focus:100
 };
 let isDobonPlaying = false;
 const Audios = {
