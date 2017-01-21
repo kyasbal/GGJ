@@ -6,30 +6,12 @@ function GameManager() {
     this.onChangeTime = function(t) {
       const time = t / 1000 / this.timeLimit;
       const colors = [
-        [
-          -0.0001,
-          "#224483"
-        ],
-        [
-          0.5,
-          "#3290D3"
-        ],
-        [
-          0.75,
-          "#77ABCC"
-        ],
-        [
-          0.80,
-          "#DD806A"
-        ],
-        [
-          0.95,
-          "#DE7536"
-        ],
-        [
-          1.00,
-          "#DD806A"
-        ]
+        [-0.0001,"#224483"],
+        [0.5,"#3290D3"],
+        [0.75,"#77ABCC"],
+        [0.80,"#DD806A"],
+        [0.95,"#DE7536"],
+        [1.00,"#DD806A"]
       ];
       let ac;
       for(let i = 0; i < colors.length; i++){
