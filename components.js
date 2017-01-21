@@ -1,6 +1,6 @@
 const C = {
-  eyeMax:100,
-  eyeMin:-3,
+  eyeMax:25,
+  eyeMin:0,
   ampl:3
 };
 
@@ -39,7 +39,9 @@ gr.registerComponent("CameraControl",{
     this._transform = this.node.getComponent("Transform");
     document.body.addEventListener("wheel",(e)=>{
       const p = this._transform.getAttribute("position");
-      this._transform.setAttribute("position",[p.X,p.Y - e.deltaY * this.sensibility /100.0,p.Z]);
+      const y = Math.max(C.eyeMin,Math.min(C.eyeMax,p.Y - e.deltaY * this.sensibility /100.0));
+      this._transform.setAttribute("position",[p.X,y,p.Z]);
+      this._transform.setAttribute("rotation",`x(-${Math.atan(y/100)}rad)`);
     });
   }
 });

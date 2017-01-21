@@ -5,6 +5,8 @@
 
     varying vec3 vNormal;
 
+    varying float vDepth;
+
     #ifdef VS
       attribute vec3 position;
       attribute vec3 normal;
@@ -32,6 +34,7 @@
         p.y += rand(vec2(seed,z)) + sin(_time/100. + seed * 100. + z) * 0.2;
         gl_Position = _matPVM * vec4(p,1);
         vNormal = normalize((_matVM * vec4(normal,0)).xyz);
+        vDepth = -(_matVM * vec4(position,1)).z;
       }
     #endif
 
@@ -42,9 +45,11 @@
     @{default:"n(0.5,0.5,1)"}
     uniform vec3 light;
 
+    @{default:100.0}
+    uniform float depthMax;
       void main(){
         gl_FragColor.xyz = max(dot(vNormal,light),0.) * color;
-        gl_FragColor.w = 0.8;
+        gl_FragColor.w = 0.8 * (1.0-vDepth/depthMax);
       }
     #endif
   }

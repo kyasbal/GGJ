@@ -14,7 +14,11 @@ GeometryFactory.addType("wave",{
   const geo = new Geometry(gl);
   const verticies = new Float32Array(attr.count * 7 * 24);
   const indicies = new Uint16Array(attr.count * 36);
-  const wof = -((attr.count - 1) * attr.margin + attr.count * 2)/2;
+  let sizeSum = 0;
+  for(let j =0; j < attr.count; j++){
+    sizeSum += Math.abs(attr.count / 2.0 - j) + 1;
+  }
+  const wof = -((attr.count - 1) * attr.margin + sizeSum)/2;
   const bCube = [].concat.apply([], [
   GeometryUtility.plane([0, 0, 1], [0, 0, 1], [0, 1, 0], [1, 0, 0], 1, 1),
   GeometryUtility.plane([0, 0, -1], [0, 0, -1], [0, 1, 0], [-1, 0, 0], 1, 1),
@@ -31,8 +35,13 @@ GeometryFactory.addType("wave",{
     GeometryUtility.planeIndex(5 * 4, 1, 1)]);
   for(let i = 0; i < attr.count; i++){
     const seed = Math.random();
+    const size = Math.abs(attr.count / 2.0 - i) + 1;
+    let sizeSum = 0;
+    for(let j =0; j < i; j++){
+      sizeSum += Math.abs(attr.count / 2.0 - j) + 1;
+    }
     for(let j = 0; j < 24; j++){
-        verticies[7 * 24 * i + j * 7 + 0] = bCube[8 * j + 0]+ attr.margin * i + 2*i + wof;
+        verticies[7 * 24 * i + j * 7 + 0] = bCube[8 * j + 0] * size  + attr.margin * i + sizeSum + wof;
         verticies[7 * 24 * i + j * 7 + 1] = bCube[8 * j + 1];
         verticies[7 * 24 * i + j * 7 + 2] = bCube[8 * j + 2];
         verticies[7 * 24 * i + j * 7 + 3] = bCube[8 * j + 3];
