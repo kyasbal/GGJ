@@ -1,41 +1,24 @@
 gr(function() {
     const $$ = gr("#sea");
-    const container = $$(".wave-container").get(0);
+    const waveContainer = $$(".wave-container").get(0);
+    const itemContainer = $$(".item-container").get(0);
     WAVES = [];
+    ITEMS = [];
     for (let i = 0; i < 100; i++) {
-        WAVES.push(container.addChildByName("wave-cube", {
+        WAVES.push(waveContainer.addChildByName("wave-cube", {
             position: `0,0,-${i}`,
             color: "cyan",
             offset: i,
             id: "wave-" + i
         }));
     }
-    const canvas = document.getElementsByTagName("canvas")[0];
-    const box = document.getElementById("gr_container");
-    const pos = (window.innerWidth - canvas.width) / 2;
-    box.style.left = pos + "px";
-    setInterval(function() {
-        itemGenerate();
-    }, 750);
+    for(let i = 0; i < 8; i++){
+      ITEMS.push(itemContainer.addChildByName("apple",{
+        position:`0,0,-${i * 100}`
+      }));
+    }
+    // const canvas = document.getElementsByTagName("canvas")[0];
+    // const box = document.getElementById("gr_container");
+    // const pos = (window.innerWidth - canvas.width) / 2;
+    // box.style.left = pos + "px";
 });
-
-function itemGenerate() {
-    const $$ = gr("#sea");
-    const camera = $$("#main-camera");
-    const min = -7;
-    const max = 8;
-    const offset = -100;
-    const posX = Math.floor((Math.random() * ((max + 1) - min)) + min);
-    //const order = camera.get(0).getComponent("MoveCameraForward").getAttribute("order");
-    const order = camera.getAttribute("position").Z + offset;
-    const pos = $$(`#wave-${i}`).getAttribute("position");
-    const scene = $$("scene").first();
-    scene.addChildByName('item', {
-        color: 'red',
-        geometry: 'sphere',
-        position: `${posX},${pos.Y + 1},${order}`,
-        scale: '1',
-        targetBuffer: "wireframe",
-        order: order
-    });
-};

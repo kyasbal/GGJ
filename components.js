@@ -6,7 +6,7 @@ const C = {
 
 function waveMain(o) {
     const t = Date.now() / 1000;
-    return Math.sin(o / 50 * Math.PI + t);
+    return Math.sin(o / 50 * Math.PI + t) * C.ampl ;
 }
 
 gr.registerComponent("Wave", {
@@ -14,15 +14,20 @@ gr.registerComponent("Wave", {
         offset: {
             converter: "Number",
             default: 0
+        },
+        yOffset:{
+          converter:"Number",
+          default: 0
         }
     },
     $mount: function() {
         this.transform = this.node.getComponent("Transform");
         this.initialY = this.transform.getAttribute("position").Y;
+        this.getAttributeRaw("yOffset").boundTo("yOffset");
     },
     $update: function() {
         const p = this.transform.getAttribute("position");
-        p.Y = waveMain(this.getAttribute("offset")) * C.ampl;
+        p.Y = waveMain(this.getAttribute("offset"))+ this.yOffset;
         this.transform.setAttribute("position", [p.X, p.Y, p.Z]);
     }
 });
@@ -51,15 +56,10 @@ gr.registerComponent("MoveCameraForward", {
         speed: {
             converter: "Number",
             default: 1.0
-        },
-        order: {
-            converter: "Number",
-            default: 99
         }
     },
     $mount: function() {
         this.getAttributeRaw("speed").boundTo("speed");
-        this.getAttributeRaw("order").boundTo("order");
         this.lastTime = Date.now();
         this._transform = this.node.getComponent("Transform");
         this.li = 0;
@@ -71,7 +71,6 @@ gr.registerComponent("MoveCameraForward", {
         const cz = p.Z - delta / 1000. * this.speed;
         const backIndex = Math.floor((-cz) % 100);
         if (backIndex !== this.li) {
-
             WAVES[this.li].setAttribute("position", [0, 0, Math.floor(cz) - 100]);
             WAVES[this.li].setAttribute("offset", -Math.floor(cz));
             this.offset = this.li;
@@ -80,27 +79,12 @@ gr.registerComponent("MoveCameraForward", {
         this.lastTime = t;
         this.li = backIndex;
         this.order = this.li;
+        console.log(p.Y - waveMain(-cz));
+        if(waveMain(-cz) > p.Y - 2.0){
+          console.error("You dead");
+        }
     }
 })
-gr.registerComponent("SyncWave", {
-    attributes: {
-        order: {
-            default: 99,
-            converter: "Number"
-        }
-    },
-    $mount: function() {
-        this.transform = this.node.getComponent("Transform");
-    },
-    $update: function() {
-
-        const p = this.transform.getAttribute("position");
-        p.Y = waveMain(1) * C.ampl;
-        this.transform.setAttribute("position", [p.X, p.Y, p.Z]);
-    }
-});
-
-gr.registerNode("item", ["SyncWave"], {}, "mesh");
 
 gr.registerNode("wave-cube", ["Wave"], {
     geometry: "wave",
@@ -109,3 +93,8 @@ gr.registerNode("wave-cube", ["Wave"], {
 }, "mesh");
 
 gr.registerNode("scroll-camera", ["CameraControl"], {}, "camera");
+gr.registerNode("apple",["Wave"],{
+  scale:"0.02",
+  src:"./models/apple.gltf",
+  yOffset:1
+},"model");

@@ -1,27 +1,37 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <title></title>
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
     <script src="https://unpkg.com/grimoirejs@beta/register/grimoire.js" charset="utf-8"></script>
     <script src="https://unpkg.com/grimoirejs-math@beta/register/grimoire-math.js" charset="utf-8"></script>
     <script src="https://unpkg.com/grimoirejs-fundamental@beta/register/grimoire-fundamental.js" charset="utf-8"></script>
+    <script src="https://unpkg.com/grimoirejs-gltf@beta/register/grimoire-gltf.js" charset="utf-8"></script>
     <script src="./components.js" charset="utf-8"></script>
     <script src="./waveGeometry.js" charset="utf-8"></script>
     <script src="./init.js" charset="utf-8"></script>
     <link rel="stylesheet" href="./index.css">
-  </head>
-  <body>
-    <div class="a" ></div>
-    <div>
-      <img class="back" src="./sea.jpg">
-      <img class="waveimg" src="./wave.png" width="100%">
-      <div id="gr_container" class="gr">
-        <script id="sea" type="text/goml" src="./index.goml"></script>
-      </div>
-      <div class="fix">
-      </div>
+</head>
+<body>
+  <div>
+        <div class="container">
+            <div id="gr_container" class="gr">
+                <script id="sea" type="text/goml" src="./index.goml"></script>
+            </div>
+            <div class="bg-container">
+              <div>
+                <img src="./bg/sunny.jpeg">
+              </div>
+            </div>
+        </div>
+    <div class="sea">
+      <img src="./seaInside.jpg"></img>
     </div>
-  </body>
+  </div>
+    <div class="footer">
+    </div>
+</body>
+
 </html>
