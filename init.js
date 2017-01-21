@@ -11,12 +11,11 @@ gr(function() {
     WAVES = [];
     ITEMS = [];
     GM.gameStart();
-
     GM.onScoreChangeHandler = function(score) {
         const bar = document.getElementsByClassName('score-inner')[0];
-        console.log(bar);
-        bar.style.width = "150px";
-        console.log(GM.score); //TODO: score bar
+        const maxWidth = 300;
+        const ratio = Math.min(GM.score, GM.maxSroreList[GM.maxSroreList.length - 1]) / GM.maxSroreList[GM.maxSroreList.length - 1];
+        bar.style.width = ratio * maxWidth + "px";
     }
     GM.addOnEndGameHandler(function() {
         console.log("end"); //TODO:do something on gameover.
