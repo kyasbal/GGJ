@@ -2,38 +2,41 @@ function GameManager() {
     this.timeLimit = 60;
     this.timer = new Timer();
     this.endGameHandlers = [];
-    this.onScoreChangeHandler = function() {};
-    this.onChangeTime = function(t) {
-      const time = t / 1000 / this.timeLimit;
-      const colors = [
-        [-0.0001,"#224483"],
-        [0.5,"#3290D3"],
-        [0.75,"#77ABCC"],
-        [0.80,"#DD806A"],
-        [0.95,"#DE7536"],
-        [1.00,"#DD806A"]
+    this.onScoreChangeHandler = function () {};
+    this.onChangeTime = function (t) {
+        const time = t / 1000 / this.timeLimit;
+        const colors = [
+        [-0.0001, "#224483"],
+        [0.5, "#3290D3"],
+        [0.75, "#77ABCC"],
+        [0.80, "#DD806A"],
+        [0.95, "#DE7536"],
+        [1.00, "#DD806A"]
       ];
-      let ac;
-      for(let i = 0; i < colors.length; i++){
-        if(colors[i + 1][0] > time){
-          const progress = (time - colors[i][0])/(colors[i + 1][0] - colors[i][0]);
-          console.log(progress);
-          ac = chroma.mix(colors[i][1],colors[i + 1][1],progress).hex();
-          break;
+        let ac;
+        for (let i = 0; i < colors.length; i++) {
+            if (colors[i + 1][0] > time) {
+                const progress = (time - colors[i][0]) / (colors[i + 1][0] - colors[i][0]);
+                console.log(progress);
+                ac = chroma.mix(colors[i][1], colors[i + 1][1], progress).hex();
+                break;
+            }
         }
-      }
-      $(".background").css("background-color",ac)
-      gr("#sea")("wave-cube").setAttribute("color",ac)
+        $(".background").css("background-color", ac)
+        gr("#sea")("wave-cube").setAttribute("color", ac)
     };
     this.score = 0;
     this.maxScoreList = [1000, 2000, 3000, 4000, 5000];
-    this.maxScore = this.maxScoreList[0];
-    this.maxScoreWidth = 300;
     this.itemManager = new ItemManager();
     this.currentHina = 0;
 }
 GameManager.prototype.addScore = function (score) {
-    this.score += score;
+    this.score = Math.max(0, score + this.score);
+    if (this.score > this.maxScoreList[this.currentHina]) {
+        this.score -= this.maxScoreList[this.currentHina];
+        this.currentHina++;
+        this.onHinaGrown(this.currentHina);
+    }
     this.onScoreChangeHandler(this.score);
 };
 GameManager.prototype.time = function () {
@@ -74,7 +77,7 @@ GameManager.prototype.gameStart = function () {
     var putting = function () {
         self.itemManager.randomPut();
         if (self._itemGen) {
-            setTimeout(putting, Math.random() * 1000);
+            setTimeout(putting, Math.random() * 300);
         }
     }
     putting();

@@ -13,24 +13,24 @@ gr(function () {
     text.innerHTML = "0/" + GM.maxScore;
     WAVES = [];
     ITEMS = [];
+    GM.onHinaGrown = function () {
+        console.log("hina grown!!!!!!!!!!!!!!!!");
+        const bar = document.getElementsByClassName('score-inner')[0];
+        const text = document.getElementsByClassName('score-text')[0];
+        text.innerHTML = '0/' + GM.maxScoreList[GM.currentHina];
+        bar.style.width = 0 + "px";
+        const img = document.getElementsByClassName('hina hina' + GM.currentHina)[0];
+        img.src = "../img/kamome.png";
+        Audios.piyopiyo.play();
+    }
     GM.onScoreChangeHandler = function (score) {
         const bar = document.getElementsByClassName('score-inner')[0];
         const text = document.getElementsByClassName('score-text')[0];
-        const ratio = Math.min(GM.score, GM.maxScore) / GM.maxScore;
+        const max = GM.maxScoreList[GM.currentHina];
+        const ratio = GM.score / max;
         bar.style.width = ratio * GM.maxScoreWidth + "px";
         const currentScore = Math.floor(ratio * GM.maxScore);
         text.innerHTML = currentScore + '/' + GM.maxScore;
-        if (currentScore >= GM.maxScoreList[GM.currentHina] &&
-            GM.currentHina < GM.maxScoreList.length) {
-            GM.currentHina++;
-            GM.maxScore = GM.maxScoreList[GM.currentHina];
-            text.innerHTML = 0 + '/' + GM.maxScore;
-            bar.style.width = 0 + "px"
-            GM.score = 0;
-            const img = document.getElementsByClassName('hina hina' + GM.currentHina)[0];
-            img.src = "../img/kamome.png";
-            console.log(GM.currentHina + "番目の雛が成長しました！");
-        }
 
     }
     GM.addOnEndGameHandler(function () {
@@ -49,7 +49,7 @@ gr(function () {
     }
     GM.gameStart();
     $("html,body").animate({
-         scrollTop: $(document).scrollTop()
+        scrollTop: $(document).scrollTop()
     });
     sound.play();
 });
