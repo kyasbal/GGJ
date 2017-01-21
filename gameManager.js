@@ -2,10 +2,11 @@ function GameManager() {
     this.timer = new Timer();
     this.timeLimit = 60;
     this.endGameHandlers = [];
-    this.onScoreChangeHandler;
-    this.onChangeTime = null;
+    this.onScoreChangeHandler = function () {};
+    this.onChangeTime = function () {};
     this.score = 0;
     this.maxSroreList = [1000, 2000, 3000, 4000, 5000];
+    this.itemManager = new ItemManager();
 }
 GameManager.prototype.addScore = function (score) {
     this.score += score;
@@ -17,6 +18,9 @@ GameManager.prototype.time = function () {
 
 GameManager.prototype.gameStart = function () {
     console.log("START!!!");
+    this.itemManager.clear();
+    this.itemManager.register("apple", 100);
+    this.itemManager.register("gull", 100);
     this.timer.reset();
     var self = this;
     var stopId = setInterval(function () {
@@ -28,14 +32,14 @@ GameManager.prototype.gameStart = function () {
                 h();
             })
         }
-        this.onChangeTime()
+        self.onChangeTime()
     }, 100);
 
     //start gen items.
-    this._itemGen = true;
+    self._itemGen = true;
     var putting = function () {
-        this.itemManager.randomPut();
-        if (this._itemGen) {
+        self.itemManager.randomPut();
+        if (self._itemGen) {
             setTimeout(putting, Math.random() * 500);
         }
     }

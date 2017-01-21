@@ -1,8 +1,11 @@
-function ItemManager(name) {
-    this.name = name;
+function ItemManager() {
     this.items = [];
     this.weights = [];
     this.waitZ = 100;
+}
+ItemManager.prototype.clear = function () {
+    this.items = [];
+    this.weights = [];
 }
 ItemManager.prototype.register = function (item, weight) {
     this.weights.push({ name: item, w: weight });
