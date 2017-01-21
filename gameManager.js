@@ -9,8 +9,6 @@ function GameManager() {
     this.maxScore = this.maxSroreList[this.maxSroreList.length - 1];
     this.maxScoreWidth = 300;
     this.itemManager = new ItemManager();
-
-    this.Hina;
     this.currentHina = 0;
 }
 GameManager.prototype.addScore = function(score) {

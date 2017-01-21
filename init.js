@@ -4,7 +4,7 @@ const sound = new Howl({
     volume: 0.5
 });
 const GM = new GameManager();
-gr(function () {
+gr(function() {
     const $$ = gr("#sea");
     const waveContainer = $$(".wave-container").get(0);
     const itemContainer = $$(".item-container").get(0);
@@ -12,11 +12,7 @@ gr(function () {
     text.innerHTML = "0/" + GM.maxScore;
     WAVES = [];
     ITEMS = [];
-    GM.Hina = function () {
-        GM.currentHina++;
-        console.log(GM.currentHina + "番目の雛が成長しました！");
-    }
-    GM.onScoreChangeHandler = function (score) {
+    GM.onScoreChangeHandler = function(score) {
         const bar = document.getElementsByClassName('score-inner')[0];
         const text = document.getElementsByClassName('score-text')[0];
         const ratio = Math.min(GM.score, GM.maxScore) / GM.maxScore;
@@ -27,11 +23,12 @@ gr(function () {
         const currentScore = Math.floor(ratio * GM.maxScore);
         if (currentScore >= GM.maxSroreList[GM.currentHina] &&
             GM.currentHina < GM.maxSroreList.length) {
-            GM.Hina();
+            GM.currentHina++;
+            console.log(GM.currentHina + "番目の雛が成長しました！");
         }
         text.innerHTML = currentScore + '/' + GM.maxScore;
     }
-    GM.addOnEndGameHandler(function () {
+    GM.addOnEndGameHandler(function() {
         console.log("end"); //TODO:do something on gameover.
         GM.gameStart();
     })
