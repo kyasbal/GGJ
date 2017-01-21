@@ -25,7 +25,7 @@ function waveMain(o) {
     bigWave = bigWave * bigWave;
     bigWave = bigWave * bigWave;
     bigWave = bigWave * bigWave * bigWave * bigWave * 5;
-    return bigWave
+    // return bigWave
 
     var w1 = Math.sin(o / 57 * Math.PI);
     var w2 = Math.sin(o / 31 * Math.PI);
