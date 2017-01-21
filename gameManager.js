@@ -4,7 +4,9 @@ function GameManager() {
     this.endGameHandlers = [];
 }
 
-
+GameManager.prototype.time = function () {
+    return this.timer.getTime()
+}
 
 GameManager.prototype.gameStart = function () {
     console.log("START!!!");
