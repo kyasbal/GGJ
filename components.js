@@ -102,8 +102,9 @@ gr.registerComponent("Item", {
     $update: function () {
         const pos = this.node.getAttribute("position");
         const cameraPos = Camera.getAttribute("position");
-        const hitZ = this.node.getAttribute("hitZ");
-        const hitY = this.node.getAttribute("hitY");
+        console.log(cameraPos.Y);
+        const hitZ = this.getAttribute("hitZ");
+        const hitY = this.getAttribute("hitY");
         const dZ = Math.abs(pos.Z - cameraPos.Z);
         const dY = Math.abs(pos.Y - cameraPos.Y);
         if (dZ < hitZ && dY < hitY) {

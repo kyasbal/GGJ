@@ -14,10 +14,16 @@ GameManager.prototype.addScore = function (score) {
     if (this.score > this.maxScoreList[this.currentHina]) {
         this.score -= this.maxScoreList[this.currentHina];
         this.currentHina++;
-        this.onHinaGrown(this.currentHina);
+        this.onHinaGrown(this.currentHina, this.currentHina === this.maxScoreList.length);
     }
-    this.onScoreChangeHandler(this.score);
+    this.onScoreChangeHandler(this.score, this.currentHina === this.maxScoreList.length);
 };
+GameManager.prototype.currentMaxScoreStr = function () {
+    if (this.currentHina === this.maxScoreList.length) {
+        return "∞";
+    }
+    return this.maxScoreList[this.currentHina]
+}
 GameManager.prototype.time = function () {
     return this.timer.getTime()
 }

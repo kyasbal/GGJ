@@ -48,19 +48,25 @@ gr(function () {
         console.log("hina grown!!!!!!!!!!!!!!!!");
         const bar = document.getElementsByClassName('score-inner')[0];
         const text = document.getElementsByClassName('score-text')[0];
-        text.innerHTML = '0/' + GM.maxScoreList[GM.currentHina];
+        text.innerHTML = '0/' + GM.currentMaxScoreStr();
         bar.style.width = 0 + "px";
         const img = document.getElementsByClassName('hina hina' + GM.currentHina)[0];
         img.src = "../img/kamome.png";
         Audios.piyopiyo.play();
     }
-    GM.onScoreChangeHandler = function (score) {
+    GM.onScoreChangeHandler = function (score, isLast) {
         const bar = document.getElementsByClassName('score-inner')[0];
         const text = document.getElementsByClassName('score-text')[0];
-        const max = GM.maxScoreList[GM.currentHina];
-        const ratio = score / max;
-        bar.style.width = ratio * 300 + "px";
-        text.innerHTML = score + '/' + max;
+        if (isLast) {
+            bar.style.width = "300px";
+            text.innerHTML = score + '/∞';
+        } else {
+
+            const max = GM.maxScoreList[GM.currentHina];
+            const ratio = score / max;
+            bar.style.width = ratio * 300 + "px";
+            text.innerHTML = score + '/' + max;
+        }
     }
     GM.addOnEndGameHandler(function () {
         console.log("end"); //TODO:do something on gameover.
