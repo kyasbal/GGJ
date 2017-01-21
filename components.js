@@ -2,14 +2,14 @@ const C = {
     eyeMax: 25,
     eyeMin: 0,
     ampl: 3,
-    bigAmpl:2,
+    bigAmpl: 2,
     focus: 70
 };
 let Camera;
 
-function resetSpeed(){
-  const moveCamera = Camera.getComponent("MoveCameraForward");
-  moveCamera.resetSpeed();
+function resetSpeed() {
+    const moveCamera = Camera.getComponent("MoveCameraForward");
+    moveCamera.resetSpeed();
 }
 const Audios = {
     dobon: new Howl({
@@ -92,7 +92,8 @@ gr.registerComponent("Reset", {
             Math.pow(pos.Y - cameraPos.Y, 2) +
             Math.pow(pos.Z - cameraPos.Z, 2);
         if (distance < 50) {
-            GM.addScore(100);
+            const score = this.node.getComponent("Score").getAttribute("score");
+            GM.addScore(score);
             this.node.emit("reset", this.node);
         }
         if (pos.Z !== 100 && pos.Z - cameraPos.Z > 50) {
@@ -100,23 +101,32 @@ gr.registerComponent("Reset", {
         }
     }
 })
+
+gr.registerComponent("Score", {
+    attributes: {
+        score: {
+            default: 100,
+            converter: "Number"
+        }
+    },
+});
 gr.registerComponent("MoveCameraForward", {
     attributes: {
         speed: {
             converter: "Number",
             default: 1.0
         },
-        acceralation:{
-           converter:"Number",
-          default:1.0
+        acceralation: { 
+            converter: "Number",
+            default: 1.0
         },
         penalty: {
             converter: "Number",
             default: 1800
         },
-        maxSpeed:{
-          converter:"Number",
-          default:300
+        maxSpeed: {
+            converter: "Number",
+            default: 300
         }
     },
     $mount: function() {
@@ -130,22 +140,22 @@ gr.registerComponent("MoveCameraForward", {
         this.hold = false;
         this.duration = 0;
         this.backSpeed = 0;
-        document.body.addEventListener("wheel",(function(e){
-          if(this.hold){
-            e.preventDefault();
-          }
+        document.body.addEventListener("wheel", (function(e) {
+            if (this.hold) {
+                e.preventDefault();
+            }
         }).bind(this));
         this.currentSpeed = this.speed;
         this.resetTime = Date.now();
     },
     $update: function() {
         const t = Date.now();
-        this.currentSpeed = Math.min(this.maxSpeed,this.speed + (t - this.resetTime)/1000 * this.acceralation);
+        this.currentSpeed = Math.min(this.maxSpeed, this.speed + (t - this.resetTime) / 1000 * this.acceralation);
         const delta = t - this.lastTime;
         this.lastTime = t;
         const p = this._transform.getAttribute("position");
         const cz = p.Z - delta / 1000. * this.currentSpeed;
-        WAVES.forEach(function (w) {
+        WAVES.forEach(function(w) {
             if (w.getAttribute("position").Z > cz) {
                 w.sendMessage("resetPosition");
             }
@@ -157,7 +167,7 @@ gr.registerComponent("MoveCameraForward", {
             // isDobonPlaying = true;
             Audios.dobon.play();
             $("html,body").animate({
-                 scrollTop: $(document).height()
+                scrollTop: $(document).height()
             }, this.penalty);
             this.hold = true;
             this.backSpeed = (C.eyeMax - p.Y) / this.penalty;
@@ -171,9 +181,9 @@ gr.registerComponent("MoveCameraForward", {
             }
         }
     },
-    reset:function(){
-      this.currentSpeed = this.getAttribute("speed");
-      this.resetTime = Date.now();
+    reset: function() {
+        this.currentSpeed = this.getAttribute("speed");
+        this.resetTime = Date.now();
     }
 });
 
@@ -183,26 +193,29 @@ gr.registerNode("wave-cube", ["Wave"], {
     material: "new(lambert)"
 }, "mesh");
 
+
+
 gr.registerNode("scroll-camera", ["CameraControl"], {}, "camera");
-gr.registerNode("apple", ["Wave", "Reset"], {
+gr.registerNode("apple", ["Wave", "Reset", "Score"], {
     scale: "0.02",
     src: "./models/apple.gltf",
-    yOffset: 1
+    yOffset: 1,
+    score: 10,
 }, "model");
 
-gr.registerNode("carrot", ["Wave", "Reset"], {
+gr.registerNode("carrot", ["Wave", "Reset", "Score"], {
     src: "./models/carrot.gltf",
     yOffset: 1
 }, "model");
 
-gr.registerNode("fish", ["Wave", "Reset"], {
+gr.registerNode("fish", ["Wave", "Reset", "Score"], {
     src: "./models/fish.gltf",
     yOffset: 1.7
 }, "model");
-gr.registerNode("gull", ["Wave", "Reset"], {
+gr.registerNode("gull", ["Wave", "Reset", "Score"], {
     src: "./models/gull.gltf",
     yOffset: 1.7
 }, "model");
-gr.registerNode("lotusRoot",["Wave","Reset"],{
-    src:"./models/lotusRoot.gltf"
-},"model");
+gr.registerNode("lotusRoot", ["Wave", "Reset", "Score"], {
+    src: "./models/lotusRoot.gltf"
+}, "model");

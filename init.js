@@ -16,19 +16,21 @@ gr(function() {
         const bar = document.getElementsByClassName('score-inner')[0];
         const text = document.getElementsByClassName('score-text')[0];
         const ratio = Math.min(GM.score, GM.maxScore) / GM.maxScore;
-        if (ratio >= 1) {
-            console.log("game clear!");
-        }
         bar.style.width = ratio * GM.maxScoreWidth + "px";
         const currentScore = Math.floor(ratio * GM.maxScore);
-        if (currentScore >= GM.maxSroreList[GM.currentHina] &&
-            GM.currentHina < GM.maxSroreList.length) {
+        text.innerHTML = currentScore + '/' + GM.maxScore;
+        if (currentScore >= GM.maxScoreList[GM.currentHina] &&
+            GM.currentHina < GM.maxScoreList.length) {
             GM.currentHina++;
+            GM.maxScore = GM.maxScoreList[GM.currentHina];
+            text.innerHTML = 0 + '/' + GM.maxScore;
+            bar.style.width = 0 + "px"
+            GM.score = 0;
             const img = document.getElementsByClassName('hina hina' + GM.currentHina)[0];
             img.src = "../img/kamome.png";
             console.log(GM.currentHina + "番目の雛が成長しました！");
         }
-        text.innerHTML = currentScore + '/' + GM.maxScore;
+
     }
     GM.addOnEndGameHandler(function() {
         console.log("end"); //TODO:do something on gameover.

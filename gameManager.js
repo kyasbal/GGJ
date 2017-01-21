@@ -5,8 +5,8 @@ function GameManager() {
     this.onScoreChangeHandler = function () {};
     this.onChangeTime = function () {};
     this.score = 0;
-    this.maxSroreList = [1000, 2000, 3000, 4000, 5000];
-    this.maxScore = this.maxSroreList[this.maxSroreList.length - 1];
+    this.maxScoreList = [1000, 2000, 3000, 4000, 5000];
+    this.maxScore = this.maxScoreList[0];
     this.maxScoreWidth = 300;
     this.itemManager = new ItemManager();
     this.currentHina = 0;
