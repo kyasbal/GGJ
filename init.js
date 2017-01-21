@@ -17,47 +17,67 @@ gr(function() {
             id: "wave-" + i
         }));
     }
-    const apple = new ItemManager('apple');
-    apple.init();
+    var manager = new ItemManager();
+    manager.register("apple");
+    manager.register("gull");
+
     setInterval(function() {
-        apple.set(3);
-    }, 5000);
+        manager.set("apple");
+        manager.set("gull");
+    }, 100);
 
 });
 
+var waitZ = 100;
+
 function ItemManager(name) {
     this.name = name;
+    this.items = [];
     this.ITEMS = [];
+    this.$$ = gr("#sea");
 }
-ItemManager.prototype.init = function() {
-    const $$ = gr("#sea");
-    const itemContainer = $$(".item-container").first();
-    for (var j = 0; j < 10; j++) {
+ItemManager.prototype.register = function(item) {
+    this.items.push(item);
+    var self = this;
+    const itemContainer = this.$$(".item-container").first();
+    for (var j = 0; j < 50; j++) {
         this.ITEMS.push({
-            node: itemContainer.addChildByName(this.name, {
-                position: "0,0,100",
-                id: j
+            node: itemContainer.addChildByName(item, {
+                position: [0, 0, waitZ],
+                id: item + "-" + j
             }).on("reset", (e) => {
                 const n = e.getAttribute("id");
-                this.ITEMS[n]._flag = false;
-                this.ITEMS[n].node.setAttribute("position", `0,0,100`);
+                const reg = n.split("-");
+                var j = reg[reg.length - 1];
+                self.ITEMS[j].node.setAttribute("position", [0, 0, waitZ]);
             }),
-            _flag: false
         });
     }
-};
-ItemManager.prototype.set = function(x) {
+}
+ItemManager.prototype.addInstance = function(name, index) {
+    //TODO
+}
+
+ItemManager.prototype.set = function(itemName) {
     const $$ = gr("#sea");
     const camera = $$("#main-camera").first();
     const pos = camera.getAttribute("position");
     const far = camera.getAttribute("far");
+    var aaaaa;
     for (var i = 0; i < this.ITEMS.length; i++) {
-        if (this.ITEMS[i]._flag === false) {
-            this.ITEMS[i].node.setAttribute("position", x + `,0,${pos.Z - far -10}`);
-            this.ITEMS[i]._flag = true;
+        var target = this.ITEMS[i];
+        var targetPos = target.node.getAttribute("position");
+
+        if (targetPos.Z > waitZ / 2 && this.ITEMS[i].node.name.name === itemName) {
+            // console.log(itemName)
+            aaaaa = target;
             break;
+            // target.node.setAttribute("position", [0,3,pos.Z - far -10]);
+            // console.log(target.node.getAttribute("position").Z)
         } else if (i === this.ITEMS.length - 1) {
-          console.error("All items are in use!");
+            aaaaa = this.addInstance(itemName);
+            // console.error("All items are in use!");
         }
     }
+    aaaaa.node.setAttribute("position", [0, 3, pos.Z - far - 10]);
 }
