@@ -47,7 +47,10 @@ GameManager.prototype.init = function () {
     }
     this._initialized = true;
     this.itemManager.register("apple", 100);
-    this.itemManager.register("gull", 100);
+    this.itemManager.register("yacht", 100);
+    this.itemManager.register("fish", 100);
+    this.itemManager.register("lotusRoot", 100);
+    this.itemManager.register("turtle", 100);
 }
 GameManager.prototype.gameStart = function () {
     console.log("START!!!");
@@ -71,7 +74,7 @@ GameManager.prototype.gameStart = function () {
     var putting = function () {
         self.itemManager.randomPut();
         if (self._itemGen) {
-            setTimeout(putting, Math.random() * 5000);
+            setTimeout(putting, Math.random() * 1000);
         }
     }
     putting();
