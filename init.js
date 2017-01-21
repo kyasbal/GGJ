@@ -2,13 +2,15 @@ const sound = new Howl({
     src: ['./audio/wind.mp3'],
     loop: true,
     volume: 0.5
-});var manager;
+});
+const GM = new GameManager();
 gr(function () {
     const $$ = gr("#sea");
     const waveContainer = $$(".wave-container").get(0);
     const itemContainer = $$(".item-container").get(0);
     WAVES = [];
     ITEMS = [];
+    GM.gameStart();
     for (let i = 0; i < 110; i++) {
         WAVES.push(waveContainer.addChildByName("wave-cube", {
             position: `${Math.random()*3},0,-${i}`,
@@ -36,9 +38,11 @@ var waitZ = 100;
 function ItemManager(name) {
     this.name = name;
     this.items = [];
+    this.weights = [];
     this.$$ = gr("#sea");
 }
-ItemManager.prototype.register = function (item) {
+ItemManager.prototype.register = function (item, weight) {
+    this.weights.push({ name: item, w: weight });
     for (var j = 0; j < 10; j++) {
         this.addInstance(item);
     }
@@ -53,6 +57,22 @@ ItemManager.prototype.addInstance = function (name) {
     });
     this.items.push(node);
     return node;
+}
+ItemManager.prototype.randomPut = function () {
+    var total = 0;
+    this.weights.forEach(function (obj) {
+        total += obj.w;
+    });
+    var k = Math.random() * total;
+    var targetName;
+    for (var i = 0; i < this.weights.length; i++) {
+        if (this.weights[i].w > k) {
+            targetName = this.weights[i].name;
+            break;
+        }
+        k -= this.weights[i].w;
+    }
+    this.set(targetName, Math.random() * 40 - 20);
 }
 
 ItemManager.prototype.set = function (itemName, x) {

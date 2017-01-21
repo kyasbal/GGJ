@@ -2,6 +2,7 @@ const C = {
     eyeMax: 25,
     eyeMin: 0,
     ampl: 3,
+    bigAmpl:2,
     focus: 70
 };
 let Camera;
@@ -28,8 +29,8 @@ function waveMain(o) {
     bigWave = bigWave * bigWave;
     bigWave = bigWave * bigWave;
     bigWave = bigWave * bigWave;
-    bigWave = bigWave * bigWave * bigWave * bigWave * 5;
-    return bigWave
+    bigWave = bigWave * bigWave * bigWave * bigWave * C.bigAmpl;
+    // return bigWave
 
     var w1 = Math.sin(o / 57 * Math.PI);
     var w2 = Math.sin(o / 31 * Math.PI);
@@ -199,7 +200,4 @@ gr.registerNode("gull", ["Wave", "Reset"], {
 }, "model");
 gr.registerNode("lotusRoot",["Wave","Reset"],{
     src:"./models/lotusRoot.gltf"
-},"model");
-gr.registerNode("apple",["Wave","Reset"],{
-    src:"./models/apple.gltf"
 },"model");

@@ -8,7 +8,7 @@
           </object.components>
           <scroll-camera id="main-camera" position="0,10,0" fovy="30d">
             <scroll-camera.components>
-                <MoveCameraForward speed="50" acceralation="3"/>
+                <MoveCameraForward speed="50" acceralation="1"/>
             </scroll-camera.components>
           </scroll-camera>
             <object class="wave-container"></object>

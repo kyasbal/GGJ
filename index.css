@@ -20,6 +20,12 @@ body,html{
   background-image: url(./bg/sunny.png);
   background-size: cover;
 }
+.sunset{
+  margin:0px;
+  height:100%;
+  background-image: url(./bg/sunset.png);
+  background-size: cover;
+}
 
 .ui{
   position: fixed;
