@@ -219,7 +219,8 @@ gr.registerNode("gull", ["Wave", "Reset", "Score"], {
 gr.registerNode("lotusRoot", ["Wave", "Reset", "Score"], {
     src: "./models/lotusRoot.gltf",
     score: 30,
-    yOffset: 1.5
+    yOffset: 1.5,
+    scale:200
 }, "model");
 gr.registerNode("yacht", ["Wave", "Reset", "Score"], {
     src: "./models/yacht.gltf",
@@ -230,5 +231,6 @@ gr.registerNode("yacht", ["Wave", "Reset", "Score"], {
 gr.registerNode("turtle", ["Wave", "Reset", "Score"], {
     src: "./models/turtle.gltf",
     score: -20,
-    yOffset: 1.2
+    yOffset: 1.2,
+    smallWave:0.2
 }, "model");
