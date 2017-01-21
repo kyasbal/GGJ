@@ -8,7 +8,7 @@
           </object.components>
           <scroll-camera id="main-camera" position="0,10,0" fovy="30d">
             <scroll-camera.components>
-                <MoveCameraForward speed="50" acceralation="1"/>
+                <MoveCameraForward speed="10" acceralation="1"/>
             </scroll-camera.components>
             <object rotation="y(180d)">
               <!-- <model src="./models/gull.gltf" position="0,-3,10"/> -->

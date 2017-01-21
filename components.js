@@ -18,6 +18,10 @@ const Audios = {
         onend: function() {
             isDobonPlaying = false;
         }
+    }),
+    piyopiyo: new Howl({
+        src: ['./audio/chick-cry1.mp3'],
+        volume: 0.5,
     })
 };
 
@@ -146,7 +150,7 @@ gr.registerComponent("MoveCameraForward", {
         this.hold = false;
         this.duration = 0;
         this.backSpeed = 0;
-        document.body.addEventListener("wheel", (function(e) {
+        document.body.addEventListener("wheel", (function (e) {
             if (this.hold) {
                 e.preventDefault();
             }
@@ -161,7 +165,7 @@ gr.registerComponent("MoveCameraForward", {
         this.lastTime = t;
         const p = this._transform.getAttribute("position");
         const cz = p.Z - delta / 1000. * this.currentSpeed;
-        WAVES.forEach(function(w) {
+        WAVES.forEach(function (w) {
             if (w.getAttribute("position").Z > cz) {
                 w.sendMessage("resetPosition");
             }
