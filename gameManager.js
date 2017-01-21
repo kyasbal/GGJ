@@ -29,10 +29,11 @@ GameManager.prototype.init = function () {
     }
     this._initialized = true;
     this.itemManager.register("apple", 100);
-    this.itemManager.register("yacht", 100);
-    this.itemManager.register("fish", 100);
+    this.itemManager.register("yacht", 50);
+    this.itemManager.register("fish", 50);
     this.itemManager.register("lotusRoot", 100);
     this.itemManager.register("turtle", 100);
+    this.itemManager.register("carrot", 100);
 }
 GameManager.prototype.gameStart = function () {
     this.timer.reset();

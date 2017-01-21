@@ -238,7 +238,8 @@ gr.registerNode("lotusRoot", ["Wave", "Item"], {
     src: "./models/lotusRoot.gltf",
     score: 30,
     yOffset: 1.5,
-    sounds: "piyopiyo"
+    scale:200,
+    sounds:"piyopiyo"
 }, "model");
 gr.registerNode("yacht", ["Wave", "Item"], {
     src: "./models/yacht.gltf",
@@ -252,5 +253,6 @@ gr.registerNode("turtle", ["Wave", "Item"], {
     src: "./models/turtle.gltf",
     score: -20,
     yOffset: 1.2,
-    sounds: "piyopiyo"
+    smallWave:0.2,
+    sounds:"piyopiyo"
 }, "model");
