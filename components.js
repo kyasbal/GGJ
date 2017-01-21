@@ -5,6 +5,11 @@ const C = {
     focus: 70
 };
 let Camera;
+
+function resetSpeed(){
+  const moveCamera = Camera.getComponent("MoveCameraForward");
+  moveCamera.resetSpeed();
+}
 const Audios = {
     dobon: new Howl({
         src: ['./audio/dobon.mp3'],
@@ -95,15 +100,25 @@ gr.registerComponent("MoveCameraForward", {
             converter: "Number",
             default: 1.0
         },
+        acceralation:{
+           converter:"Number",
+          default:1.0
+        },
         penalty: {
             converter: "Number",
             default: 1800
+        },
+        maxSpeed:{
+          converter:"Number",
+          default:300
         }
     },
     $mount: function () {
         Camera = this.node;
         this.getAttributeRaw("speed").boundTo("speed");
         this.getAttributeRaw("penalty").boundTo("penalty");
+        this.getAttributeRaw("acceralation").boundTo("acceralation");
+        this.getAttributeRaw("maxSpeed").boundTo("maxSpeed");
         this.lastTime = Date.now();
         this._transform = this.node.getComponent("Transform");
         this.hold = false;
@@ -114,13 +129,16 @@ gr.registerComponent("MoveCameraForward", {
             e.preventDefault();
           }
         }).bind(this));
+        this.currentSpeed = this.speed;
+        this.resetTime = Date.now();
     },
     $update: function () {
         const t = Date.now();
+        this.currentSpeed = Math.min(this.maxSpeed,this.speed + (t - this.resetTime)/1000 * this.acceralation);
         const delta = t - this.lastTime;
         this.lastTime = t;
         const p = this._transform.getAttribute("position");
-        const cz = p.Z - delta / 1000. * this.speed;
+        const cz = p.Z - delta / 1000. * this.currentSpeed;
         WAVES.forEach(function (w) {
             if (w.getAttribute("position").Z > cz) {
                 w.sendMessage("resetPosition");
@@ -138,6 +156,7 @@ gr.registerComponent("MoveCameraForward", {
             this.hold = true;
             this.backSpeed = (C.eyeMax - p.Y) / this.penalty;
             this.duration = Date.now() + this.penalty;
+            this.reset();
         } else {
             var newY = Math.max(p.Y + this.backSpeed, cameraMinHeight);
             this._transform.setAttribute("position", [p.X, newY, cz]);
@@ -145,6 +164,10 @@ gr.registerComponent("MoveCameraForward", {
                 this.hold = false;
             }
         }
+    },
+    reset:function(){
+      this.currentSpeed = this.getAttribute("speed");
+      this.resetTime = Date.now();
     }
 });
 
