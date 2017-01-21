@@ -21,12 +21,12 @@ gr(function () {
     manager.register("apple", 100);
     manager.register("gull", 100);
 
-    setInterval(function () {
-        console.log("asdasdasdasdasdasdasdasdasd");
-        // manager.set("apple");
-        // manager.set("gull");
+
+    var putting = function () {
         manager.randomPut()
-    }, Math.random() * 1000);
+        setTimeout(putting, Math.random() * 500);
+    }
+    putting();
 
 });
 
@@ -69,7 +69,7 @@ ItemManager.prototype.randomPut = function () {
         }
         k -= this.weights[i].w;
     }
-    this.set(targetName);
+    this.set(targetName, Math.random() * 40 - 20);
 }
 
 ItemManager.prototype.set = function (itemName, x) {
