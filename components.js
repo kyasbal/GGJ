@@ -18,6 +18,10 @@ const Audios = {
         onend: function() {
             isDobonPlaying = false;
         }
+    }),
+    piyopiyo: new Howl({
+        src: ['./audio/chick-cry1.mp3'],
+        volume: 0.5,
     })
 };
 
@@ -80,7 +84,7 @@ gr.registerComponent("CameraControl", {
         this.__bindAttributes();
         this._transform = this.node.getComponent("Transform");
     },
-    $update: function() {
+    $update: function(t) {
         const distance = document.documentElement.getBoundingClientRect().height - window.innerHeight;
         const heightRatio = $(window).scrollTop() / distance;
         const p = this._transform.getAttribute("position");
@@ -91,11 +95,11 @@ gr.registerComponent("CameraControl", {
 gr.registerComponent("Hit", {
     attributes: {
         hitY: {
-            default: 1,
+            default: 3,
             converter: "Number"
         },
         hitZ: {
-            default: 1,
+            default: 3,
             converter: "Number"
         }
     },
@@ -161,11 +165,11 @@ gr.registerComponent("MoveCameraForward", {
         this.hold = false;
         this.duration = 0;
         this.backSpeed = 0;
-        document.body.addEventListener("wheel", (function(e) {
-            if (this.hold) {
-                e.preventDefault();
-            }
-        }).bind(this));
+        // document.body.addEventListener("wheel", (function (e) {
+        //     if (this.hold) {
+        //         e.preventDefault();
+        //     }
+        // }).bind(this));
         this.currentSpeed = this.speed;
         this.resetTime = Date.now();
     },
@@ -176,7 +180,7 @@ gr.registerComponent("MoveCameraForward", {
         this.lastTime = t;
         const p = this._transform.getAttribute("position");
         const cz = p.Z - delta / 1000. * this.currentSpeed;
-        WAVES.forEach(function(w) {
+        WAVES.forEach(function (w) {
             if (w.getAttribute("position").Z > cz) {
                 w.sendMessage("resetPosition");
             }
@@ -194,8 +198,8 @@ gr.registerComponent("MoveCameraForward", {
             this.backSpeed = (C.eyeMax - p.Y) / this.penalty;
             this.duration = Date.now() + this.penalty;
             this.reset();
-        } else {
-            var newY = Math.max(p.Y + this.backSpeed, cameraMinHeight);
+        } else{
+            var newY = this.hold ? Math.max(p.Y + this.backSpeed, cameraMinHeight) : p.Y;
             this._transform.setAttribute("position", [p.X, newY, cz]);
             if (this.duration <= Date.now()) {
                 this.hold = false;
@@ -233,7 +237,8 @@ gr.registerNode("carrot", ["Wave", "Reset", "Score", "Hit"], {
 gr.registerNode("fish", ["Wave", "Reset", "Score", "Hit"], {
     src: "./models/fish.gltf",
     yOffset: 1.7,
-    score: 50
+    smallWave:10,
+    score:50
 }, "model");
 gr.registerNode("gull", ["Wave", "Reset", "Score", "Hit"], {
     src: "./models/gull.gltf",
@@ -248,7 +253,8 @@ gr.registerNode("yacht", ["Wave", "Reset", "Score", "Hit"], {
     src: "./models/yacht.gltf",
     scale: "2",
     score: -20,
-    yOffset: 1.5
+    yOffset: 1.5,
+    rotation:"y(90d)"
 }, "model");
 gr.registerNode("turtle", ["Wave", "Reset", "Score", "Hit"], {
     src: "./models/turtle.gltf",

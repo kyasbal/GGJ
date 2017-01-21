@@ -4,35 +4,40 @@ const sound = new Howl({
     volume: 0.5
 });
 const GM = new GameManager();
-gr(function() {
-    GM.init();
+
+function initAnimation(){
+  return new Promise((resolve,reject)=>{
+    setTimeout(()=>{
+      resolve()
+    },1000);
+  });
+}
+gr(function () {
+      GM.init();
     const $$ = gr("#sea");
     const waveContainer = $$(".wave-container").get(0);
     const itemContainer = $$(".item-container").get(0);
     const text = document.getElementsByClassName('score-text')[0];
-    text.innerHTML = "0/" + GM.maxScore;
+    text.innerHTML = "0/" + GM.maxScoreList[GM.currentHina];
     WAVES = [];
     ITEMS = [];
-    GM.onScoreChangeHandler = function(score) {
+    GM.onHinaGrown = function () {
+        console.log("hina grown!!!!!!!!!!!!!!!!");
         const bar = document.getElementsByClassName('score-inner')[0];
         const text = document.getElementsByClassName('score-text')[0];
-        GM.score = GM.score > 0 ? GM.score : 0;
-        const ratio = Math.min(GM.score, GM.maxScore) / GM.maxScore;
-        bar.style.width = ratio * GM.maxScoreWidth + "px";
-        const currentScore = Math.floor(ratio * GM.maxScore);
-        text.innerHTML = currentScore + '/' + GM.maxScore;
-        if (currentScore >= GM.maxScoreList[GM.currentHina] &&
-            GM.currentHina < GM.maxScoreList.length) {
-            GM.currentHina++;
-            GM.maxScore = GM.maxScoreList[GM.currentHina];
-            text.innerHTML = 0 + '/' + GM.maxScore;
-            bar.style.width = 0 + "px"
-            GM.score = 0;
-            const img = document.getElementsByClassName('hina hina' + GM.currentHina)[0];
-            img.src = "../img/kamome.png";
-            console.log(GM.currentHina + "番目の雛が成長しました！");
-        }
-
+        text.innerHTML = '0/' + GM.maxScoreList[GM.currentHina];
+        bar.style.width = 0 + "px";
+        const img = document.getElementsByClassName('hina hina' + GM.currentHina)[0];
+        img.src = "../img/kamome.png";
+        Audios.piyopiyo.play();
+    }
+    GM.onScoreChangeHandler = function (score) {
+        const bar = document.getElementsByClassName('score-inner')[0];
+        const text = document.getElementsByClassName('score-text')[0];
+        const max = GM.maxScoreList[GM.currentHina];
+        const ratio = score / max;
+        bar.style.width = ratio * 300 + "px";
+        text.innerHTML = score + '/' + max;
     }
     GM.addOnEndGameHandler(function() {
         console.log("end"); //TODO:do something on gameover.
@@ -48,9 +53,11 @@ gr(function() {
             id: "wave-" + i
         }));
     }
-    GM.gameStart();
     $("html,body").animate({
         scrollTop: $(document).scrollTop()
     });
     sound.play();
+    initAnimation().then(t=>{
+        GM.gameStart();
+    });
 });
