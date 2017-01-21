@@ -12,7 +12,7 @@ GameManager.prototype.gameStart = function () {
     var self = this;
     var stopId = setInterval(function () {
         var ct = self.timer.getTime();
-        $(".time-text").text((self.timeLimit - ct / 1000).toFixed(1));
+        $(".time-text").text(Math.floor(self.timeLimit - ct / 1000));
         if (self.timeLimit * 1000 < ct) {
             clearInterval(stopId);
             self.endGameHandlers.forEach(function (h) {
