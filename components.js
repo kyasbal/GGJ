@@ -79,9 +79,9 @@ gr.registerComponent("MoveCameraForward", {
         this.lastTime = t;
         this.li = backIndex;
         this.order = this.li;
-        console.log(p.Y - waveMain(-cz));
+      //  console.log(p.Y - waveMain(-cz));
         if(waveMain(-cz) > p.Y - 2.0){
-          console.error("You dead");
+      //    console.error("You dead");
         }
     }
 })
