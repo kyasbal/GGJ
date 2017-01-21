@@ -1,14 +1,14 @@
-<goml width="640" height="480" bgColor="black">
+<goml width="fit" height="480" bgColor="black">
     <import-material typeName="lambert" src="./index.sort"/>
     <import-material typeName="bg" src="./background.sort?abcdefgh"/>
-    <geometry type="wave" name="wave" margin="0.1" count="20"/>
+    <geometry type="wave" name="wave" margin="0.1" count="30"/>
     <scene>
         <object class="whole-container">
           <object.components>
           </object.components>
             <object class="wave-container"></object>
             <object class="item-container"></object>
-            <scroll-camera id="main-camera" position="0,0,0">
+            <scroll-camera id="main-camera" position="0,10,0" fovy="30d">
               <scroll-camera.components>
                   <MoveCameraForward speed="50"/>
               </scroll-camera.components>

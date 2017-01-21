@@ -1,3 +1,8 @@
+const sound = new Howl({
+  src: ['./audio/wind.mp3'],
+  loop: true,
+  volume: 0.5
+});
 gr(function() {
     const $$ = gr("#sea");
     const waveContainer = $$(".wave-container").get(0);
@@ -17,8 +22,9 @@ gr(function() {
         position:`0,0,-${i * 100}`
       }));
     }
-    // const canvas = document.getElementsByTagName("canvas")[0];
-    // const box = document.getElementById("gr_container");
-    // const pos = (window.innerWidth - canvas.width) / 2;
-    // box.style.left = pos + "px";
+    const canvas = document.getElementsByTagName("canvas")[0];
+    const box = document.getElementById("gr_container");
+    const pos = (window.innerWidth - canvas.width) / 2;
+    box.style.left = pos + "px";
+    sound.play();
 });
