@@ -22,7 +22,6 @@ gr(function () {
     manager.register("gull");
 
     setInterval(function () {
-        console.log("asdasd");
         manager.set("apple");
         manager.set("gull");
     }, 1000);
