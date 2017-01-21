@@ -18,8 +18,6 @@ gr(function () {
     for (let i = 0; i < 110; i++) {
         WAVES.push(waveContainer.addChildByName("wave-cube", {
             position: `${Math.random()*3},0,-${i}`,
-            color: "#0084cf",
-            offset: i,
             id: "wave-" + i
         }));
     }
@@ -97,3 +95,4 @@ ItemManager.prototype.set = function (itemName, x) {
     }
     inst.setAttribute("position", [x ? x : 0, 3, pos.Z - far - 10]);
 }
+document.ondragstart = function(){return false;};
