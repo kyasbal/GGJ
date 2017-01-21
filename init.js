@@ -3,15 +3,16 @@ const sound = new Howl({
     loop: true,
     volume: 0.5
 });
-gr(function() {
+gr(function () {
     const $$ = gr("#sea");
     const waveContainer = $$(".wave-container").get(0);
     const itemContainer = $$(".item-container").get(0);
     WAVES = [];
-    for (let i = 0; i < 100; i++) {
+    ITEMS = [];
+    for (let i = 0; i < 110; i++) {
         WAVES.push(waveContainer.addChildByName("wave-cube", {
-            position: `0,0,-${i}`,
-            color: "cyan",
+            position: `${Math.random()*3},0,-${i}`,
+            color: "#0084cf",
             offset: i,
             id: "wave-" + i
         }));
@@ -28,7 +29,7 @@ function ItemManager(name) {
     this.name = name;
     this.ITEMS = [];
 }
-ItemManager.prototype.init = function() {
+ItemManager.prototype.init = function () {
     const $$ = gr("#sea");
     const itemContainer = $$(".item-container").first();
     for (var j = 0; j < 10; j++) {
@@ -45,7 +46,7 @@ ItemManager.prototype.init = function() {
         });
     }
 };
-ItemManager.prototype.set = function(x) {
+ItemManager.prototype.set = function (x) {
     const $$ = gr("#sea");
     const camera = $$("#main-camera").first();
     const pos = camera.getAttribute("position");

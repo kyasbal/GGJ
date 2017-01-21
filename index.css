@@ -3,8 +3,6 @@ body,html{
 }
 .container{
   width:100%;
-  height:480px;
-  background-color: #4099DC;
 }
 .bg-container >img{
   width:100%;
@@ -17,7 +15,16 @@ body,html{
 }
 .sea{
   margin: 0px;
-  height:1024px;
-  background-image: url(./bg/sunny.jpeg);
+  height:1231px;
+  background-image: url(./bg/sunny.png);
   background-size: cover;
+}
+
+.ui{
+  position: fixed;
+  left: 0px;
+  right:0px;
+  top:0px;
+  height:256px;
+  text-align: center;
 }
