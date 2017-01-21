@@ -15,7 +15,7 @@ const Audios = {
     dobon: new Howl({
         src: ['./audio/dobon.mp3'],
         volume: 0.5,
-        onend: function() {
+        onend: function () {
             isDobonPlaying = false;
         }
     })
@@ -45,17 +45,17 @@ gr.registerComponent("Wave", {
             default: 0
         }
     },
-    $mount: function() {
+    $mount: function () {
         this.transform = this.node.getComponent("Transform");
         this.initialY = this.transform.getAttribute("position").Y;
         this.getAttributeRaw("yOffset").boundTo("yOffset");
     },
-    $update: function() {
+    $update: function () {
         const p = this.transform.getAttribute("position");
         p.Y = waveMain(p.Z) + this.yOffset;
         this.transform.setAttribute("position", [p.X, p.Y, p.Z]);
     },
-    $resetPosition: function() {
+    $resetPosition: function () {
         var count = WAVES.length;
         var d = 1;
         var p = this.node.getAttribute("position");
@@ -70,11 +70,11 @@ gr.registerComponent("CameraControl", {
             default: 1.0
         }
     },
-    $mount: function() {
+    $mount: function () {
         this.__bindAttributes();
         this._transform = this.node.getComponent("Transform");
     },
-    $update: function() {
+    $update: function () {
         const distance = document.documentElement.getBoundingClientRect().height - window.innerHeight;
         const heightRatio = $(window).scrollTop() / distance;
         const p = this._transform.getAttribute("position");
@@ -84,8 +84,8 @@ gr.registerComponent("CameraControl", {
 });
 gr.registerComponent("Reset", {
     attributes: {},
-    $mount: function() {},
-    $update: function() {
+    $mount: function () {},
+    $update: function () {
         const pos = this.node.getAttribute("position");
         const cameraPos = Camera.getAttribute("position");
         const distance = Math.pow(pos.X - cameraPos.X, 2) +
@@ -116,7 +116,7 @@ gr.registerComponent("MoveCameraForward", {
             converter: "Number",
             default: 1.0
         },
-        acceralation: { 
+        acceralation: {
             converter: "Number",
             default: 1.0
         },
@@ -129,7 +129,7 @@ gr.registerComponent("MoveCameraForward", {
             default: 300
         }
     },
-    $mount: function() {
+    $mount: function () {
         Camera = this.node;
         this.getAttributeRaw("speed").boundTo("speed");
         this.getAttributeRaw("penalty").boundTo("penalty");
@@ -148,7 +148,7 @@ gr.registerComponent("MoveCameraForward", {
         this.currentSpeed = this.speed;
         this.resetTime = Date.now();
     },
-    $update: function() {
+    $update: function () {
         const t = Date.now();
         this.currentSpeed = Math.min(this.maxSpeed, this.speed + (t - this.resetTime) / 1000 * this.acceralation);
         const delta = t - this.lastTime;
@@ -181,7 +181,7 @@ gr.registerComponent("MoveCameraForward", {
             }
         }
     },
-    reset: function() {
+    reset: function () {
         this.currentSpeed = this.getAttribute("speed");
         this.resetTime = Date.now();
     }

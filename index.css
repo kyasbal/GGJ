@@ -17,8 +17,18 @@ body,html{
 .sea{
   margin: 0px;
   height:1231px;
-  background-image: url(./bg/sunny.png);
+  background-image: url(./bg/sky.png);
   background-size: cover;
+}
+
+.background{
+    position:fixed;
+    z-index: -10;
+    left:0px;
+    right:0px;
+    bottom:0px;
+    top:0px;
+    background-color: orange;
 }
 
 .ui{

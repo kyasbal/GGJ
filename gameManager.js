@@ -2,8 +2,29 @@ function GameManager() {
     this.timeLimit = 60;
     this.timer = new Timer();
     this.endGameHandlers = [];
-    this.onScoreChangeHandler = function () {};
-    this.onChangeTime = function () {};
+    this.onScoreChangeHandler = function() {};
+    this.onChangeTime = function(t) {
+      const time = t / 1000 / this.timeLimit;
+      const colors = [
+        [-0.0001,"#224483"],
+        [0.5,"#3290D3"],
+        [0.75,"#77ABCC"],
+        [0.80,"#DD806A"],
+        [0.95,"#DE7536"],
+        [1.00,"#DD806A"]
+      ];
+      let ac;
+      for(let i = 0; i < colors.length; i++){
+        if(colors[i + 1][0] > time){
+          const progress = (time - colors[i][0])/(colors[i + 1][0] - colors[i][0]);
+          console.log(progress);
+          ac = chroma.mix(colors[i][1],colors[i + 1][1],progress).hex();
+          break;
+        }
+      }
+      $(".background").css("background-color",ac)
+      gr("#sea")("wave-cube").setAttribute("color",ac)
+    };
     this.score = 0;
     this.maxScoreList = [1000, 2000, 3000, 4000, 5000];
     this.maxScore = this.maxScoreList[0];
@@ -18,12 +39,19 @@ GameManager.prototype.addScore = function (score) {
 GameManager.prototype.time = function () {
     return this.timer.getTime()
 }
-
-GameManager.prototype.gameStart = function () {
-    console.log("START!!!");
-    this.itemManager.clear();
+GameManager.prototype.init = function () {
+    console.log("initilize game manager.");
+    if (this._initialized) {
+        console.error("GM init calld twice");
+        return;
+    }
+    this._initialized = true;
     this.itemManager.register("apple", 100);
     this.itemManager.register("gull", 100);
+}
+GameManager.prototype.gameStart = function () {
+    console.log("START!!!");
+
     this.timer.reset();
     var self = this;
     var stopId = setInterval(function () {
@@ -35,7 +63,7 @@ GameManager.prototype.gameStart = function () {
                 h();
             })
         }
-        self.onChangeTime()
+        self.onChangeTime(ct)
     }, 100);
 
     //start gen items.
@@ -43,7 +71,7 @@ GameManager.prototype.gameStart = function () {
     var putting = function () {
         self.itemManager.randomPut();
         if (self._itemGen) {
-            setTimeout(putting, Math.random() * 500);
+            setTimeout(putting, Math.random() * 5000);
         }
     }
     putting();
