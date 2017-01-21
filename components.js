@@ -16,20 +16,20 @@ const Audios = {
 };
 
 function waveMain(o) {
-  // var a = Math.sin(t / 3 * Math.PI * 2)
-  // return a * a * a * a * C.ampl
   var bigWaveParam = o / 1000 * Math.PI * 2;
   var bigWave = Math.sin(bigWaveParam);
   bigWave = bigWave * bigWave;
   bigWave = bigWave * bigWave;
   bigWave = bigWave * bigWave;
-  return bigWave * bigWave * bigWave * bigWave * 3 * C.ampl;
-  return bigWave;
+  bigWave = bigWave * bigWave;
+  bigWave = bigWave * bigWave;
+  bigWave = bigWave * bigWave * bigWave * bigWave * 5;
+  return bigWave
 
   var w1 = Math.sin(o / 57 * Math.PI);
   var w2 = Math.sin(o / 31 * Math.PI);
   var w3 = Math.sin(o / 17 * Math.PI);
-  return (w1 + 0.6 * w2 + 0.8 * w3) * C.ampl;
+  return (w1 + 0.6 * w2 + 0.8 * w3 + bigWave) * C.ampl;
 }
 
 gr.registerComponent("Wave", {
@@ -109,26 +109,31 @@ gr.registerComponent("MoveCameraForward", {
       }
     })
 
-    if (this.hold) {
-      const y = p.Y + this.backSpeed;
-      this._transform.setAttribute("position", [p.X, y, cz]);
+    var cameraMinHeight = waveMain(cz) + 2;
+    if (!this.hold && cameraMinHeight > p.Y && !isDobonPlaying) {
+      this._transform.setAttribute("position", [p.X, p.Y, cz]);
+      isDobonPlaying = true;
+      Audios.dobon.play();
+      $("html,body").animate({
+        scrollTop: $('body').offset().top
+      }, this.penalty);
+      this.hold = true;
+      this.backSpeed = (C.eyeMax - p.Y) / this.penalty;
+      this.duration = Date.now() + this.penalty;
+    } else {
+      var newY = Math.max(p.Y + this.backSpeed, cameraMinHeight);
+      this._transform.setAttribute("position", [p.X, newY, cz]);
       if (this.duration <= Date.now()) {
         this.hold = false;
       }
+    }
+    if (this.hold) {
+
     } else {
-      this._transform.setAttribute("position", [p.X, p.Y, cz]);
-      console.log(waveMain(cz));
-      if (waveMain(-cz) > p.Y - 2.0) {
-        if (!isDobonPlaying) {
-          isDobonPlaying = true;
-          Audios.dobon.play();
-          $("html,body").animate({
-            scrollTop: $('body').offset().top
-          }, this.penalty);
-          this.hold = true;
-          this.backSpeed = (C.eyeMax - p.Y) / this.penalty;
-          this.duration = Date.now() + this.penalty;
-        }
+      if (cameraMinHeight > p.Y && !isDobonPlaying) {
+
+      } else {
+
       }
     }
   }
