@@ -6,11 +6,14 @@ function GameManager() {
     this.score = 0;
     this.maxSroreList = [1000, 2000, 3000, 4000, 5000];
 }
-
 GameManager.prototype.addScore = function(score) {
     this.score += score;
     this.onScoreChangeHandler(this.score);
 };
+GameManager.prototype.time = function() {
+    return this.timer.getTime()
+}
+
 GameManager.prototype.gameStart = function() {
     console.log("START!!!");
     this.timer.reset();
