@@ -1,4 +1,12 @@
 const GM = new GameManager();
+
+function initAnimation() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve()
+        }, 1000);
+    });
+}
 gr(function () {
     GM.init();
     const $$ = gr("#sea");
@@ -40,9 +48,11 @@ gr(function () {
             id: "wave-" + i
         }));
     }
-    GM.gameStart();
     $("html,body").animate({
         scrollTop: $(document).scrollTop()
     });
     Audios.wind.play();
+    initAnimation().then(t => {
+        GM.gameStart();
+    });
 });

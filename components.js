@@ -209,7 +209,8 @@ gr.registerNode("carrot", ["Wave", "Reset", "Score"], {
 gr.registerNode("fish", ["Wave", "Reset", "Score"], {
     src: "./models/fish.gltf",
     yOffset: 1.7,
-    score: 50
+    smallWave:10,
+    score:50
 }, "model");
 gr.registerNode("gull", ["Wave", "Reset", "Score"], {
     src: "./models/gull.gltf",
