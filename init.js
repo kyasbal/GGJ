@@ -10,8 +10,7 @@ gr(function () {
     const itemContainer = $$(".item-container").get(0);
     WAVES = [];
     ITEMS = [];
-    GM.gameStart();
-    GM.onScoreChangeHandler = function(score) {
+    GM.onScoreChangeHandler = function (score) {
         const bar = document.getElementsByClassName('score-inner')[0];
         const maxWidth = 300;
         const ratio = Math.min(GM.score, GM.maxSroreList[GM.maxSroreList.length - 1]) / GM.maxSroreList[GM.maxSroreList.length - 1];
@@ -30,15 +29,4 @@ gr(function () {
         }));
     }
     GM.gameStart();
-    // var manager = new ItemManager();
-    // manager.register("apple", 100);
-    // manager.register("gull", 100);
-    //
-    //
-    // var putting = function() {
-    //     manager.randomPut()
-    //     setTimeout(putting, Math.random() * 500);
-    // }
-    // putting();
-
 });
