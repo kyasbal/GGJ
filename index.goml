@@ -6,7 +6,7 @@
           <object.components>
           </object.components>
             <object class="wave-container"></object>
-            <scroll-camera position="0,0,0">
+            <scroll-camera id="main-camera" position="0,0,0">
               <scroll-camera.components>
                   <MoveCameraForward speed="50"/>
               </scroll-camera.components>
