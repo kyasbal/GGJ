@@ -1,5 +1,6 @@
 <goml width="640" height="480" bgColor="black">
     <import-material typeName="lambert" src="./index.sort"/>
+    <import-material typeName="bg" src="./background.sort"/>
     <geometry type="wave" name="wave" margin="0.1" count="20"/>
     <scene>
         <object class="whole-container">
@@ -13,7 +14,10 @@
             </scroll-camera>
         </object>
     </scene>
-    <renderer camera="scroll-camera" >
-        <render-scene/>
+    <renderer camera="scroll-camera" far="100">
+        <texture-buffer name="o1"/>
+        <render-buffer name="d1"/>
+        <render-scene out="o1"/>
+        <render-quad material="new(bg)" source="backbuffer(o1)" height="0.6"/>
     </renderer>
 </goml>

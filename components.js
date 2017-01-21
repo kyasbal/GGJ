@@ -1,6 +1,6 @@
 const C = {
-    eyeMax: 100,
-    eyeMin: -3,
+    eyeMax: 25,
+    eyeMin: 0,
     ampl: 3
 };
 
@@ -39,7 +39,9 @@ gr.registerComponent("CameraControl", {
         this._transform = this.node.getComponent("Transform");
         document.body.addEventListener("wheel", (e) => {
             const p = this._transform.getAttribute("position");
-            this._transform.setAttribute("position", [p.X, p.Y - e.deltaY * this.sensibility / 100.0, p.Z]);
+            const y = Math.max(C.eyeMin, Math.min(C.eyeMax, p.Y - e.deltaY * this.sensibility / 100.0));
+            this._transform.setAttribute("position", [p.X, y, p.Z]);
+            this._transform.setAttribute("rotation", `x(-${Math.atan(y/100)}rad)`);
         });
     }
 });
@@ -69,7 +71,7 @@ gr.registerComponent("MoveCameraForward", {
         const cz = p.Z - delta / 1000. * this.speed;
         const backIndex = Math.floor((-cz) % 100);
         if (backIndex !== this.li) {
-            this.order = this.li;
+
             WAVES[this.li].setAttribute("position", [0, 0, Math.floor(cz) - 100]);
             WAVES[this.li].setAttribute("offset", -Math.floor(cz));
             this.offset = this.li;
@@ -77,6 +79,7 @@ gr.registerComponent("MoveCameraForward", {
         this._transform.setAttribute("position", [p.X, p.Y, cz]);
         this.lastTime = t;
         this.li = backIndex;
+        this.order = this.li;
     }
 })
 gr.registerComponent("SyncWave", {
@@ -90,9 +93,10 @@ gr.registerComponent("SyncWave", {
         this.transform = this.node.getComponent("Transform");
     },
     $update: function() {
-        // const p = this.transform.getAttribute("position");
-        // p.Y = waveMain(this.order) * C.ampl + 1;
-        // this.transform.setAttribute("position", [p.X, p.Y, p.Z]);
+
+        const p = this.transform.getAttribute("position");
+        p.Y = waveMain(1) * C.ampl;
+        this.transform.setAttribute("position", [p.X, p.Y, p.Z]);
     }
 });
 

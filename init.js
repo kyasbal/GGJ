@@ -16,7 +16,7 @@ gr(function() {
     box.style.left = pos + "px";
     setInterval(function() {
         itemGenerate();
-    }, 300);
+    }, 750);
 });
 
 function itemGenerate() {
@@ -26,14 +26,16 @@ function itemGenerate() {
     const max = 8;
     const offset = -100;
     const posX = Math.floor((Math.random() * ((max + 1) - min)) + min);
-    const order = camera.get(0).getComponent("MoveCameraForward").getAttribute("order");
+    //const order = camera.get(0).getComponent("MoveCameraForward").getAttribute("order");
+    const order = camera.getAttribute("position").Z + offset;
     const pos = $$(`#wave-${i}`).getAttribute("position");
     const scene = $$("scene").first();
     scene.addChildByName('item', {
-        color: 'white',
+        color: 'red',
         geometry: 'sphere',
-        position: `${posX},${pos.Y + 4},${pos.Z}`,
+        position: `${posX},${pos.Y + 1},${order}`,
         scale: '1',
+        targetBuffer: "wireframe",
         order: order
     });
 };
