@@ -1,54 +1,9 @@
-const sound = new Howl({
-    src: ['./audio/wind.mp3'],
-    loop: true,
-    volume: 0.5
-});
-const GM = new GameManager();
-gr(function() {
-    const $$ = gr("#sea");
-    const waveContainer = $$(".wave-container").get(0);
-    const itemContainer = $$(".item-container").get(0);
-    WAVES = [];
-    ITEMS = [];
-    GM.gameStart();
-
-    GM.onScoreChangeHandler = function(score) {
-        const bar = document.getElementsByClassName('score-inner')[0];
-        console.log(bar);
-        bar.style.width = "150px";
-        console.log(GM.score); //TODO: score bar
-    }
-    GM.addOnEndGameHandler(function() {
-        console.log("end"); //TODO:do something on gameover.
-        GM.gameStart();
-    })
-    for (let i = 0; i < 110; i++) {
-        WAVES.push(waveContainer.addChildByName("wave-cube", {
-            position: `${Math.random()*3},0,-${i}`,
-            id: "wave-" + i
-        }));
-    }
-     manager= new ItemManager();
-    manager.register("apple");
-    manager.register("gull");
-    setTimeout(putNew,3000);
-});
-
-function putNew(){
-  const rnd = Math.random();
-  manager.set(Math.random() < 0.5 ?"apple":"gull");
-  setTimeout(
-    putNew,
-  rnd * 2000);
-}
-
-var waitZ = 100;
-
 function ItemManager(name) {
     this.name = name;
     this.items = [];
     this.weights = [];
     this.$$ = gr("#sea");
+    this.waitZ = 100;
 }
 ItemManager.prototype.register = function (item, weight) {
     this.weights.push({ name: item, w: weight });
@@ -59,10 +14,10 @@ ItemManager.prototype.register = function (item, weight) {
 ItemManager.prototype.addInstance = function (name) {
     const itemContainer = this.$$(".item-container").first();
     var node = itemContainer.addChildByName(name, {
-        position: [0, 0, waitZ]
+        position: [0, 0, this.waitZ]
     });
     node.on("reset", () => {
-        node.setAttribute("position", [0, 0, waitZ]);
+        node.setAttribute("position", [0, 0, this.waitZ]);
     });
     this.items.push(node);
     return node;
@@ -93,7 +48,7 @@ ItemManager.prototype.set = function (itemName, x) {
         var target = this.items[i];
         var targetPos = target.getAttribute("position");
 
-        if (targetPos.Z > waitZ / 2 && target.name.name === itemName) {
+        if (targetPos.Z > this.waitZ / 2 && target.name.name === itemName) {
             inst = target;
             break;
         } else if (i === this.items.length - 1) {
@@ -102,4 +57,3 @@ ItemManager.prototype.set = function (itemName, x) {
     }
     inst.setAttribute("position", [x ? x : 0, 3, pos.Z - far - 10]);
 }
-document.ondragstart = function(){return false;};
