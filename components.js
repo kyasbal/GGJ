@@ -5,7 +5,6 @@ const C = {
     focus: 70
 };
 let Camera;
-let isDobonPlaying = false;
 const Audios = {
     dobon: new Howl({
         src: ['./audio/dobon.mp3'],
@@ -124,9 +123,8 @@ gr.registerComponent("MoveCameraForward", {
         })
 
         var cameraMinHeight = waveMain(cz) + 2;
-        if (!this.hold && cameraMinHeight > p.Y && !isDobonPlaying) {
+        if (!this.hold && cameraMinHeight > p.Y) {
             this._transform.setAttribute("position", [p.X, p.Y, cz]);
-            isDobonPlaying = true;
             Audios.dobon.play();
             $("html,body").animate({
                 scrollTop: $('body').offset().top

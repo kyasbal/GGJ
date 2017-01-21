@@ -2,8 +2,8 @@ const sound = new Howl({
     src: ['./audio/wind.mp3'],
     loop: true,
     volume: 0.5
-});
-gr(function() {
+});var manager;
+gr(function () {
     const $$ = gr("#sea");
     const waveContainer = $$(".wave-container").get(0);
     const itemContainer = $$(".item-container").get(0);
@@ -17,67 +17,59 @@ gr(function() {
             id: "wave-" + i
         }));
     }
-    var manager = new ItemManager();
+     manager= new ItemManager();
     manager.register("apple");
     manager.register("gull");
-
-    setInterval(function() {
-        manager.set("apple");
-        manager.set("gull");
-    }, 100);
-
+    setTimeout(putNew,3000);
 });
+
+function putNew(){
+  const rnd = Math.random();
+  manager.set(Math.random() < 0.5 ?"apple":"gull");
+  setTimeout(
+    putNew,
+  rnd * 2000);
+}
 
 var waitZ = 100;
 
 function ItemManager(name) {
     this.name = name;
     this.items = [];
-    this.ITEMS = [];
     this.$$ = gr("#sea");
 }
-ItemManager.prototype.register = function(item) {
-    this.items.push(item);
-    var self = this;
-    const itemContainer = this.$$(".item-container").first();
-    for (var j = 0; j < 50; j++) {
-        this.ITEMS.push({
-            node: itemContainer.addChildByName(item, {
-                position: [0, 0, waitZ],
-                id: item + "-" + j
-            }).on("reset", (e) => {
-                const n = e.getAttribute("id");
-                const reg = n.split("-");
-                var j = reg[reg.length - 1];
-                self.ITEMS[j].node.setAttribute("position", [0, 0, waitZ]);
-            }),
-        });
+ItemManager.prototype.register = function (item) {
+    for (var j = 0; j < 10; j++) {
+        this.addInstance(item);
     }
 }
-ItemManager.prototype.addInstance = function(name, index) {
-    //TODO
+ItemManager.prototype.addInstance = function (name) {
+    const itemContainer = this.$$(".item-container").first();
+    var node = itemContainer.addChildByName(name, {
+        position: [0, 0, waitZ]
+    });
+    node.on("reset", () => {
+        node.setAttribute("position", [0, 0, waitZ]);
+    });
+    this.items.push(node);
+    return node;
 }
 
-ItemManager.prototype.set = function(itemName) {
-    const $$ = gr("#sea");
-    const camera = $$("#main-camera").first();
+ItemManager.prototype.set = function (itemName, x) {
+    const camera = this.$$("#main-camera").first();
     const pos = camera.getAttribute("position");
     const far = camera.getAttribute("far");
-    var aaaaa;
-    for (var i = 0; i < this.ITEMS.length; i++) {
-        var target = this.ITEMS[i];
-        var targetPos = target.node.getAttribute("position");
+    var inst;
+    for (var i = 0; i < this.items.length; i++) {
+        var target = this.items[i];
+        var targetPos = target.getAttribute("position");
 
-        if (targetPos.Z > waitZ / 2 && this.ITEMS[i].node.name.name === itemName) {
-            // console.log(itemName)
-            aaaaa = target;
+        if (targetPos.Z > waitZ / 2 && target.name.name === itemName) {
+            inst = target;
             break;
-            // target.node.setAttribute("position", [0,3,pos.Z - far -10]);
-            // console.log(target.node.getAttribute("position").Z)
-        } else if (i === this.ITEMS.length - 1) {
-            aaaaa = this.addInstance(itemName);
-            // console.error("All items are in use!");
+        } else if (i === this.items.length - 1) {
+            inst = this.addInstance(itemName);
         }
     }
-    aaaaa.node.setAttribute("position", [0, 3, pos.Z - far - 10]);
+    inst.setAttribute("position", [x ? x : 0, 3, pos.Z - far - 10]);
 }
