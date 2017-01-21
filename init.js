@@ -3,7 +3,7 @@ const sound = new Howl({
     loop: true,
     volume: 0.5
 });
-gr(function () {
+gr(function() {
     const $$ = gr("#sea");
     const waveContainer = $$(".wave-container").get(0);
     const itemContainer = $$(".item-container").get(0);
@@ -29,7 +29,7 @@ function ItemManager(name) {
     this.name = name;
     this.ITEMS = [];
 }
-ItemManager.prototype.init = function () {
+ItemManager.prototype.init = function() {
     const $$ = gr("#sea");
     const itemContainer = $$(".item-container").first();
     for (var j = 0; j < 10; j++) {
@@ -46,16 +46,18 @@ ItemManager.prototype.init = function () {
         });
     }
 };
-ItemManager.prototype.set = function (x) {
+ItemManager.prototype.set = function(x) {
     const $$ = gr("#sea");
     const camera = $$("#main-camera").first();
     const pos = camera.getAttribute("position");
     const far = camera.getAttribute("far");
     for (var i = 0; i < this.ITEMS.length; i++) {
         if (this.ITEMS[i]._flag === false) {
-            this.ITEMS[i].node.setAttribute("position", x + `,0,${pos.Z - far}`);
+            this.ITEMS[i].node.setAttribute("position", x + `,0,${pos.Z - far -10}`);
             this.ITEMS[i]._flag = true;
             break;
+        } else if (i === this.ITEMS.length - 1) {
+          console.error("All items are in use!");
         }
     }
 }
