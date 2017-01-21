@@ -93,7 +93,7 @@ gr.registerComponent("Reset", {
             Math.pow(pos.Z - cameraPos.Z, 2);
         if (distance < 50) {
             GM.addScore(100);
-            //this.node.emit("reset", this.node);
+            this.node.emit("reset", this.node);
         }
         if (pos.Z !== 100 && pos.Z - cameraPos.Z > 50) {
             this.node.emit("reset", this.node);
