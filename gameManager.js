@@ -11,7 +11,7 @@ function GameManager() {
         [0.75, "#77ABCC"],
         [0.80, "#DD806A"],
         [0.95, "#DE7536"],
-        [1.00, "#DD806A"]
+        [1.05, "#DD806A"]
       ];
         let ac;
         for (let i = 0; i < colors.length; i++) {
@@ -25,7 +25,7 @@ function GameManager() {
         gr("#sea")("wave-cube").setAttribute("color", ac)
     };
     this.score = 0;
-    this.maxScoreList = [1000, 2000, 3000, 4000, 5000];
+    this.maxScoreList = [100, 200, 300, 400, 500];
     this.itemManager = new ItemManager();
     this.currentHina = 0;
 }
@@ -59,7 +59,7 @@ GameManager.prototype.gameStart = function () {
     var self = this;
     var stopId = setInterval(function () {
         var ct = self.timer.getTime();
-        $(".time-text").text(Math.floor(self.timeLimit - ct / 1000));
+        $(".time-text").text(Math.floor(self.timeLimit - ct / 5000));
         if (self.timeLimit * 1000 < ct) {
             clearInterval(stopId);
             Audios.timeup.play()

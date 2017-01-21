@@ -79,6 +79,7 @@ gr.registerComponent("CameraControl", {
         this._transform.setAttribute("rotation", `x(-${Math.atan(p.Y/C.focus)}rad)`);
     }
 });
+
 gr.registerComponent("Item", {
     attributes: {
         score: {
@@ -88,15 +89,24 @@ gr.registerComponent("Item", {
         sounds: {
             default: "",
             converter: "String"
+        },
+        hitY: {
+            default: 3,
+            converter: "Number"
+        },
+        hitZ: {
+            default: 3,
+            converter: "Number"
         }
     },
     $update: function () {
         const pos = this.node.getAttribute("position");
         const cameraPos = Camera.getAttribute("position");
-        const distance = Math.pow(pos.X - cameraPos.X, 2) +
-            Math.pow(pos.Y - cameraPos.Y, 2) +
-            Math.pow(pos.Z - cameraPos.Z, 2);
-        if (distance < 50) {
+        const hitZ = this.node.getAttribute("hitZ");
+        const hitY = this.node.getAttribute("hitY");
+        const dZ = Math.abs(pos.Z - cameraPos.Z);
+        const dY = Math.abs(pos.Y - cameraPos.Y);
+        if (dZ < hitZ && dY < hitY) {
             const score = this.getAttribute("score");
             GM.addScore(score);
             console.log(this.getAttribute("sounds"));
@@ -140,11 +150,11 @@ gr.registerComponent("MoveCameraForward", {
         this.hold = false;
         this.duration = 0;
         this.backSpeed = 0;
-        document.body.addEventListener("wheel", (function (e) {
-            if (this.hold) {
-                e.preventDefault();
-            }
-        }).bind(this));
+        // document.body.addEventListener("wheel", (function (e) {
+        //     if (this.hold) {
+        //         e.preventDefault();
+        //     }
+        // }).bind(this));
         this.currentSpeed = this.speed;
         this.resetTime = Date.now();
     },
@@ -174,7 +184,7 @@ gr.registerComponent("MoveCameraForward", {
             this.duration = Date.now() + this.penalty;
             this.reset();
         } else {
-            var newY = Math.max(p.Y + this.backSpeed, cameraMinHeight);
+            var newY = this.hold ? Math.max(p.Y + this.backSpeed, cameraMinHeight) : p.Y;
             this._transform.setAttribute("position", [p.X, newY, cz]);
             if (this.duration <= Date.now()) {
                 this.hold = false;
@@ -203,6 +213,7 @@ gr.registerNode("apple", ["Wave", "Item"], {
     score: 10,
     sounds: "piyopiyo"
 }, "model");
+
 
 gr.registerNode("carrot", ["Wave", "Item"], {
     src: "./models/carrot.gltf",
@@ -237,6 +248,7 @@ gr.registerNode("yacht", ["Wave", "Item"], {
     sounds: "piyopiyo"
 }, "model");
 gr.registerNode("turtle", ["Wave", "Item"], {
+    rotation: "y(90d)",
     src: "./models/turtle.gltf",
     score: -20,
     yOffset: 1.2,
