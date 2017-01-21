@@ -3,6 +3,7 @@ const C = {
     eyeMin: 0,
     ampl: 3
 };
+let Camera;
 let isDobonPlaying = false;
 const Audios = {
     dobon: new Howl({
@@ -58,12 +59,24 @@ gr.registerComponent("CameraControl", {
             this._transform.setAttribute("position", [p.X, y, p.Z]);
         });
     },
-    $update:function(){
-      const p = this._transform.getAttribute("position");
-      this._transform.setAttribute("rotation", `x(-${Math.atan(p.Y/100)}rad)`);
+    $update: function() {
+        const p = this._transform.getAttribute("position");
+        this._transform.setAttribute("rotation", `x(-${Math.atan(p.Y/100)}rad)`);
     }
 });
 
+gr.registerComponent("Reset", {
+    attributes: {},
+    $mount: function() {},
+    $update: function() {
+        const posZ = this.node.getAttribute("position").Z;
+        const cameraZ = Camera.getAttribute("position").Z;
+        //console.log(posZ - cameraZ > 0);
+        if (posZ !== 100 && posZ - cameraZ > 0) {
+            this.node.emit("reset", this.node);
+        }
+    }
+})
 gr.registerComponent("MoveCameraForward", {
     attributes: {
         speed: {
@@ -76,6 +89,7 @@ gr.registerComponent("MoveCameraForward", {
         }
     },
     $mount: function() {
+        Camera = this.node;
         this.getAttributeRaw("speed").boundTo("speed");
         this.getAttributeRaw("penalty").boundTo("penalty");
         this.lastTime = Date.now();
@@ -98,12 +112,12 @@ gr.registerComponent("MoveCameraForward", {
         }
 
         if (this.hold) {
-          const y = p.Y + this.backSpeed;
-          this._transform.setAttribute("position",[p.X,y,cz]);
-          this.duration --;
-          if(this.duration<= Date.now()){
-            this.hold = false;
-          }
+            const y = p.Y + this.backSpeed;
+            this._transform.setAttribute("position", [p.X, y, cz]);
+            this.duration--;
+            if (this.duration <= Date.now()) {
+                this.hold = false;
+            }
         } else {
             this._transform.setAttribute("position", [p.X, p.Y, cz]);
             this.lastTime = t;
@@ -132,7 +146,7 @@ gr.registerNode("wave-cube", ["Wave"], {
 }, "mesh");
 
 gr.registerNode("scroll-camera", ["CameraControl"], {}, "camera");
-gr.registerNode("apple", ["Wave"], {
+gr.registerNode("apple", ["Wave", "Reset"], {
     scale: "0.02",
     src: "./models/apple.gltf",
     yOffset: 1
