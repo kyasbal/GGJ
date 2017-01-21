@@ -11,6 +11,10 @@ gr(function () {
     WAVES = [];
     ITEMS = [];
     GM.gameStart();
+    GM.addOnEndGameHandler(function () {
+        console.log("end"); //TODO:do something on gameover.
+        GM.gameStart();
+    })
     for (let i = 0; i < 110; i++) {
         WAVES.push(waveContainer.addChildByName("wave-cube", {
             position: `${Math.random()*3},0,-${i}`,
