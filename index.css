@@ -1,39 +1,23 @@
 body,html{
   margin: 0;
 }
-
-div.bg-container{
-  position: absolute;
-  z-index: -1;
-  left:0px;
-  right:0px;
+.container{
+  width:100%;
+  height:480px;
+  background-color: #4099DC;
 }
-div.bg-container  img{
-  position: absolute;
-  top: 0px;
+.bg-container >img{
+  width:100%;
+}
+#gr_container{
+  position: fixed;
   left: 0px;
   right: 0px;
-  width: 100%;
-  height: 100%;
-}
-div.bg-container > div{
-  height:1024px;
-}
-
-div.container{
-  height:1024px;
-}
-
-.gr{
-  position:fixed;
-  top:40px;
+  bottom:0px;
 }
 .sea{
-  display: block;
-  height: 640px;
-}
-
-.sea > img{
-  display: block;
-  width: 100%;
+  margin: 0px;
+  height:1024px;
+  background-image: url(./bg/sunny.jpeg);
+  background-size: cover;
 }

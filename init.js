@@ -1,3 +1,8 @@
+const sound = new Howl({
+  src: ['./audio/wind.mp3'],
+  loop: true,
+  volume: 0.5
+});
 gr(function() {
     const $$ = gr("#sea");
     const waveContainer = $$(".wave-container").get(0);
@@ -40,7 +45,6 @@ ItemManager.prototype.set = function(x) {
     const camera = $$("#main-camera").first();
     const posZ = camera.getAttribute("position").Z;
     const far = camera.getAttribute("far");
-    console.log(far, posZ);
     for (var i = 0; i < this.ITEMS.length; i++) {
         if (this.ITEMS[i]._flag === false) {
             this.ITEMS[i].node.setAttribute("position", x + `,0,${posZ - far}`);
