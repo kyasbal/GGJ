@@ -34,7 +34,7 @@ gr(function () {
         bar.style.width = ratio * 300 + "px";
         text.innerHTML = score + '/' + max;
     }
-    GM.addOnEndGameHandler(function () {
+    GM.addOnEndGameHandler(function() {
         console.log("end"); //TODO:do something on gameover.
         GM.gameStart(); //TODO:remove
     })

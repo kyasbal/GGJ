@@ -79,19 +79,40 @@ gr.registerComponent("CameraControl", {
         this._transform.setAttribute("rotation", `x(-${Math.atan(p.Y/C.focus)}rad)`);
     }
 });
-gr.registerComponent("Reset", {
-    attributes: {},
-    $mount: function () {},
+
+gr.registerComponent("Item", {
+    attributes: {
+        score: {
+            default: 100,
+            converter: "Number"
+        },
+        sounds: {
+            default: "",
+            converter: "String"
+        },
+        hitY: {
+            default: 3,
+            converter: "Number"
+        },
+        hitZ: {
+            default: 3,
+            converter: "Number"
+        }
+    },
     $update: function () {
         const pos = this.node.getAttribute("position");
         const cameraPos = Camera.getAttribute("position");
-        const distance = Math.pow(pos.X - cameraPos.X, 2) +
-            Math.pow(pos.Y - cameraPos.Y, 2) +
-            Math.pow(pos.Z - cameraPos.Z, 2);
-        if (distance < 50) {
-            const score = this.node.getComponent("Score").getAttribute("score");
+        const hitZ = this.node.getAttribute("hitZ");
+        const hitY = this.node.getAttribute("hitY");
+        const dZ = Math.abs(pos.Z - cameraPos.Z);
+        const dY = Math.abs(pos.Y - cameraPos.Y);
+        if (dZ < hitZ && dY < hitY) {
+            const score = this.getAttribute("score");
             GM.addScore(score);
+            console.log(this.getAttribute("sounds"));
+            Audios[this.getAttribute("sounds")].play();
             this.node.emit("reset", this.node);
+            return;
         }
         if (pos.Z !== 100 && pos.Z - cameraPos.Z > 50) {
             this.node.emit("reset", this.node);
@@ -99,14 +120,6 @@ gr.registerComponent("Reset", {
     }
 })
 
-gr.registerComponent("Score", {
-    attributes: {
-        score: {
-            default: 100,
-            converter: "Number"
-        }
-    },
-});
 gr.registerComponent("MoveCameraForward", {
     attributes: {
         speed: {
@@ -137,11 +150,11 @@ gr.registerComponent("MoveCameraForward", {
         this.hold = false;
         this.duration = 0;
         this.backSpeed = 0;
-        document.body.addEventListener("wheel", (function (e) {
-            if (this.hold) {
-                e.preventDefault();
-            }
-        }).bind(this));
+        // document.body.addEventListener("wheel", (function (e) {
+        //     if (this.hold) {
+        //         e.preventDefault();
+        //     }
+        // }).bind(this));
         this.currentSpeed = this.speed;
         this.resetTime = Date.now();
     },
@@ -171,7 +184,7 @@ gr.registerComponent("MoveCameraForward", {
             this.duration = Date.now() + this.penalty;
             this.reset();
         } else {
-            var newY = Math.max(p.Y + this.backSpeed, cameraMinHeight);
+            var newY = this.hold ? Math.max(p.Y + this.backSpeed, cameraMinHeight) : p.Y;
             this._transform.setAttribute("position", [p.X, newY, cz]);
             if (this.duration <= Date.now()) {
                 this.hold = false;
@@ -193,44 +206,53 @@ gr.registerNode("wave-cube", ["Wave"], {
 
 
 gr.registerNode("scroll-camera", ["CameraControl"], {}, "camera");
-gr.registerNode("apple", ["Wave", "Reset", "Score"], {
+gr.registerNode("apple", ["Wave", "Item"], {
     scale: "0.02",
     src: "./models/apple.gltf",
     yOffset: 1,
     score: 10,
+    sounds: "piyopiyo"
 }, "model");
 
-gr.registerNode("carrot", ["Wave", "Reset", "Score"], {
+
+gr.registerNode("carrot", ["Wave", "Item"], {
     src: "./models/carrot.gltf",
     yOffset: 1,
-    score: 10
+    score: 10,
+    sounds: "piyopiyo"
 }, "model");
 
-gr.registerNode("fish", ["Wave", "Reset", "Score"], {
+gr.registerNode("fish", ["Wave", "Item"], {
     src: "./models/fish.gltf",
     yOffset: 1.7,
-    smallWave:10,
-    score:50
+    smallWave: 10,
+    score: 50,
+    sounds: "piyopiyo"
 }, "model");
-gr.registerNode("gull", ["Wave", "Reset", "Score"], {
+gr.registerNode("gull", ["Wave", "Item"], {
     src: "./models/gull.gltf",
-    yOffset: 1.7
+    yOffset: 1.7,
+    sounds: "piyopiyo"
 }, "model");
-gr.registerNode("lotusRoot", ["Wave", "Reset", "Score"], {
+gr.registerNode("lotusRoot", ["Wave", "Item"], {
     src: "./models/lotusRoot.gltf",
     score: 30,
     yOffset: 1.5,
-    scale:200
+    scale:200,
+    sounds:"piyopiyo"
 }, "model");
-gr.registerNode("yacht", ["Wave", "Reset", "Score"], {
+gr.registerNode("yacht", ["Wave", "Item"], {
     src: "./models/yacht.gltf",
     scale: "2",
     score: -20,
-    yOffset: 1.5
+    yOffset: 1.5,
+    sounds: "piyopiyo"
 }, "model");
-gr.registerNode("turtle", ["Wave", "Reset", "Score"], {
+gr.registerNode("turtle", ["Wave", "Item"], {
+    rotation: "y(90d)",
     src: "./models/turtle.gltf",
     score: -20,
     yOffset: 1.2,
-    smallWave:0.2
+    smallWave:0.2,
+    sounds:"piyopiyo"
 }, "model");
