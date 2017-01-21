@@ -79,8 +79,17 @@ gr.registerComponent("CameraControl", {
         this._transform.setAttribute("rotation", `x(-${Math.atan(p.Y/C.focus)}rad)`);
     }
 });
-gr.registerComponent("Hit", {
+
+gr.registerComponent("Item", {
     attributes: {
+        score: {
+            default: 100,
+            converter: "Number"
+        },
+        sounds: {
+            default: "",
+            converter: "String"
+        },
         hitY: {
             default: 3,
             converter: "Number"
@@ -90,10 +99,6 @@ gr.registerComponent("Hit", {
             converter: "Number"
         }
     },
-})
-gr.registerComponent("Reset", {
-    attributes: {},
-    $mount: function () {},
     $update: function () {
         const pos = this.node.getAttribute("position");
         const cameraPos = Camera.getAttribute("position");
@@ -101,12 +106,13 @@ gr.registerComponent("Reset", {
         const hitY = this.node.getAttribute("hitY");
         const dZ = Math.abs(pos.Z - cameraPos.Z);
         const dY = Math.abs(pos.Y - cameraPos.Y);
-
-        if (dZ<hitZ && dY<hitY) {
-          console.log(true);
-            const score = this.node.getComponent("Score").getAttribute("score");
+        if (dZ < hitZ && dY < hitY) {
+            const score = this.getAttribute("score");
             GM.addScore(score);
+            console.log(this.getAttribute("sounds"));
+            Audios[this.getAttribute("sounds")].play();
             this.node.emit("reset", this.node);
+            return;
         }
         if (pos.Z !== 100 && pos.Z - cameraPos.Z > 50) {
             this.node.emit("reset", this.node);
@@ -114,14 +120,6 @@ gr.registerComponent("Reset", {
     }
 })
 
-gr.registerComponent("Score", {
-    attributes: {
-        score: {
-            default: 100,
-            converter: "Number"
-        }
-    },
-});
 gr.registerComponent("MoveCameraForward", {
     attributes: {
         speed: {
@@ -185,7 +183,7 @@ gr.registerComponent("MoveCameraForward", {
             this.backSpeed = (C.eyeMax - p.Y) / this.penalty;
             this.duration = Date.now() + this.penalty;
             this.reset();
-        } else{
+        } else {
             var newY = this.hold ? Math.max(p.Y + this.backSpeed, cameraMinHeight) : p.Y;
             this._transform.setAttribute("position", [p.X, newY, cz]);
             if (this.duration <= Date.now()) {
@@ -208,43 +206,53 @@ gr.registerNode("wave-cube", ["Wave"], {
 
 
 gr.registerNode("scroll-camera", ["CameraControl"], {}, "camera");
-gr.registerNode("apple", ["Wave", "Reset", "Score", "Hit"], {
+gr.registerNode("apple", ["Wave", "Item"], {
     scale: "0.02",
     src: "./models/apple.gltf",
     yOffset: 1,
     score: 10,
+    sounds: "piyopiyo"
 }, "model");
 
-gr.registerNode("carrot", ["Wave", "Reset", "Score", "Hit"], {
+
+gr.registerNode("carrot", ["Wave", "Item"], {
     src: "./models/carrot.gltf",
     yOffset: 1,
-    score: 10
+    score: 10,
+    sounds: "piyopiyo"
 }, "model");
 
-gr.registerNode("fish", ["Wave", "Reset", "Score", "Hit"], {
+gr.registerNode("fish", ["Wave", "Item"], {
     src: "./models/fish.gltf",
     yOffset: 1.7,
-    smallWave:10,
-    score:50
+    smallWave: 10,
+    score: 50,
+    sounds: "piyopiyo"
 }, "model");
-gr.registerNode("gull", ["Wave", "Reset", "Score", "Hit"], {
+gr.registerNode("gull", ["Wave", "Item"], {
     src: "./models/gull.gltf",
-    yOffset: 1.7
+    yOffset: 1.7,
+    sounds: "piyopiyo"
 }, "model");
-gr.registerNode("lotusRoot", ["Wave", "Reset", "Score", "Hit"], {
+gr.registerNode("lotusRoot", ["Wave", "Item"], {
     src: "./models/lotusRoot.gltf",
     score: 30,
-    yOffset: 1.5
+    yOffset: 1.5,
+    scale:200,
+    sounds:"piyopiyo"
 }, "model");
-gr.registerNode("yacht", ["Wave", "Reset", "Score", "Hit"], {
+gr.registerNode("yacht", ["Wave", "Item"], {
     src: "./models/yacht.gltf",
     scale: "2",
     score: -20,
     yOffset: 1.5,
-    rotation:"y(90d)"
+    sounds: "piyopiyo"
 }, "model");
-gr.registerNode("turtle", ["Wave", "Reset", "Score", "Hit"], {
+gr.registerNode("turtle", ["Wave", "Item"], {
+    rotation: "y(90d)",
     src: "./models/turtle.gltf",
     score: -20,
-    yOffset: 1.2
+    yOffset: 1.2,
+    smallWave:0.2,
+    sounds:"piyopiyo"
 }, "model");
