@@ -1,6 +1,6 @@
 <goml width="fit" height="480" bgColor="black">
     <import-material typeName="lambert" src="./index.sort"/>
-    <import-material typeName="bg" src="./background.sort?abcdefgh"/>
+    <import-material typeName="bg" src="./background.sort"/>
     <geometry type="wave" name="wave" margin="0.1" count="30"/>
     <scene>
         <object class="whole-container">

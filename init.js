@@ -12,7 +12,7 @@ gr(function() {
     for (let i = 0; i < 100; i++) {
         WAVES.push(waveContainer.addChildByName("wave-cube", {
             position: `0,0,-${i}`,
-            color: "cyan",
+            color: "#0084CF",
             offset: i,
             id: "wave-" + i
         }));

@@ -1,7 +1,8 @@
 const C = {
     eyeMax: 25,
     eyeMin: 0,
-    ampl: 3
+    ampl: 3,
+    focus:70
 };
 let isDobonPlaying = false;
 const Audios = {
@@ -52,15 +53,13 @@ gr.registerComponent("CameraControl", {
     $mount: function() {
         this.__bindAttributes();
         this._transform = this.node.getComponent("Transform");
-        document.body.addEventListener("wheel", (e) => {
-            const p = this._transform.getAttribute("position");
-            const y = Math.max(C.eyeMin, Math.min(C.eyeMax, p.Y - e.deltaY * this.sensibility / 100.0));
-            this._transform.setAttribute("position", [p.X, y, p.Z]);
-        });
     },
     $update:function(){
+      const distance = document.documentElement.getBoundingClientRect().height - window.innerHeight;
+      const heightRatio =1.0 - $(window).scrollTop()/distance;
       const p = this._transform.getAttribute("position");
-      this._transform.setAttribute("rotation", `x(-${Math.atan(p.Y/100)}rad)`);
+      this._transform.setAttribute("position",[p.X,C.eyeMin + (C.eyeMax - C.eyeMin) * heightRatio,p.Z]);
+      this._transform.setAttribute("rotation", `x(-${Math.atan(p.Y/C.focus)}rad)`);
     }
 });
 
@@ -96,9 +95,10 @@ gr.registerComponent("MoveCameraForward", {
             WAVES[this.li].setAttribute("offset", -Math.floor(cz));
             this.offset = this.li;
         }
-
+        this.lastTime = t;
+        this.li = backIndex;
         if (this.hold) {
-          const y = p.Y + this.backSpeed;
+          const y =Math.min(C.eyeMax,p.Y + this.backSpeed * (this.duration - Date.now()));
           this._transform.setAttribute("position",[p.X,y,cz]);
           this.duration --;
           if(this.duration<= Date.now()){
@@ -106,18 +106,15 @@ gr.registerComponent("MoveCameraForward", {
           }
         } else {
             this._transform.setAttribute("position", [p.X, p.Y, cz]);
-            this.lastTime = t;
-            this.li = backIndex;
-            this.order = this.li;
             if (waveMain(-cz) > p.Y - 2.0) {
-                if (!isDobonPlaying) {
+                if (!isDobonPlaying && !this.hold) {
                     isDobonPlaying = true;
                     Audios.dobon.play();
                     $("html,body").animate({
                         scrollTop: $('body').offset().top
                     }, this.penalty);
                     this.hold = true;
-                    this.backSpeed = (C.eyeMax - p.Y) / this.penalty;
+                    this.backSpeed = Math.min(C.eyeMax,(C.eyeMax - p.Y)) / this.penalty;
                     this.duration = Date.now() + this.penalty;
                 }
             }
