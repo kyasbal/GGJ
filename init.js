@@ -10,7 +10,7 @@ gr(function () {
     const waveContainer = $$(".wave-container").get(0);
     const itemContainer = $$(".item-container").get(0);
     const text = document.getElementsByClassName('score-text')[0];
-    text.innerHTML = "0/" + GM.maxScore;
+    text.innerHTML = "0/" + GM.maxScoreList[GM.currentHina];
     WAVES = [];
     ITEMS = [];
     GM.onHinaGrown = function () {
@@ -27,11 +27,9 @@ gr(function () {
         const bar = document.getElementsByClassName('score-inner')[0];
         const text = document.getElementsByClassName('score-text')[0];
         const max = GM.maxScoreList[GM.currentHina];
-        const ratio = GM.score / max;
-        bar.style.width = ratio * GM.maxScoreWidth + "px";
-        const currentScore = Math.floor(ratio * GM.maxScore);
-        text.innerHTML = currentScore + '/' + GM.maxScore;
-
+        const ratio = score / max;
+        bar.style.width = ratio * 300 + "px";
+        text.innerHTML = score + '/' + max;
     }
     GM.addOnEndGameHandler(function () {
         console.log("end"); //TODO:do something on gameover.
