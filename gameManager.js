@@ -53,8 +53,6 @@ GameManager.prototype.init = function () {
     this.itemManager.register("turtle", 100);
 }
 GameManager.prototype.gameStart = function () {
-    console.log("START!!!");
-
     this.timer.reset();
     var self = this;
     var stopId = setInterval(function () {

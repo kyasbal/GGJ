@@ -220,7 +220,9 @@ gr.registerNode("lotusRoot", ["Wave", "Reset", "Score"], {
     src: "./models/lotusRoot.gltf"
 }, "model");
 gr.registerNode("yacht", ["Wave", "Reset", "Score"], {
-    src: "./models/yacht.gltf"
+    src: "./models/yacht.gltf",
+    scale:"2",
+    rotation:"y(90d)"
 }, "model");
 gr.registerNode("turtle", ["Wave", "Reset", "Score"], {
     src: "./models/turtle.gltf"
