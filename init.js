@@ -44,4 +44,8 @@ gr(function () {
         }));
     }
     GM.gameStart();
+    $("html,body").animate({
+         scrollTop: $(document).scrollTop()
+    });
+    sound.play();
 });
