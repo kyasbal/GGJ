@@ -77,15 +77,6 @@ gr.registerComponent("CameraControl", {
         this._transform.setAttribute("rotation", `x(-${Math.atan(p.Y/C.focus)}rad)`);
     }
 });
-
-let SCORE = 0;
-
-function addScore(name) {
-    if (name === "apple") {
-        SCORE += 10;
-        console.log(SCORE);
-    }
-}
 gr.registerComponent("Reset", {
     attributes: {},
     $mount: function() {},
@@ -96,8 +87,8 @@ gr.registerComponent("Reset", {
             Math.pow(pos.Y - cameraPos.Y, 2) +
             Math.pow(pos.Z - cameraPos.Z, 2);
         if (distance < 50) {
-            addScore(this.node.name.name);
-            this.node.emit("reset", this.node);
+            GM.addScore(100);
+            //this.node.emit("reset", this.node);
         }
         if (pos.Z !== 100 && pos.Z - cameraPos.Z > 50) {
             this.node.emit("reset", this.node);

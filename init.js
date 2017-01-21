@@ -4,14 +4,21 @@ const sound = new Howl({
     volume: 0.5
 });
 const GM = new GameManager();
-gr(function () {
+gr(function() {
     const $$ = gr("#sea");
     const waveContainer = $$(".wave-container").get(0);
     const itemContainer = $$(".item-container").get(0);
     WAVES = [];
     ITEMS = [];
     GM.gameStart();
-    GM.addOnEndGameHandler(function () {
+
+    GM.onScoreChangeHandler = function(score) {
+        const bar = document.getElementsByClassName('score-inner')[0];
+        console.log(bar);
+        bar.style.width = "150px";
+        console.log(GM.score); //TODO: score bar
+    }
+    GM.addOnEndGameHandler(function() {
         console.log("end"); //TODO:do something on gameover.
         GM.gameStart();
     })
@@ -28,7 +35,7 @@ gr(function () {
     manager.register("gull", 100);
 
 
-    var putting = function () {
+    var putting = function() {
         manager.randomPut()
         setTimeout(putting, Math.random() * 500);
     }
@@ -44,13 +51,16 @@ function ItemManager(name) {
     this.weights = [];
     this.$$ = gr("#sea");
 }
-ItemManager.prototype.register = function (item, weight) {
-    this.weights.push({ name: item, w: weight });
+ItemManager.prototype.register = function(item, weight) {
+    this.weights.push({
+        name: item,
+        w: weight
+    });
     for (var j = 0; j < 10; j++) {
         this.addInstance(item);
     }
 }
-ItemManager.prototype.addInstance = function (name) {
+ItemManager.prototype.addInstance = function(name) {
     const itemContainer = this.$$(".item-container").first();
     var node = itemContainer.addChildByName(name, {
         position: [0, 0, waitZ]
@@ -61,9 +71,9 @@ ItemManager.prototype.addInstance = function (name) {
     this.items.push(node);
     return node;
 }
-ItemManager.prototype.randomPut = function () {
+ItemManager.prototype.randomPut = function() {
     var total = 0;
-    this.weights.forEach(function (obj) {
+    this.weights.forEach(function(obj) {
         total += obj.w;
     });
     var k = Math.random() * total;
@@ -78,7 +88,7 @@ ItemManager.prototype.randomPut = function () {
     this.set(targetName, Math.random() * 40 - 20);
 }
 
-ItemManager.prototype.set = function (itemName, x) {
+ItemManager.prototype.set = function(itemName, x) {
     const camera = this.$$("#main-camera").first();
     const pos = camera.getAttribute("position");
     const far = camera.getAttribute("far");
