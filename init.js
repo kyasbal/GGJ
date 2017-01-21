@@ -1,19 +1,14 @@
-const sound = new Howl({
-    src: ['./audio/wind.mp3'],
-    loop: true,
-    volume: 0.5
-});
 const GM = new GameManager();
 
-function initAnimation(){
-  return new Promise((resolve,reject)=>{
-    setTimeout(()=>{
-      resolve()
-    },1000);
-  });
+function initAnimation() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve()
+        }, 1000);
+    });
 }
 gr(function () {
-      GM.init();
+    GM.init();
     const $$ = gr("#sea");
     const waveContainer = $$(".wave-container").get(0);
     const itemContainer = $$(".item-container").get(0);
@@ -56,8 +51,8 @@ gr(function () {
     $("html,body").animate({
         scrollTop: $(document).scrollTop()
     });
-    sound.play();
-    initAnimation().then(t=>{
+    Audios.wind.play();
+    initAnimation().then(t => {
         GM.gameStart();
     });
 });

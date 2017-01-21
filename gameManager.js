@@ -62,6 +62,7 @@ GameManager.prototype.gameStart = function () {
         $(".time-text").text(Math.floor(self.timeLimit - ct / 5000));
         if (self.timeLimit * 1000 < ct) {
             clearInterval(stopId);
+            Audios.timeup.play()
             self.endGameHandlers.forEach(function (h) {
                 h();
             })
