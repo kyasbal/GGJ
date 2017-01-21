@@ -9,13 +9,30 @@ body, html {
 .bg-container>img {
     width: 100%;
 }
-
-#gr_container {
-    position: fixed;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    top: 0px;
+.sea{
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  margin: 0px;
+  height:1231px;
+  background-image: url(./bg/sunny.png);
+  background-size: cover;
+  opacity: 1.0;
+}
+.sunset{
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  margin:0px;
+  height:1231px;
+  background-image: url(./bg/sunset.png);
+  background-size: cover;
+  opacity:0.5;
+}
+.sea-container{
+  height:1231px;
 }
 
 .sea {
@@ -25,13 +42,13 @@ body, html {
     background-size: cover;
 }
 
-.ui {
-    position: fixed;
-    left: 0px;
-    right: 0px;
-    top: 0px;
-    text-align: center;
-    z-index: 10;
+.time-text{
+  font-size:64px;
+  margin:0px;
+  transform: translateY(25%);
+  color:white;
+  user-select:none;
+  cursor:default;
 }
 
 .time-text {
@@ -51,24 +68,17 @@ body, html {
     transform: translateY(-100%);
 }
 
-.score-bar-bg {
-    height: 32px;
-    background-color: gray;
-    width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    transform: translateY(-90px);
-    z-index: 3;
-    border-radius: 5px;
-    border: 1px solid white;
-    opacity: 0.8;
+.score-inner{
+  background-color: orange;
+  height:32px;
+  border-radius: 5px;
+  width: 150px;
 }
 
-.score-inner {
-    background-color: green;
-    height: 32px;
-    width: 0px;
-    border-radius: 5px;
+.ui-wrap{
+  width:544px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .ui-wrap {
@@ -88,11 +98,21 @@ body, html {
     clear: all;
 }
 
-.hina-container {
-    position: absolute;
-    float: left;
-    transform: translateY(-256px);
-    padding: 60px 180px;
+.score-text{
+  color:white;
+  font-weight: bold;
+  user-select:none;
+  cursor:default;
+}
+
+.score-text-container{
+  position: absolute;
+  width: 300px;
+  margin-top: -10px;
+}
+
+.hina1{
+  top:20px;
 }
 
 .hina1 {
@@ -114,7 +134,11 @@ body, html {
     left: 220px;
 }
 
-.hina5 {
-    top: 70px;
-    left: 280px;
+img{
+  user-select:none;
+  cursor:default;
+}
+
+.background{
+  background-color: red;
 }
