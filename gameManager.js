@@ -66,6 +66,7 @@ GameManager.prototype.gameStart = function () {
             self.endGameHandlers.forEach(function (h) {
                 h();
             })
+            return;
         }
         self.onChangeTime(ct)
     }, 100);
