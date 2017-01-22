@@ -90,9 +90,9 @@ gr.registerComponent("CameraControl", {
             converter: "Number",
             default: 1.0
         },
-        scrollLength:{
-          converter:"Number",
-          default:300
+        scrollLength: {
+            converter: "Number",
+            default: 300
         }
     },
     $mount: function () {
@@ -101,22 +101,26 @@ gr.registerComponent("CameraControl", {
         const length = this.getAttribute("scrollLength");
         const distance = document.documentElement.getBoundingClientRect().height - window.innerHeight;
         const diff = length - distance;
-        $("#spacer").css("height",diff);
+        $("#spacer").css("height", diff);
         $("html,body").animate({
             scrollTop: length
         });
-        this.lastScrollTop = document.documentElement.scrollTop || document.body.scrollTop
+        const nowScrollTop = document.documentElement.scrollTop || document.body.scrollTop
+        this.lastFrame = nowScrollTop;
     },
     $update: function () {
-        const nowScrollTop = document.documentElement.scrollTop || document.body.scrollTop
-        if(nowScrollTop !== this.lastScrollTop){
+        let height;
         const distance = document.documentElement.getBoundingClientRect().height - window.innerHeight;
-        const heightRatio =  nowScrollTop/ distance;
+        const nowScrollTop = document.documentElement.scrollTop || document.body.scrollTop
+        if (nowScrollTop !== this.lastFrame) {
+            height = nowScrollTop;
+        } else {
+            return;
+        }
+        const heightRatio = height / distance;
         const p = this._transform.getAttribute("position");
         this._transform.setAttribute("position", [p.X, C.eyeMin + (C.eyeMax - C.eyeMin) * heightRatio, p.Z]);
         this._transform.setAttribute("rotation", `x(-${Math.atan(p.Y/C.focus)}rad)`);
-        this.lastScrollTop = nowScrollTop;
-      }
     }
 });
 
@@ -207,11 +211,11 @@ gr.registerComponent("MoveCameraForward", {
         this.hold = false;
         this.duration = 0;
         this.backSpeed = 0;
-        // document.body.addEventListener("wheel", (function (e) {
-        //     if (this.hold) {
-        //         e.preventDefault();
-        //     }
-        // }).bind(this));
+        document.body.addEventListener("wheel", (function (e) {
+            if (this.hold) {
+                e.preventDefault();
+            }
+        }).bind(this));
         this.currentSpeed = this.speed;
         this.resetTime = Date.now();
     },
@@ -315,7 +319,7 @@ gr.registerNode("yacht", ["Wave", "Item"], {
     hitY: 13,
     sounds: "shipCollision",
     hasPenalty: true,
-    hitX:0.4
+    hitX: 0.4
 }, "model");
 gr.registerNode("turtle", ["Wave", "Item"], {
     rotation: "y(90d)",
@@ -334,7 +338,7 @@ gr.registerNode("oldman", ["Wave", "Item"], {
 }, "mesh");
 gr.registerNode("duck", ["Wave", "Item"], {
     texture: "./img/duck.png",
-    score: 800,
+    score: 100,
     yOffset: 2.5,
     smallWave: 0.2,
     sounds: "habataki"
