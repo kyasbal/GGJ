@@ -43,12 +43,12 @@ gr.registerComponent("Rotate", {
             converter: 'Number'
         }
     },
-    $mount: function() {
+    $mount: function () {
         this._transform = this.node.getComponent('Transform');
         this.getAttributeRaw("axis").boundTo("axis");
         this.getAttributeRaw("speed").boundTo("speed");
     },
-    $update: function() {
+    $update: function () {
         this._transform.localRotation = Quaternion.multiply(
             Quaternion.angleAxis(this.speed, this.axis), this._transform.localRotation);
     }
@@ -64,19 +64,19 @@ gr.registerComponent("Wave", {
             default: 1.0
         }
     },
-    $mount: function() {
+    $mount: function () {
         this.transform = this.node.getComponent("Transform");
         this.initialY = this.transform.getAttribute("position").Y;
         this.getAttributeRaw("yOffset").boundTo("yOffset");
         this.getAttributeRaw("smallWave").boundTo("smallWave");
         this.random = Math.random() * 1000;
     },
-    $update: function() {
+    $update: function () {
         const p = this.transform.getAttribute("position");
         p.Y = waveMain(p.Z) + this.yOffset + this.smallWave * Math.sin(Date.now() / 1000. + this.random);
         this.transform.setAttribute("position", [p.X, p.Y, p.Z]);
     },
-    $resetPosition: function() {
+    $resetPosition: function () {
         var count = WAVES.length;
         var d = 1;
         var p = this.node.getAttribute("position");
@@ -91,11 +91,11 @@ gr.registerComponent("CameraControl", {
             default: 1.0
         }
     },
-    $mount: function() {
+    $mount: function () {
         this.__bindAttributes();
         this._transform = this.node.getComponent("Transform");
     },
-    $update: function() {
+    $update: function () {
         const distance = document.documentElement.getBoundingClientRect().height - window.innerHeight;
         const heightRatio = $(window).scrollTop() / distance;
         const p = this._transform.getAttribute("position");
@@ -180,7 +180,7 @@ gr.registerComponent("MoveCameraForward", {
             default: 300
         }
     },
-    $mount: function() {
+    $mount: function () {
         Camera = this.node;
         this.getAttributeRaw("speed").boundTo("speed");
         this.getAttributeRaw("penalty").boundTo("penalty");
@@ -199,14 +199,14 @@ gr.registerComponent("MoveCameraForward", {
         this.currentSpeed = this.speed;
         this.resetTime = Date.now();
     },
-    $update: function() {
+    $update: function () {
         const t = Date.now();
         this.currentSpeed = Math.min(this.maxSpeed, this.speed + (t - this.resetTime) / 1000 * this.acceralation);
         const delta = t - this.lastTime;
         this.lastTime = t;
         const p = this._transform.getAttribute("position");
         const cz = p.Z - delta / 1000. * this.currentSpeed;
-        WAVES.forEach(function(w) {
+        WAVES.forEach(function (w) {
             if (w.getAttribute("position").Z > cz) {
                 w.sendMessage("resetPosition");
             }
@@ -226,7 +226,7 @@ gr.registerComponent("MoveCameraForward", {
             }
         }
     },
-    reset: function() {
+    reset: function () {
         this.currentSpeed = this.getAttribute("speed");
         this.resetTime = Date.now();
     },
@@ -280,7 +280,7 @@ gr.registerNode("gull", ["Wave", "Item"], {
     yOffset: 1.7,
     sounds: "piyopiyo"
 }, "model");
-gr.registerNode("lotusRoot", ["Wave", "Item","Rotate"], {
+gr.registerNode("lotusRoot", ["Wave", "Item", "Rotate"], {
     src: "./models/lotusRoot.gltf",
     score: 30,
     yOffset: 1.5,
@@ -305,3 +305,10 @@ gr.registerNode("turtle", ["Wave", "Item"], {
     smallWave: 0.2,
     sounds: "kame"
 }, "model");
+gr.registerNode("oldman", ["Wave", "Item"], {
+    texture: "./img/ojiisan.png",
+    score: 200,
+    yOffset: 1.2,
+    smallWave: 0.2,
+    sounds: "oji"
+}, "mesh");
