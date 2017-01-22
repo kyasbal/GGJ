@@ -1,4 +1,12 @@
 const GM = new GameManager();
+const UT = new Util();
+
+// UT.itemFreq({
+//     10: {
+//         carrot: 10000,
+//         apple: 10000
+//     }
+// })
 
 function initAnimation() {
     return new Promise((resolve, reject) => {
@@ -16,14 +24,15 @@ gr(function () {
     text.innerHTML = "0/" + GM.maxScoreList[GM.currentHina];
     WAVES = [];
     ITEMS = [];
-    var lastLeaveTime = -1;
+
+    // set countdown.
+    GM.addTimetable(5, function () { Audios.countdown.play(); });
+    GM.addTimetable(4, function () { Audios.countdown.play(); });
+    GM.addTimetable(3, function () { Audios.countdown.play(); });
+    GM.addTimetable(2, function () { Audios.countdown.play(); });
+    GM.addTimetable(1, function () { Audios.countdown.play(); });
+
     GM.onChangeTime = function (t, l) {
-        if (lastLeaveTime != l) {
-            lastLeaveTime = l;
-            if (l <= 5) {
-                Audios.countdown.play();
-            }
-        }
         const time = t / 1000 / this.timeLimit;
         const colors = [
         [-0.0001, "#224483"],

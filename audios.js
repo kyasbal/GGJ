@@ -26,5 +26,9 @@ const Audios = {
     countdown: new Howl({
         src: ['./audio/countdown.mp3'],
         volume: 0.5
+    }),
+    kame: new Howl({
+        src: ['./audio/kame.mp3'],
+        volume: 0.5
     })
 };

@@ -102,15 +102,14 @@ gr.registerComponent("Item", {
     $update: function () {
         const pos = this.node.getAttribute("position");
         const cameraPos = Camera.getAttribute("position");
-        console.log(cameraPos.Y);
         const hitZ = this.getAttribute("hitZ");
         const hitY = this.getAttribute("hitY");
         const dZ = Math.abs(pos.Z - cameraPos.Z);
         const dY = Math.abs(pos.Y - cameraPos.Y);
         if (dZ < hitZ && dY < hitY) {
+            console.log(`player hit ${this.node.name.name}`);
             const score = this.getAttribute("score");
             GM.addScore(score);
-            console.log(this.getAttribute("sounds"));
             Audios[this.getAttribute("sounds")].play();
             this.node.emit("reset", this.node);
             return;
@@ -239,21 +238,21 @@ gr.registerNode("lotusRoot", ["Wave", "Item"], {
     src: "./models/lotusRoot.gltf",
     score: 30,
     yOffset: 1.5,
-    scale:200,
-    sounds:"piyopiyo"
+    scale: 200,
+    sounds: "piyopiyo"
 }, "model");
 gr.registerNode("yacht", ["Wave", "Item"], {
     src: "./models/yacht.gltf",
     scale: "2",
     score: -20,
     yOffset: 1.5,
-    sounds: "piyopiyo"
+    sounds: "shipCollision"
 }, "model");
 gr.registerNode("turtle", ["Wave", "Item"], {
     rotation: "y(90d)",
     src: "./models/turtle.gltf",
     score: -20,
     yOffset: 1.2,
-    smallWave:0.2,
-    sounds:"piyopiyo"
+    smallWave: 0.2,
+    sounds: "kame"
 }, "model");
