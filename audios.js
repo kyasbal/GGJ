@@ -13,7 +13,7 @@ const Audios = {
         volume: 0.5
     }),
     shipCollision: new Howl({
-        src: ['./audio/shipCollision.mp3'],
+        src: ['./audio/Hit05-1.mp3'],
         volume: 0.5
     }),
     timeup: new Howl({
@@ -43,5 +43,9 @@ const Audios = {
     habataki: new Howl({
         src: ['./audio/habataki.mp3'],
         volume: 0.9
+    }),
+    gaburi: new Howl({
+        src: ['./audio/gaburi.mp3'],
+        volume: 0.7
     }),
 };
