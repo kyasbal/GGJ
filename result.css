@@ -135,8 +135,21 @@ div.item-list{
 }
 
 .point-text{
-  font-size:32px;
   font-weight: bold;
   color:white;
   text-shadow: 1px 1px 1px #000;
+}
+
+.item-container> p{
+  font-size: 20px;
+  color: white;
+  text-shadow: 1px 1px 1px #000;
+}
+
+.item-container > p.minus{
+  color:red;
+}
+
+.item-container > p.plus{
+  color:lightgreen;
 }

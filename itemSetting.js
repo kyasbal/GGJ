@@ -4,7 +4,7 @@
 
      60: {
        apple: 70,
-       carrot: 60,
+       carrot: 70,
        fish: 15,
        yacht: 0,
        turtle: 0,
@@ -13,7 +13,7 @@
      50: {
        apple: 85,
        carrot: 80,
-       fish: 20,
+       fish: 25,
        yacht: 0,
        turtle: 0,
        lotusRoot: 5
@@ -23,7 +23,7 @@
      40: {
        apple: 80,
        carrot: 80,
-       fish: 25,
+       fish: 30,
        yacht: 0,
        turtle: 25,
        lotusRoot: 5
@@ -39,21 +39,21 @@
      },
 
      20: {
-       apple: 75,
-       carrot: 75,
-       fish: 40,
+       apple: 80,
+       carrot: 80,
+       fish: 70,
        yacht: 30,
        turtle: 40,
-       lotusRoot: 5
+       lotusRoot: 20
      },
 
      10: {
-       apple: 70,
-       carrot: 70,
-       fish: 50,
+       apple: 60,
+       carrot: 60,
+       fish: 100,
        yacht: 45,
-       turtle: 55,
-       lotusRoot: 5
+       turtle: 40,
+       lotusRoot: 20
      },
 
- })
+ });
