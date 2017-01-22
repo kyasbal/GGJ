@@ -115,8 +115,8 @@ gr.registerComponent("Item", {
         const dY = Math.abs(pos.Y - cameraPos.Y);
         if (dZ < hitZ && dY < hitY) {
             console.log(`player hit ${this.node.name.name}`);
-            const score = this.getAttribute("score");
-            GM.addScore(score);
+            // const score = this.getAttribute("score");
+            GM.addScore(this);
             Audios[this.getAttribute("sounds")].play();
             this.node.emit("reset", this.node);
             if(this.hasPenalty){
@@ -128,7 +128,8 @@ gr.registerComponent("Item", {
             this.node.emit("reset", this.node);
         }
     }
-})
+});
+
 
 gr.registerComponent("MoveCameraForward", {
     attributes: {
@@ -183,6 +184,8 @@ gr.registerComponent("MoveCameraForward", {
 
         var cameraMinHeight = waveMain(cz) + 2;
         if (!this.hold && cameraMinHeight > p.Y) {
+            this._transform.setAttribute("position", [p.X, p.Y, cz]);
+            GM.commbo = 0;
             Audios.dobon.play();
             this.execPenalty();
         } else {
@@ -258,6 +261,7 @@ gr.registerNode("yacht", ["Wave", "Item"], {
     scale: "2",
     score: -20,
     yOffset: 1.5,
+    hitY:13,
     sounds: "shipCollision",
     hasPenalty:true
 }, "model");

@@ -25,3 +25,4 @@ Util.prototype.itemFreq = function (obj) {
 //         apple: 1
 //     }
 // })
+const UT = new Util();

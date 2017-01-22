@@ -9,6 +9,10 @@ function GameManager() {
     this.itemManager = new ItemManager();
     this.currentHina = 0;
     this.timetable = [];
+    this.takenItems = {};
+    this.commbo = 0;
+    this.onchangeSecond = function () {};
+    this.itemFreq = 300;
 }
 GameManager.prototype.addTimetable = function (second, callback) {
     if (!Array.isArray(this.timetable[second])) {
@@ -16,7 +20,21 @@ GameManager.prototype.addTimetable = function (second, callback) {
     }
     this.timetable[second].push(callback);
 }
-GameManager.prototype.addScore = function (score) {
+GameManager.prototype.addScore = function (scoreItem) {
+    // logging score
+    const itemName = scoreItem.node.name.name;
+    if (this.takenItems[itemName] === void 0) {
+        this.takenItems[itemName] = 0;
+    }
+    this.takenItems[itemName]++;
+
+    // update score.
+    const score = scoreItem.getAttribute("score");
+    if (score > 0) {
+        this.commbo++;
+    } else {
+        this.commbo = 0;
+    }
     this.score = Math.max(0, score + this.score);
     if (this.score >= this.maxScoreList[this.currentHina]) {
         this.score -= this.maxScoreList[this.currentHina];
@@ -52,6 +70,8 @@ GameManager.prototype.gameStart = function () {
     this.timer.reset();
     var self = this;
     var lastLeaveTime = -1;
+
+    // time management.
     var stopId = setInterval(function () {
         var ct = self.timer.getTime();
         var leaveTime = Math.ceil(self.timeLimit - ct / 1000);
@@ -65,9 +85,11 @@ GameManager.prototype.gameStart = function () {
             return;
         }
         if (lastLeaveTime !== leaveTime) {
+            self.onchangeSecond();
             lastLeaveTime = leaveTime;
             var timetableEvents = self.timetable[leaveTime];
             if (timetableEvents) {
+                console.log(`timetable execute: ${leaveTime}`);
                 timetableEvents.forEach(function (e) {
                     e();
                 });
@@ -81,10 +103,10 @@ GameManager.prototype.gameStart = function () {
     var putting = function () {
         self.itemManager.randomPut();
         if (self._itemGen) {
-            setTimeout(putting, Math.random() * 300);
+            setTimeout(putting, Math.random() * self.itemFreq);
         }
     }
-    putting();
+    setTimeout(putting, 800);
 }
 GameManager.prototype.stopGenItem = function () {
     this._itemGen = false;

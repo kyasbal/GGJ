@@ -1,12 +1,4 @@
 const GM = new GameManager();
-const UT = new Util();
-
-// UT.itemFreq({
-//     10: {
-//         carrot: 10000,
-//         apple: 10000
-//     }
-// })
 
 function initAnimation() {
     return new Promise((resolve, reject) => {
@@ -32,6 +24,9 @@ gr(function () {
     GM.addTimetable(2, function () { Audios.countdown.play(); });
     GM.addTimetable(1, function () { Audios.countdown.play(); });
 
+    GM.onchangeSecond = function () {
+        console.log(`commbo:${GM.commbo}`);
+    }
     GM.onChangeTime = function (t, l) {
         const time = t / 1000 / this.timeLimit;
         const colors = [
@@ -61,7 +56,7 @@ gr(function () {
         bar.style.width = 0 + "px";
         const img = document.getElementsByClassName('hina hina' + GM.currentHina)[0];
         img.src = "../img/kamome.png";
-        Audios.piyopiyo.play();
+        Audios.trans.play();
     }
     GM.onScoreChangeHandler = function (score, isLast) {
         const bar = document.getElementsByClassName('score-inner')[0];
@@ -78,8 +73,15 @@ gr(function () {
         }
     }
     GM.addOnEndGameHandler(function () {
-        console.log("end"); //TODO:do something on gameover.
-        GM.gameStart(); //TODO:remove
+        console.log("game end");
+        console.log(GM.takenItems);
+        var params = []
+        for (var key in GM.takenItems) {
+            params.push(`${key}=${GM.takenItems[key]}`);
+            // url += `${key}=${GM.takenItems[key]}`;
+        }
+        var url = './result.html?' + params.join("&");
+        window.location.href = url;
     })
 
     //init waves
