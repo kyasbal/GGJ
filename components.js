@@ -336,10 +336,3 @@ gr.registerNode("oldman", ["Wave", "Item"], {
     smallWave: 0.2,
     sounds: "oji"
 }, "mesh");
-gr.registerNode("duck", ["Wave", "Item"], {
-    texture: "./img/duck.png",
-    score: 800,
-    yOffset: 2.5,
-    smallWave: 0.2,
-    sounds: "habataki"
-}, "mesh");
