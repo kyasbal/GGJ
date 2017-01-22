@@ -4,7 +4,7 @@ function initAnimation() {
     return new Promise((resolve, reject) => {
         const $$ = gr("#sea");
         var player = $$("#player_gull").first();
-        UT.animate(1, 0, 1000, function (z) {
+        UT.animate(1, 0, 3000, function (z) {
             var x = (1 - z * z * z * z) * 10;
             var p = player.getAttribute("position");
             player.setAttribute("position", [p.X, x / 10 * 3 - 3.8, 20 - 2.1 * x]); //TODO: to be better
