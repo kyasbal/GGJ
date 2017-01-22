@@ -35,5 +35,13 @@ const Audios = {
     oji: new Howl({
         src: ['./audio/oldman.wav'],
         volume: 0.5
-    })
+    }),
+    bgm: new Howl({
+        src: ['./audio/Ben_Ben.mp3'],
+        volume: 0.9
+    }),
+    habataki: new Howl({
+        src: ['./audio/habataki.mp3'],
+        volume: 0.9
+    }),
 };

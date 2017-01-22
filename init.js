@@ -2,9 +2,15 @@ const GM = new GameManager();
 
 function initAnimation() {
     return new Promise((resolve, reject) => {
-        setTimeout(() => {
+        const $$ = gr("#sea");
+        var player = $$("#player_gull").first();
+        UT.animate(1, 0, 1000, function (z) {
+            var x = (1 - z * z * z * z) * 10;
+            var p = player.getAttribute("position");
+            player.setAttribute("position", [p.X, x / 10 * 3 - 3.8, 20 - 2.1 * x]); //TODO: to be better
+        }, function () {
             resolve()
-        }, 1000);
+        });
     });
 }
 gr(function () {
@@ -55,7 +61,7 @@ gr(function () {
         text.innerHTML = '0/' + GM.currentMaxScoreStr();
         bar.style.width = 0 + "px";
         const img = document.getElementsByClassName('hina hina' + GM.currentHina)[0];
-        img.src = "../img/kamome.png";
+        img.src = "./img/kamome.png";
         Audios.trans.play();
     }
     GM.onScoreChangeHandler = function (score, isLast) {
@@ -95,11 +101,9 @@ gr(function () {
             id: "wave-" + i
         }));
     }
-    $("html,body").animate({
-        scrollTop: $(document).scrollTop()
-    });
     Audios.wind.play();
+    Audios.bgm.play();
     initAnimation().then(t => {
         GM.gameStart();
     });
-});
+});;

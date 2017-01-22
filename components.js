@@ -89,18 +89,34 @@ gr.registerComponent("CameraControl", {
         sensibility: {
             converter: "Number",
             default: 1.0
+        },
+        scrollLength:{
+          converter:"Number",
+          default:300
         }
     },
     $mount: function () {
         this.__bindAttributes();
         this._transform = this.node.getComponent("Transform");
+        const length = this.getAttribute("scrollLength");
+        const distance = document.documentElement.getBoundingClientRect().height - window.innerHeight;
+        const diff = length - distance;
+        $("#spacer").css("height",diff);
+        $("html,body").animate({
+            scrollTop: length
+        });
+        this.lastScrollTop = document.documentElement.scrollTop || document.body.scrollTop
     },
     $update: function () {
+        const nowScrollTop = document.documentElement.scrollTop || document.body.scrollTop
+        if(nowScrollTop !== this.lastScrollTop){
         const distance = document.documentElement.getBoundingClientRect().height - window.innerHeight;
-        const heightRatio = $(window).scrollTop() / distance;
+        const heightRatio =  nowScrollTop/ distance;
         const p = this._transform.getAttribute("position");
         this._transform.setAttribute("position", [p.X, C.eyeMin + (C.eyeMax - C.eyeMin) * heightRatio, p.Z]);
         this._transform.setAttribute("rotation", `x(-${Math.atan(p.Y/C.focus)}rad)`);
+        this.lastScrollTop = nowScrollTop;
+      }
     }
 });
 
@@ -132,13 +148,13 @@ gr.registerComponent("Item", {
         }
     },
 
-    $mount: function() {
+    $mount: function () {
         this.getAttributeRaw("hasPenalty").boundTo("hasPenalty");
         this.getAttributeRaw("hitX").boundTo("hitX");
         this.getAttributeRaw("hitY").boundTo("hitY");
         this.getAttributeRaw("hitZ").boundTo("hitZ");
     },
-    $update: function() {
+    $update: function () {
         const pos = this.node.getAttribute("position");
         const cameraPos = Camera.getAttribute("position");
         const dZ = Math.abs(pos.Z - (cameraPos.Z - C.cameraHitDistance));
@@ -230,10 +246,10 @@ gr.registerComponent("MoveCameraForward", {
         this.currentSpeed = this.getAttribute("speed");
         this.resetTime = Date.now();
     },
-    execPenalty: function() {
+    execPenalty: function () {
         const p = this._transform.getAttribute("position");
         $("html,body").animate({
-            scrollTop: $(document).height()
+            scrollTop: 300
         }, this.penalty);
         this.hold = true;
         this.backSpeed = (C.eyeMax - p.Y) / this.penalty;
@@ -312,7 +328,14 @@ gr.registerNode("turtle", ["Wave", "Item"], {
 gr.registerNode("oldman", ["Wave", "Item"], {
     texture: "./img/ojiisan.png",
     score: 200,
-    yOffset: 1.2,
+    yOffset: 1.9,
     smallWave: 0.2,
     sounds: "oji"
+}, "mesh");
+gr.registerNode("duck", ["Wave", "Item"], {
+    texture: "./img/duck.png",
+    score: 800,
+    yOffset: 2.5,
+    smallWave: 0.2,
+    sounds: "habataki"
 }, "mesh");

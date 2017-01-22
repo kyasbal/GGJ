@@ -11,7 +11,7 @@
                 <MoveCameraForward speed="30" acceralation="1"/>
             </scroll-camera.components>
             <object rotation="y(180d)">
-              <!-- <model src="./models/gull.gltf" position="0,-3,10"/> -->
+              <model id="player_gull" src="./models/gull.gltf" position="0,-3,20"/>
             </object>
           </scroll-camera>
             <object class="wave-container"></object>
