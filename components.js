@@ -108,8 +108,8 @@ gr.registerComponent("Item", {
         const dY = Math.abs(pos.Y - cameraPos.Y);
         if (dZ < hitZ && dY < hitY) {
             console.log(`player hit ${this.node.name.name}`);
-            const score = this.getAttribute("score");
-            GM.addScore(score);
+            // const score = this.getAttribute("score");
+            GM.addScore(this);
             Audios[this.getAttribute("sounds")].play();
             this.node.emit("reset", this.node);
             return;

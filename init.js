@@ -70,8 +70,15 @@ gr(function () {
         }
     }
     GM.addOnEndGameHandler(function () {
-        console.log("end"); //TODO:do something on gameover.
-        GM.gameStart(); //TODO:remove
+        console.log("game end");
+        console.log(GM.takenItems);
+        var params = []
+        for (var key in GM.takenItems) {
+            params.push(`${key}=${GM.takenItems[key]}`);
+            // url += `${key}=${GM.takenItems[key]}`;
+        }
+        var url = './result.html?' + params.join("&");
+        window.location.href = url;
     })
 
     //init waves

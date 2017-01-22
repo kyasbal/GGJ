@@ -9,6 +9,7 @@ function GameManager() {
     this.itemManager = new ItemManager();
     this.currentHina = 0;
     this.timetable = [];
+    this.takenItems = {}
 }
 GameManager.prototype.addTimetable = function (second, callback) {
     if (!Array.isArray(this.timetable[second])) {
@@ -16,7 +17,13 @@ GameManager.prototype.addTimetable = function (second, callback) {
     }
     this.timetable[second].push(callback);
 }
-GameManager.prototype.addScore = function (score) {
+GameManager.prototype.addScore = function (scoreItem) {
+    const itemName = scoreItem.node.name.name;
+    if (this.takenItems[itemName] === void 0) {
+        this.takenItems[itemName] = 0;
+    }
+    this.takenItems[itemName]++;
+    const score = scoreItem.getAttribute("score");
     this.score = Math.max(0, score + this.score);
     if (this.score >= this.maxScoreList[this.currentHina]) {
         this.score -= this.maxScoreList[this.currentHina];
