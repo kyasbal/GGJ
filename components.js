@@ -115,7 +115,7 @@ gr.registerComponent("Item", {
             converter: "String"
         },
         hitX: {
-            default: 2.0,
+            default: 4.0,
             converter: "Number"
         },
         hitY: {
@@ -132,13 +132,13 @@ gr.registerComponent("Item", {
         }
     },
 
-    $mount: function () {
+    $mount: function() {
         this.getAttributeRaw("hasPenalty").boundTo("hasPenalty");
         this.getAttributeRaw("hitX").boundTo("hitX");
         this.getAttributeRaw("hitY").boundTo("hitY");
         this.getAttributeRaw("hitZ").boundTo("hitZ");
     },
-    $update: function () {
+    $update: function() {
         const pos = this.node.getAttribute("position");
         const cameraPos = Camera.getAttribute("position");
         const dZ = Math.abs(pos.Z - (cameraPos.Z - C.cameraHitDistance));
@@ -230,7 +230,7 @@ gr.registerComponent("MoveCameraForward", {
         this.currentSpeed = this.getAttribute("speed");
         this.resetTime = Date.now();
     },
-    execPenalty: function () {
+    execPenalty: function() {
         const p = this._transform.getAttribute("position");
         $("html,body").animate({
             scrollTop: $(document).height()
@@ -256,7 +256,9 @@ gr.registerNode("apple", ["Wave", "Item", "Rotate"], {
     src: "./models/apple.gltf",
     yOffset: 1,
     score: 10,
-    sounds: "piyopiyo"
+    sounds: "piyopiyo",
+    hitY: 5,
+    hitZ: 5
 }, "model");
 
 
@@ -265,7 +267,8 @@ gr.registerNode("carrot", ["Wave", "Item", "Rotate"], {
     yOffset: 1,
     score: 10,
     sounds: "piyopiyo",
-    axis: [0, -1, 0]
+    axis: [0, -1, 0],
+    hitY: 5
 }, "model");
 
 gr.registerNode("fish", ["Wave", "Item"], {
