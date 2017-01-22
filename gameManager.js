@@ -18,7 +18,7 @@ GameManager.prototype.addTimetable = function (second, callback) {
 }
 GameManager.prototype.addScore = function (score) {
     this.score = Math.max(0, score + this.score);
-    if (this.score > this.maxScoreList[this.currentHina]) {
+    if (this.score >= this.maxScoreList[this.currentHina]) {
         this.score -= this.maxScoreList[this.currentHina];
         this.currentHina++;
         this.onHinaGrown(this.currentHina, this.currentHina === this.maxScoreList.length);
