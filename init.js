@@ -62,7 +62,7 @@ gr(function () {
         text.innerHTML = '0/' + GM.currentMaxScoreStr();
         bar.style.width = 0 + "px";
         const img = document.getElementsByClassName('hina hina' + GM.currentHina)[0];
-        img.src = "../img/kamome.png";
+        img.src = "./img/kamome.png";
         Audios.trans.play();
     }
     GM.onScoreChangeHandler = function (score, isLast) {
