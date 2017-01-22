@@ -118,7 +118,8 @@ gr.registerComponent("Item", {
             this.node.emit("reset", this.node);
         }
     }
-})
+});
+
 
 gr.registerComponent("MoveCameraForward", {
     attributes: {
@@ -246,6 +247,7 @@ gr.registerNode("yacht", ["Wave", "Item"], {
     scale: "2",
     score: -20,
     yOffset: 1.5,
+    hitY:13,
     sounds: "shipCollision"
 }, "model");
 gr.registerNode("turtle", ["Wave", "Item"], {
