@@ -16,6 +16,14 @@ function initAnimation() {
 gr(function () {
     GM.init();
     const $$ = gr("#sea");
+    const goml = $$("goml").get(0);
+    goml.on("asset-load-completed",function(){
+      Audios.wind.play();
+      Audios.bgm.play();
+      initAnimation().then(t => {
+          GM.gameStart();
+      });
+    });
     const waveContainer = $$(".wave-container").get(0);
     const itemContainer = $$(".item-container").get(0);
     const text = document.getElementsByClassName('score-text')[0];
@@ -101,9 +109,4 @@ gr(function () {
             id: "wave-" + i
         }));
     }
-    Audios.wind.play();
-    Audios.bgm.play();
-    initAnimation().then(t => {
-        GM.gameStart();
-    });
 });;
