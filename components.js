@@ -91,6 +91,10 @@ gr.registerComponent("Item", {
             default: "",
             converter: "String"
         },
+        hitX: {
+            default: 2.0,
+            converter: "Number"
+        },
         hitY: {
             default: 3,
             converter: "Number"
@@ -104,17 +108,20 @@ gr.registerComponent("Item", {
             converter: "Boolean"
         }
     },
+
     $mount: function () {
         this.getAttributeRaw("hasPenalty").boundTo("hasPenalty");
+        this.getAttributeRaw("hitX").boundTo("hitX");
+        this.getAttributeRaw("hitY").boundTo("hitY");
+        this.getAttributeRaw("hitZ").boundTo("hitZ");
     },
     $update: function () {
         const pos = this.node.getAttribute("position");
         const cameraPos = Camera.getAttribute("position");
-        const hitZ = this.getAttribute("hitZ");
-        const hitY = this.getAttribute("hitY");
         const dZ = Math.abs(pos.Z - (cameraPos.Z - C.cameraHitDistance));
         const dY = Math.abs(pos.Y - cameraPos.Y);
-        if (dZ < hitZ && dY < hitY) {
+        const dX = Math.abs(pos.X - cameraPos.X);
+        if (dZ < this.hitZ && dY < this.hitY && dX < this.hitX) {
             console.log(`player hit ${this.node.name.name}`);
             // const score = this.getAttribute("score");
             GM.addScore(this);
