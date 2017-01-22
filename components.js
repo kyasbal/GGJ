@@ -271,7 +271,8 @@ gr.registerNode("yacht", ["Wave", "Item"], {
     yOffset: 1.5,
     hitY: 13,
     sounds: "shipCollision",
-    hasPenalty: true
+    hasPenalty: true,
+    hitX:0.4
 }, "model");
 gr.registerNode("turtle", ["Wave", "Item"], {
     rotation: "y(90d)",
