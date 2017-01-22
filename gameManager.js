@@ -106,7 +106,7 @@ GameManager.prototype.gameStart = function () {
             setTimeout(putting, Math.random() * self.itemFreq);
         }
     }
-    putting();
+    setTimeout(putting, 800);
 }
 GameManager.prototype.stopGenItem = function () {
     this._itemGen = false;
