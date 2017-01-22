@@ -30,5 +30,9 @@ const Audios = {
     kame: new Howl({
         src: ['./audio/kame.mp3'],
         volume: 0.5
+    }),
+    trans: new Howl({
+        src: ['./audio/chick-transform.mp3'],
+        volume: 0.5
     })
 };

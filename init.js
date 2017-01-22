@@ -61,7 +61,7 @@ gr(function () {
         bar.style.width = 0 + "px";
         const img = document.getElementsByClassName('hina hina' + GM.currentHina)[0];
         img.src = "../img/kamome.png";
-        Audios.piyopiyo.play();
+        Audios.trans.play();
     }
     GM.onScoreChangeHandler = function (score, isLast) {
         const bar = document.getElementsByClassName('score-inner')[0];
