@@ -89,11 +89,22 @@ gr.registerComponent("CameraControl", {
         sensibility: {
             converter: "Number",
             default: 1.0
+        },
+        scrollLength:{
+          converter:"Number",
+          default:300
         }
     },
     $mount: function () {
         this.__bindAttributes();
         this._transform = this.node.getComponent("Transform");
+        const length = this.getAttribute("scrollLength");
+        const distance = document.documentElement.getBoundingClientRect().height - window.innerHeight;
+        const diff = length - distance;
+        $("#spacer").css("height",diff);
+        $("html,body").animate({
+            scrollTop: $(document).scrollTop()
+        });
     },
     $update: function () {
         const distance = document.documentElement.getBoundingClientRect().height - window.innerHeight;
@@ -233,7 +244,7 @@ gr.registerComponent("MoveCameraForward", {
     execPenalty: function() {
         const p = this._transform.getAttribute("position");
         $("html,body").animate({
-            scrollTop: $(document).height()
+            scrollTop: 300
         }, this.penalty);
         this.hold = true;
         this.backSpeed = (C.eyeMax - p.Y) / this.penalty;

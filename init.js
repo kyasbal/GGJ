@@ -94,9 +94,6 @@ gr(function () {
             id: "wave-" + i
         }));
     }
-    $("html,body").animate({
-        scrollTop: $(document).scrollTop()
-    });
     Audios.wind.play();
     initAnimation().then(t => {
         GM.gameStart();
