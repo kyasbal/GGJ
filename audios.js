@@ -29,7 +29,7 @@ const Audios = {
         volume: 0.5
     }),
     trans: new Howl({
-        src: ['./audio/chick-transform.mp3'],
+        src: ['./audio/transform.mp3'],
         volume: 0.5
     }),
     oji: new Howl({
