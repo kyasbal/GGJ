@@ -1,12 +1,4 @@
 const GM = new GameManager();
-const UT = new Util();
-
-// UT.itemFreq({
-//     10: {
-//         carrot: 10000,
-//         apple: 10000
-//     }
-// })
 
 function initAnimation() {
     return new Promise((resolve, reject) => {
