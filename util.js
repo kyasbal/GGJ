@@ -15,7 +15,7 @@ Util.prototype.animate = function (begin, end, duration, func, endCallback) { //
         count--;
         if (count > 0) {
             setTimeout(f, span);
-        } else {
+        } else if (endCallback) {
             endCallback();
         }
     }
@@ -29,7 +29,7 @@ Util.prototype.itemFreq = function (obj) {
         const changes = obj[key];
         GM.addTimetable(key, function () {
             for (var name in changes) {
-                console.log(`change:${name} to ${changes[name]}`);
+                // console.log(`change:${name} to ${changes[name]}`);
                 GM.itemManager.setWeight(name, changes[name]);
             }
         });

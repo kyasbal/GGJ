@@ -4,7 +4,7 @@ function initAnimation() {
     return new Promise((resolve, reject) => {
         const $$ = gr("#sea");
         var player = $$("#player_gull").first();
-        UT.animate(1, 0, 1000, function (z) {
+        UT.animate(1, 0, 3000, function (z) {
             var x = (1 - z * z * z * z) * 10;
             var p = player.getAttribute("position");
             player.setAttribute("position", [p.X, x / 10 * 3 - 3.8, 20 - 2.1 * x]); //TODO: to be better
@@ -17,12 +17,12 @@ gr(function () {
     GM.init();
     const $$ = gr("#sea");
     const goml = $$("goml").get(0);
-    goml.on("asset-load-completed",function(){
-      Audios.wind.play();
-      Audios.bgm.play();
-      initAnimation().then(t => {
-          GM.gameStart();
-      });
+    goml.on("asset-load-completed", function () {
+        Audios.wind.play();
+        Audios.bgm.play();
+        initAnimation().then(t => {
+            GM.gameStart();
+        });
     });
     const waveContainer = $$(".wave-container").get(0);
     const itemContainer = $$(".item-container").get(0);
@@ -39,7 +39,7 @@ gr(function () {
     GM.addTimetable(1, function () { Audios.countdown.play(); });
 
     GM.onchangeSecond = function () {
-        console.log(`commbo:${GM.commbo}`);
+        // console.log(`commbo:${GM.commbo}`);
     }
     GM.onChangeTime = function (t, l) {
         const time = t / 1000 / this.timeLimit;
@@ -63,7 +63,7 @@ gr(function () {
         gr("#sea")("wave-cube").setAttribute("color", ac)
     };
     GM.onHinaGrown = function () {
-        console.log("hina grown!!!!!!!!!!!!!!!!");
+        // console.log("hina grown!!!!!!!!!!!!!!!!");
         const bar = document.getElementsByClassName('score-inner')[0];
         const text = document.getElementsByClassName('score-text')[0];
         text.innerHTML = '0/' + GM.currentMaxScoreStr();
@@ -71,6 +71,22 @@ gr(function () {
         const img = document.getElementsByClassName('hina hina' + GM.currentHina)[0];
         img.src = "./img/kamome.png";
         Audios.trans.play();
+        $('.hina' + GM.currentHina).animate({
+            top: "500px",
+            left: "240px", //TODO:to center.
+            opacity: "0"
+        }, 1500, "swing", function () {
+            var c = gr("#sea")("#main-camera").first().addChildByName("model", {
+                src: "./models/gull.gltf",
+                position: "0,-3,-20",
+                rotation: "y(180)"
+            });
+            UT.animate(0, 1, 1500, function (x) {
+                x = x * x * 10
+                var pos = c.getAttribute("position");
+                c.setAttribute("position", [pos.X + x, pos.Y + x, pos.Z - 4 * x * x]); //TODO:more
+            })
+        });
     }
     GM.onScoreChangeHandler = function (score, isLast) {
         const bar = document.getElementsByClassName('score-inner')[0];
@@ -87,15 +103,15 @@ gr(function () {
         }
     }
     GM.addOnEndGameHandler(function () {
-        console.log("game end");
-        console.log(GM.takenItems);
+        // console.log("game end");
+        // console.log(GM.takenItems);
         var params = []
         for (var key in GM.takenItems) {
             params.push(`${key}=${GM.takenItems[key]}`);
             // url += `${key}=${GM.takenItems[key]}`;
         }
         params.push(`hina=${GM.currentHina}`);
-        var url = './result.html?' + params.join("&");//TODO:アイテム一つも取らないとバグる？
+        var url = './result.html?' + params.join("&"); //TODO:アイテム一つも取らないとバグる？
         url += `&score=${GM.getTotalScore()}`
         window.location.href = url;
     })
