@@ -1,10 +1,12 @@
+var Quaternion = gr.lib.math.Quaternion;
+var Vector3 = gr.lib.math.Vector3;
 const C = {
     eyeMax: 25,
     eyeMin: 0,
     ampl: 3,
     bigAmpl: 2,
     focus: 70,
-    cameraHitDistance: 10
+    cameraHitDistance: 5
 };
 let Camera;
 
@@ -30,6 +32,27 @@ function waveMain(o) {
     return (w1 + 0.6 * w2 + 0.8 * w3 + bigWave) * C.ampl;
 }
 
+gr.registerComponent("Rotate", {
+    attributes: {
+        axis: {
+            default: '0, 1, 0',
+            converter: 'Vector3'
+        },
+        speed: {
+            default: 0.03,
+            converter: 'Number'
+        }
+    },
+    $mount: function () {
+        this._transform = this.node.getComponent('Transform');
+        this.getAttributeRaw("axis").boundTo("axis");
+        this.getAttributeRaw("speed").boundTo("speed");
+    },
+    $update: function () {
+        this._transform.localRotation = Quaternion.multiply(
+            Quaternion.angleAxis(this.speed, this.axis), this._transform.localRotation);
+    }
+});
 gr.registerComponent("Wave", {
     attributes: {
         yOffset: {
@@ -123,7 +146,6 @@ gr.registerComponent("Item", {
         const dX = Math.abs(pos.X - cameraPos.X);
         if (dZ < this.hitZ && dY < this.hitY && dX < this.hitX) {
             console.log(`player hit ${this.node.name.name}`);
-            // const score = this.getAttribute("score");
             GM.addScore(this);
             Audios[this.getAttribute("sounds")].play();
             this.node.emit("reset", this.node);
@@ -229,7 +251,7 @@ gr.registerNode("wave-cube", ["Wave"], {
 
 
 gr.registerNode("scroll-camera", ["CameraControl"], {}, "camera");
-gr.registerNode("apple", ["Wave", "Item"], {
+gr.registerNode("apple", ["Wave", "Item", "Rotate"], {
     scale: "0.02",
     src: "./models/apple.gltf",
     yOffset: 1,
@@ -238,11 +260,12 @@ gr.registerNode("apple", ["Wave", "Item"], {
 }, "model");
 
 
-gr.registerNode("carrot", ["Wave", "Item"], {
+gr.registerNode("carrot", ["Wave", "Item", "Rotate"], {
     src: "./models/carrot.gltf",
     yOffset: 1,
     score: 10,
-    sounds: "piyopiyo"
+    sounds: "piyopiyo",
+    axis: [0, -1, 0]
 }, "model");
 
 gr.registerNode("fish", ["Wave", "Item"], {
@@ -257,12 +280,13 @@ gr.registerNode("gull", ["Wave", "Item"], {
     yOffset: 1.7,
     sounds: "piyopiyo"
 }, "model");
-gr.registerNode("lotusRoot", ["Wave", "Item"], {
+gr.registerNode("lotusRoot", ["Wave", "Item", "Rotate"], {
     src: "./models/lotusRoot.gltf",
     score: 30,
     yOffset: 1.5,
     scale: 200,
-    sounds: "piyopiyo"
+    sounds: "piyopiyo",
+    axis: [0, 0, 1]
 }, "model");
 gr.registerNode("yacht", ["Wave", "Item"], {
     src: "./models/yacht.gltf",
@@ -282,3 +306,10 @@ gr.registerNode("turtle", ["Wave", "Item"], {
     smallWave: 0.2,
     sounds: "kame"
 }, "model");
+gr.registerNode("oldman", ["Wave", "Item"], {
+    texture: "./img/ojiisan.png",
+    score: 200,
+    yOffset: 1.2,
+    smallWave: 0.2,
+    sounds: "oji"
+}, "mesh");
