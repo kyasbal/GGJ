@@ -12,6 +12,7 @@ function GameManager() {
     this.takenItems = {};
     this.commbo = 0;
     this.onchangeSecond = function () {};
+    this.itemFreq = 300;
 }
 GameManager.prototype.addTimetable = function (second, callback) {
     if (!Array.isArray(this.timetable[second])) {
@@ -69,6 +70,8 @@ GameManager.prototype.gameStart = function () {
     this.timer.reset();
     var self = this;
     var lastLeaveTime = -1;
+
+    // time management.
     var stopId = setInterval(function () {
         var ct = self.timer.getTime();
         var leaveTime = Math.ceil(self.timeLimit - ct / 1000);
@@ -86,6 +89,7 @@ GameManager.prototype.gameStart = function () {
             lastLeaveTime = leaveTime;
             var timetableEvents = self.timetable[leaveTime];
             if (timetableEvents) {
+                console.log(`timetable execute: ${leaveTime}`);
                 timetableEvents.forEach(function (e) {
                     e();
                 });
@@ -99,7 +103,7 @@ GameManager.prototype.gameStart = function () {
     var putting = function () {
         self.itemManager.randomPut();
         if (self._itemGen) {
-            setTimeout(putting, Math.random() * 300);
+            setTimeout(putting, Math.random() * self.itemFreq);
         }
     }
     putting();
