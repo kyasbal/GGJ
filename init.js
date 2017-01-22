@@ -101,6 +101,7 @@ gr(function () {
         }));
     }
     Audios.wind.play();
+    Audios.bgm.play();
     initAnimation().then(t => {
         GM.gameStart();
     });
