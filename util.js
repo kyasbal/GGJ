@@ -2,9 +2,30 @@ function Util() {
 
 }
 
+Util.prototype.animate = function (begin, end, duration, func, endCallback) { //TODO:fix
+    var d = (end - begin);
+    const span = 1000 / 60;
+    var count = Math.floor(duration / span);
+    var dd = d / count;
+    // console.log(d, count);
+    var v = begin;
+    var f = function () {
+        func(v);
+        v += dd;
+        count--;
+        if (count > 0) {
+            setTimeout(f, span);
+        } else {
+            endCallback();
+        }
+    }
+    f();
+}
+
+
 Util.prototype.itemFreq = function (obj) {
     for (var key in obj) {
-        console.log(key);
+        // console.log(key);
         const changes = obj[key];
         GM.addTimetable(key, function () {
             for (var name in changes) {
