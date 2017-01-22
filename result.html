@@ -4,6 +4,7 @@
 <head>
     <title>Bootstrap 101 Template</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <link rel="stylesheet" href="./normalize.css">
     <link rel="stylesheet" href="./result.css">
@@ -16,10 +17,7 @@
                 <div class="bg-glow grow">
                     <h2 class="score-title">Your score</h2>
                     <p>1230 pts</p>
-
-                </div>
-                <div class="btn-container">
-                    <a class="btn">Share with Twitter</a>
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en" data-text="4 of 5 baby birds was hatched! I got 12932 pts!" data-via="grimoire_js" data-hashtag="Scroll_Seagull" >Tweet</a>
                 </div>
             </div>
         </div>
@@ -46,12 +44,13 @@
                     <h2 class="replay-text">Play again</h2>
                 </div>
                     <div class="btn-container">
-                        <a class="btn">Replay</a>
+                        <a class="btn" href="./index.html">Replay</a>
                     </div>
                 </div>
           </div>
         </div>
     </section>
+    <p class="grimoire-link">Powered by <strong><a href="https://grimoire.gl">Grimoire.js</a></strong></p>
 </body>
 
 </html>

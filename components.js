@@ -5,7 +5,8 @@ const C = {
     eyeMin: 0,
     ampl: 3,
     bigAmpl: 2,
-    focus: 70
+    focus: 70,
+    cameraHitDistance: 5
 };
 let Camera;
 
@@ -113,6 +114,10 @@ gr.registerComponent("Item", {
             default: "",
             converter: "String"
         },
+        hitX: {
+            default: 2.0,
+            converter: "Number"
+        },
         hitY: {
             default: 3,
             converter: "Number"
@@ -120,21 +125,33 @@ gr.registerComponent("Item", {
         hitZ: {
             default: 3,
             converter: "Number"
+        },
+        hasPenalty: {
+            default: false,
+            converter: "Boolean"
         }
     },
-    $update: function() {
+
+    $mount: function () {
+        this.getAttributeRaw("hasPenalty").boundTo("hasPenalty");
+        this.getAttributeRaw("hitX").boundTo("hitX");
+        this.getAttributeRaw("hitY").boundTo("hitY");
+        this.getAttributeRaw("hitZ").boundTo("hitZ");
+    },
+    $update: function () {
         const pos = this.node.getAttribute("position");
         const cameraPos = Camera.getAttribute("position");
-        const hitZ = this.getAttribute("hitZ");
-        const hitY = this.getAttribute("hitY");
-        const dZ = Math.abs(pos.Z - cameraPos.Z);
+        const dZ = Math.abs(pos.Z - (cameraPos.Z - C.cameraHitDistance));
         const dY = Math.abs(pos.Y - cameraPos.Y);
-        if (dZ < hitZ && dY < hitY) {
+        const dX = Math.abs(pos.X - cameraPos.X);
+        if (dZ < this.hitZ && dY < this.hitY && dX < this.hitX) {
             console.log(`player hit ${this.node.name.name}`);
-            // const score = this.getAttribute("score");
             GM.addScore(this);
             Audios[this.getAttribute("sounds")].play();
             this.node.emit("reset", this.node);
+            if (this.hasPenalty) {
+                Camera.getComponent("MoveCameraForward").execPenalty();
+            }
             return;
         }
         if (pos.Z !== 100 && pos.Z - cameraPos.Z > 50) {
@@ -195,18 +212,12 @@ gr.registerComponent("MoveCameraForward", {
             }
         });
 
-        var cameraMinHeight = waveMain(cz) + 2;
+        var cameraMinHeight = waveMain(cz - C.cameraHitDistance) + 2;
         if (!this.hold && cameraMinHeight > p.Y) {
             this._transform.setAttribute("position", [p.X, p.Y, cz]);
             GM.commbo = 0;
             Audios.dobon.play();
-            $("html,body").animate({
-                scrollTop: $(document).height()
-            }, this.penalty);
-            this.hold = true;
-            this.backSpeed = (C.eyeMax - p.Y) / this.penalty;
-            this.duration = Date.now() + this.penalty;
-            this.reset();
+            this.execPenalty();
         } else {
             var newY = this.hold ? Math.max(p.Y + this.backSpeed, cameraMinHeight) : p.Y;
             this._transform.setAttribute("position", [p.X, newY, cz]);
@@ -218,6 +229,16 @@ gr.registerComponent("MoveCameraForward", {
     reset: function() {
         this.currentSpeed = this.getAttribute("speed");
         this.resetTime = Date.now();
+    },
+    execPenalty: function () {
+        const p = this._transform.getAttribute("position");
+        $("html,body").animate({
+            scrollTop: $(document).height()
+        }, this.penalty);
+        this.hold = true;
+        this.backSpeed = (C.eyeMax - p.Y) / this.penalty;
+        this.duration = Date.now() + this.penalty;
+        this.reset();
     }
 });
 
@@ -273,7 +294,8 @@ gr.registerNode("yacht", ["Wave", "Item"], {
     score: -20,
     yOffset: 1.5,
     hitY: 13,
-    sounds: "shipCollision"
+    sounds: "shipCollision",
+    hasPenalty: true
 }, "model");
 gr.registerNode("turtle", ["Wave", "Item"], {
     rotation: "y(90d)",
