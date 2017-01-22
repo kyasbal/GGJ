@@ -1,3 +1,5 @@
+var Quaternion = gr.lib.math.Quaternion;
+var Vector3 = gr.lib.math.Vector3;
 const C = {
     eyeMax: 25,
     eyeMin: 0,
@@ -30,6 +32,27 @@ function waveMain(o) {
     return (w1 + 0.6 * w2 + 0.8 * w3 + bigWave) * C.ampl;
 }
 
+gr.registerComponent("Rotate", {
+    attributes: {
+        axis: {
+            default: '0, 1, 0',
+            converter: 'Vector3'
+        },
+        speed: {
+            default: 0.03,
+            converter: 'Number'
+        }
+    },
+    $mount: function() {
+        this._transform = this.node.getComponent('Transform');
+        this.getAttributeRaw("axis").boundTo("axis");
+        this.getAttributeRaw("speed").boundTo("speed");
+    },
+    $update: function() {
+        this._transform.localRotation = Quaternion.multiply(
+            Quaternion.angleAxis(this.speed, this.axis), this._transform.localRotation);
+    }
+});
 gr.registerComponent("Wave", {
     attributes: {
         yOffset: {
@@ -41,19 +64,19 @@ gr.registerComponent("Wave", {
             default: 1.0
         }
     },
-    $mount: function () {
+    $mount: function() {
         this.transform = this.node.getComponent("Transform");
         this.initialY = this.transform.getAttribute("position").Y;
         this.getAttributeRaw("yOffset").boundTo("yOffset");
         this.getAttributeRaw("smallWave").boundTo("smallWave");
         this.random = Math.random() * 1000;
     },
-    $update: function () {
+    $update: function() {
         const p = this.transform.getAttribute("position");
         p.Y = waveMain(p.Z) + this.yOffset + this.smallWave * Math.sin(Date.now() / 1000. + this.random);
         this.transform.setAttribute("position", [p.X, p.Y, p.Z]);
     },
-    $resetPosition: function () {
+    $resetPosition: function() {
         var count = WAVES.length;
         var d = 1;
         var p = this.node.getAttribute("position");
@@ -68,11 +91,11 @@ gr.registerComponent("CameraControl", {
             default: 1.0
         }
     },
-    $mount: function () {
+    $mount: function() {
         this.__bindAttributes();
         this._transform = this.node.getComponent("Transform");
     },
-    $update: function () {
+    $update: function() {
         const distance = document.documentElement.getBoundingClientRect().height - window.innerHeight;
         const heightRatio = $(window).scrollTop() / distance;
         const p = this._transform.getAttribute("position");
@@ -157,7 +180,7 @@ gr.registerComponent("MoveCameraForward", {
             default: 300
         }
     },
-    $mount: function () {
+    $mount: function() {
         Camera = this.node;
         this.getAttributeRaw("speed").boundTo("speed");
         this.getAttributeRaw("penalty").boundTo("penalty");
@@ -176,14 +199,14 @@ gr.registerComponent("MoveCameraForward", {
         this.currentSpeed = this.speed;
         this.resetTime = Date.now();
     },
-    $update: function () {
+    $update: function() {
         const t = Date.now();
         this.currentSpeed = Math.min(this.maxSpeed, this.speed + (t - this.resetTime) / 1000 * this.acceralation);
         const delta = t - this.lastTime;
         this.lastTime = t;
         const p = this._transform.getAttribute("position");
         const cz = p.Z - delta / 1000. * this.currentSpeed;
-        WAVES.forEach(function (w) {
+        WAVES.forEach(function(w) {
             if (w.getAttribute("position").Z > cz) {
                 w.sendMessage("resetPosition");
             }
@@ -203,7 +226,7 @@ gr.registerComponent("MoveCameraForward", {
             }
         }
     },
-    reset: function () {
+    reset: function() {
         this.currentSpeed = this.getAttribute("speed");
         this.resetTime = Date.now();
     },
@@ -228,7 +251,7 @@ gr.registerNode("wave-cube", ["Wave"], {
 
 
 gr.registerNode("scroll-camera", ["CameraControl"], {}, "camera");
-gr.registerNode("apple", ["Wave", "Item"], {
+gr.registerNode("apple", ["Wave", "Item", "Rotate"], {
     scale: "0.02",
     src: "./models/apple.gltf",
     yOffset: 1,
@@ -237,11 +260,12 @@ gr.registerNode("apple", ["Wave", "Item"], {
 }, "model");
 
 
-gr.registerNode("carrot", ["Wave", "Item"], {
+gr.registerNode("carrot", ["Wave", "Item", "Rotate"], {
     src: "./models/carrot.gltf",
     yOffset: 1,
     score: 10,
-    sounds: "piyopiyo"
+    sounds: "piyopiyo",
+    axis: [0, -1, 0]
 }, "model");
 
 gr.registerNode("fish", ["Wave", "Item"], {
@@ -256,12 +280,13 @@ gr.registerNode("gull", ["Wave", "Item"], {
     yOffset: 1.7,
     sounds: "piyopiyo"
 }, "model");
-gr.registerNode("lotusRoot", ["Wave", "Item"], {
+gr.registerNode("lotusRoot", ["Wave", "Item","Rotate"], {
     src: "./models/lotusRoot.gltf",
     score: 30,
     yOffset: 1.5,
     scale: 200,
-    sounds: "piyopiyo"
+    sounds: "piyopiyo",
+    axis: [0, 0, 1]
 }, "model");
 gr.registerNode("yacht", ["Wave", "Item"], {
     src: "./models/yacht.gltf",
