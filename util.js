@@ -15,7 +15,7 @@ Util.prototype.animate = function (begin, end, duration, func, endCallback) { //
         count--;
         if (count > 0) {
             setTimeout(f, span);
-        } else {
+        } else if (endCallback) {
             endCallback();
         }
     }

@@ -63,6 +63,21 @@ gr(function () {
         const img = document.getElementsByClassName('hina hina' + GM.currentHina)[0];
         img.src = "./img/kamome.png";
         Audios.trans.play();
+        $('.hina' + GM.currentHina).animate({
+            top: "500px",
+            left: "240px", //TODO:to center.
+            opacity: "0"
+        }, 1500, "swing", function () {
+            var c = gr("#sea")("#main-camera").first().addChildByName("model", {
+                src: "./models/gull.gltf",
+                position: "0,-3,-20",
+                rotation: "10,10,10"
+            });
+            UT.animate(0, 10, 1500, function (x) {
+                var pos = c.getAttribute("position");
+                c.setAttribute("position", [pos.X + x, pos.Y + x, pos.Z + 0.2 * x]); //TODO:more
+            })
+        });
     }
     GM.onScoreChangeHandler = function (score, isLast) {
         const bar = document.getElementsByClassName('score-inner')[0];
@@ -87,7 +102,7 @@ gr(function () {
             // url += `${key}=${GM.takenItems[key]}`;
         }
         params.push(`hina=${GM.currentHina + 1}`);
-        var url = './result.html?' + params.join("&");//TODO:アイテム一つも取らないとバグる？
+        var url = './result.html?' + params.join("&"); //TODO:アイテム一つも取らないとバグる？
         url += `&score=${GM.getTotalScore()}`
         window.location.href = url;
     })
