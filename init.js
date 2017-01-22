@@ -105,6 +105,7 @@ gr(function () {
         scrollTop: $(document).scrollTop()
     });
     Audios.wind.play();
+    Audios.bgm.play();
     initAnimation().then(t => {
         GM.gameStart();
     });
