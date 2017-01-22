@@ -97,7 +97,14 @@ gr.registerComponent("Item", {
         hitZ: {
             default: 3,
             converter: "Number"
+        },
+        hasPenalty:{
+          default:false,
+          converter:"Boolean"
         }
+    },
+    $mount:function(){
+      this.getAttributeRaw("hasPenalty").boundTo("hasPenalty");
     },
     $update: function () {
         const pos = this.node.getAttribute("position");
@@ -112,6 +119,9 @@ gr.registerComponent("Item", {
             GM.addScore(score);
             Audios[this.getAttribute("sounds")].play();
             this.node.emit("reset", this.node);
+            if(this.hasPenalty){
+              Camera.getComponent("MoveCameraForward").execPenalty();
+            }
             return;
         }
         if (pos.Z !== 100 && pos.Z - cameraPos.Z > 50) {
@@ -173,16 +183,8 @@ gr.registerComponent("MoveCameraForward", {
 
         var cameraMinHeight = waveMain(cz) + 2;
         if (!this.hold && cameraMinHeight > p.Y) {
-            this._transform.setAttribute("position", [p.X, p.Y, cz]);
-            // isDobonPlaying = true;
             Audios.dobon.play();
-            $("html,body").animate({
-                scrollTop: $(document).height()
-            }, this.penalty);
-            this.hold = true;
-            this.backSpeed = (C.eyeMax - p.Y) / this.penalty;
-            this.duration = Date.now() + this.penalty;
-            this.reset();
+            this.execPenalty();
         } else {
             var newY = this.hold ? Math.max(p.Y + this.backSpeed, cameraMinHeight) : p.Y;
             this._transform.setAttribute("position", [p.X, newY, cz]);
@@ -194,6 +196,16 @@ gr.registerComponent("MoveCameraForward", {
     reset: function () {
         this.currentSpeed = this.getAttribute("speed");
         this.resetTime = Date.now();
+    },
+    execPenalty:function(){
+      const p = this._transform.getAttribute("position");
+      $("html,body").animate({
+          scrollTop: $(document).height()
+      }, this.penalty);
+      this.hold = true;
+      this.backSpeed = (C.eyeMax - p.Y) / this.penalty;
+      this.duration = Date.now() + this.penalty;
+      this.reset();
     }
 });
 
@@ -246,7 +258,8 @@ gr.registerNode("yacht", ["Wave", "Item"], {
     scale: "2",
     score: -20,
     yOffset: 1.5,
-    sounds: "shipCollision"
+    sounds: "shipCollision",
+    hasPenalty:true
 }, "model");
 gr.registerNode("turtle", ["Wave", "Item"], {
     rotation: "y(90d)",
