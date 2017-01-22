@@ -31,5 +31,9 @@ const Audios = {
     trans: new Howl({
         src: ['./audio/chick-transform.mp3'],
         volume: 0.5
+    }),
+    oji: new Howl({
+        src: ['./audio/oldman.wav'],
+        volume: 0.5
     })
 };

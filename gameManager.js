@@ -108,6 +108,13 @@ GameManager.prototype.gameStart = function () {
     }
     setTimeout(putting, 800);
 }
+GameManager.prototype.getTotalScore = function () {
+    var total = 0;
+    for (var i = 0; i < this.currentHina; i++) {
+        total += this.maxScoreList[i]
+    }
+    return total + this.score;
+}
 GameManager.prototype.stopGenItem = function () {
     this._itemGen = false;
 }
