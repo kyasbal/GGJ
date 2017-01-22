@@ -4,7 +4,7 @@ const C = {
     ampl: 3,
     bigAmpl: 2,
     focus: 70,
-    cameraHitDistance: 10
+    cameraHitDistance: 5
 };
 let Camera;
 
@@ -123,7 +123,6 @@ gr.registerComponent("Item", {
         const dX = Math.abs(pos.X - cameraPos.X);
         if (dZ < this.hitZ && dY < this.hitY && dX < this.hitX) {
             console.log(`player hit ${this.node.name.name}`);
-            // const score = this.getAttribute("score");
             GM.addScore(this);
             Audios[this.getAttribute("sounds")].play();
             this.node.emit("reset", this.node);
