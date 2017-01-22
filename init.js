@@ -86,7 +86,8 @@ gr(function () {
             params.push(`${key}=${GM.takenItems[key]}`);
             // url += `${key}=${GM.takenItems[key]}`;
         }
-        var url = './result.html?' + params.join("&"); //TODO:アイテム一つも取らないとバグる？
+        params.push(`hina=${GM.currentHina + 1}`);
+        var url = './result.html?' + params.join("&");//TODO:アイテム一つも取らないとバグる？
         url += `&score=${GM.getTotalScore()}`
         window.location.href = url;
     })

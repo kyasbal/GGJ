@@ -39,5 +39,9 @@ const Audios = {
     bgm: new Howl({
         src: ['./audio/Ben_Ben.mp3'],
         volume: 0.9
-    })
+    }),
+    habataki: new Howl({
+        src: ['./audio/habataki.mp3'],
+        volume: 0.9
+    }),
 };
