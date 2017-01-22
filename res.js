@@ -7,6 +7,17 @@ window.onload = function() {
         var p;
         if ((p = document.getElementById("count-" + w[0])) !== null) {
             p.innerHTML = w[1];
+            if(p.id !== "count-score"){
+            if(p.id === "count-turtle" || p.id === "count-yacht"){
+              if(w[1] > 0){
+                p.className = "minus"
+              }
+            }else{
+              if(w[1] > 0){
+                p.className = "plus"
+              }
+            }
+          }
         };
         if (w[0] === "hina") {
             hina = w[1];
