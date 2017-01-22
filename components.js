@@ -103,15 +103,20 @@ gr.registerComponent("CameraControl", {
         const diff = length - distance;
         $("#spacer").css("height",diff);
         $("html,body").animate({
-            scrollTop: $(document).scrollTop()
+            scrollTop: length
         });
+        this.lastScrollTop = document.documentElement.scrollTop || document.body.scrollTop
     },
     $update: function () {
+        const nowScrollTop = document.documentElement.scrollTop || document.body.scrollTop
+        if(nowScrollTop !== this.lastScrollTop){
         const distance = document.documentElement.getBoundingClientRect().height - window.innerHeight;
-        const heightRatio = $(window).scrollTop() / distance;
+        const heightRatio =  nowScrollTop/ distance;
         const p = this._transform.getAttribute("position");
         this._transform.setAttribute("position", [p.X, C.eyeMin + (C.eyeMax - C.eyeMin) * heightRatio, p.Z]);
         this._transform.setAttribute("rotation", `x(-${Math.atan(p.Y/C.focus)}rad)`);
+        this.lastScrollTop = nowScrollTop;
+      }
     }
 });
 
