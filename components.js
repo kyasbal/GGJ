@@ -105,18 +105,22 @@ gr.registerComponent("CameraControl", {
         $("html,body").animate({
             scrollTop: length
         });
-        this.lastScrollTop = document.documentElement.scrollTop || document.body.scrollTop
+        const nowScrollTop = document.documentElement.scrollTop || document.body.scrollTop
+        this.lastFrame = nowScrollTop;
     },
     $update: function () {
+        let height;
+        const distance = document.documentElement.getBoundingClientRect().height - window.innerHeight;
         const nowScrollTop = document.documentElement.scrollTop || document.body.scrollTop
-        if (nowScrollTop !== this.lastScrollTop) {
-            const distance = document.documentElement.getBoundingClientRect().height - window.innerHeight;
-            const heightRatio = nowScrollTop / distance;
-            const p = this._transform.getAttribute("position");
-            this._transform.setAttribute("position", [p.X, C.eyeMin + (C.eyeMax - C.eyeMin) * heightRatio, p.Z]);
-            this._transform.setAttribute("rotation", `x(-${Math.atan(p.Y/C.focus)}rad)`);
-            this.lastScrollTop = nowScrollTop;
+        if (nowScrollTop !== this.lastFrame) {
+            height = nowScrollTop;
+        } else {
+            return;
         }
+        const heightRatio = height / distance;
+        const p = this._transform.getAttribute("position");
+        this._transform.setAttribute("position", [p.X, C.eyeMin + (C.eyeMax - C.eyeMin) * heightRatio, p.Z]);
+        this._transform.setAttribute("rotation", `x(-${Math.atan(p.Y/C.focus)}rad)`);
     }
 });
 
@@ -207,11 +211,11 @@ gr.registerComponent("MoveCameraForward", {
         this.hold = false;
         this.duration = 0;
         this.backSpeed = 0;
-        // document.body.addEventListener("wheel", (function (e) {
-        //     if (this.hold) {
-        //         e.preventDefault();
-        //     }
-        // }).bind(this));
+        document.body.addEventListener("wheel", (function (e) {
+            if (this.hold) {
+                e.preventDefault();
+            }
+        }).bind(this));
         this.currentSpeed = this.speed;
         this.resetTime = Date.now();
     },
