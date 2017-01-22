@@ -174,7 +174,7 @@ gr.registerComponent("MoveCameraForward", {
         var cameraMinHeight = waveMain(cz) + 2;
         if (!this.hold && cameraMinHeight > p.Y) {
             this._transform.setAttribute("position", [p.X, p.Y, cz]);
-            // isDobonPlaying = true;
+            GM.commbo = 0;
             Audios.dobon.play();
             $("html,body").animate({
                 scrollTop: $(document).height()

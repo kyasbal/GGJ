@@ -24,6 +24,9 @@ gr(function () {
     GM.addTimetable(2, function () { Audios.countdown.play(); });
     GM.addTimetable(1, function () { Audios.countdown.play(); });
 
+    GM.onchangeSecond = function () {
+        console.log(`commbo:${GM.commbo}`);
+    }
     GM.onChangeTime = function (t, l) {
         const time = t / 1000 / this.timeLimit;
         const colors = [

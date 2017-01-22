@@ -1,10 +1,7 @@
 const Audios = {
     dobon: new Howl({
         src: ['./audio/dobon.mp3'],
-        volume: 0.5,
-        onend: function () {
-            isDobonPlaying = false;
-        }
+        volume: 0.5
     }),
     piyopiyo: new Howl({
         src: ['./audio/chick-cry1.mp3'],

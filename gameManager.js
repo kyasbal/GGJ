@@ -9,7 +9,9 @@ function GameManager() {
     this.itemManager = new ItemManager();
     this.currentHina = 0;
     this.timetable = [];
-    this.takenItems = {}
+    this.takenItems = {};
+    this.commbo = 0;
+    this.onchangeSecond = function () {};
 }
 GameManager.prototype.addTimetable = function (second, callback) {
     if (!Array.isArray(this.timetable[second])) {
@@ -18,12 +20,20 @@ GameManager.prototype.addTimetable = function (second, callback) {
     this.timetable[second].push(callback);
 }
 GameManager.prototype.addScore = function (scoreItem) {
+    // logging score
     const itemName = scoreItem.node.name.name;
     if (this.takenItems[itemName] === void 0) {
         this.takenItems[itemName] = 0;
     }
     this.takenItems[itemName]++;
+
+    // update score.
     const score = scoreItem.getAttribute("score");
+    if (score > 0) {
+        this.commbo++;
+    } else {
+        this.commbo = 0;
+    }
     this.score = Math.max(0, score + this.score);
     if (this.score >= this.maxScoreList[this.currentHina]) {
         this.score -= this.maxScoreList[this.currentHina];
@@ -72,6 +82,7 @@ GameManager.prototype.gameStart = function () {
             return;
         }
         if (lastLeaveTime !== leaveTime) {
+            self.onchangeSecond();
             lastLeaveTime = leaveTime;
             var timetableEvents = self.timetable[leaveTime];
             if (timetableEvents) {
