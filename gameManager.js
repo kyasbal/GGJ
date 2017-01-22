@@ -65,6 +65,7 @@ GameManager.prototype.init = function () {
     this.itemManager.register("lotusRoot", 100);
     this.itemManager.register("turtle", 100);
     this.itemManager.register("carrot", 100);
+    this.itemManager.register("oldman", 10);
 }
 GameManager.prototype.gameStart = function () {
     this.timer.reset();
