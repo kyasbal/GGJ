@@ -5,7 +5,7 @@ function ItemManager() {
 }
 
 ItemManager.prototype.register = function (item, weight) {
-    console.log(`register ${item} :${weight}`);
+    // console.log(`register ${item} :${weight}`);
     this.weights.push({ name: item, w: weight });
     for (var j = 0; j < 10; j++) {
         this.addInstance(item);

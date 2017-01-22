@@ -39,7 +39,7 @@ gr(function () {
     GM.addTimetable(1, function () { Audios.countdown.play(); });
 
     GM.onchangeSecond = function () {
-        console.log(`commbo:${GM.commbo}`);
+        // console.log(`commbo:${GM.commbo}`);
     }
     GM.onChangeTime = function (t, l) {
         const time = t / 1000 / this.timeLimit;
@@ -63,7 +63,7 @@ gr(function () {
         gr("#sea")("wave-cube").setAttribute("color", ac)
     };
     GM.onHinaGrown = function () {
-        console.log("hina grown!!!!!!!!!!!!!!!!");
+        // console.log("hina grown!!!!!!!!!!!!!!!!");
         const bar = document.getElementsByClassName('score-inner')[0];
         const text = document.getElementsByClassName('score-text')[0];
         text.innerHTML = '0/' + GM.currentMaxScoreStr();
@@ -79,11 +79,12 @@ gr(function () {
             var c = gr("#sea")("#main-camera").first().addChildByName("model", {
                 src: "./models/gull.gltf",
                 position: "0,-3,-20",
-                rotation: "10,10,10"
+                rotation: "y(180)"
             });
-            UT.animate(0, 10, 1500, function (x) {
+            UT.animate(0, 1, 1500, function (x) {
+                x = x * x * 10
                 var pos = c.getAttribute("position");
-                c.setAttribute("position", [pos.X + x, pos.Y + x, pos.Z + 0.2 * x]); //TODO:more
+                c.setAttribute("position", [pos.X + x, pos.Y + x, pos.Z - 4 * x * x]); //TODO:more
             })
         });
     }
@@ -102,8 +103,8 @@ gr(function () {
         }
     }
     GM.addOnEndGameHandler(function () {
-        console.log("game end");
-        console.log(GM.takenItems);
+        // console.log("game end");
+        // console.log(GM.takenItems);
         var params = []
         for (var key in GM.takenItems) {
             params.push(`${key}=${GM.takenItems[key]}`);
