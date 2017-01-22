@@ -108,8 +108,8 @@ gr.registerComponent("Item", {
         const dY = Math.abs(pos.Y - cameraPos.Y);
         if (dZ < hitZ && dY < hitY) {
             console.log(`player hit ${this.node.name.name}`);
-            const score = this.getAttribute("score");
-            GM.addScore(score);
+            // const score = this.getAttribute("score");
+            GM.addScore(this);
             Audios[this.getAttribute("sounds")].play();
             this.node.emit("reset", this.node);
             return;
@@ -175,7 +175,7 @@ gr.registerComponent("MoveCameraForward", {
         var cameraMinHeight = waveMain(cz) + 2;
         if (!this.hold && cameraMinHeight > p.Y) {
             this._transform.setAttribute("position", [p.X, p.Y, cz]);
-            // isDobonPlaying = true;
+            GM.commbo = 0;
             Audios.dobon.play();
             $("html,body").animate({
                 scrollTop: $(document).height()

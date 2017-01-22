@@ -24,6 +24,9 @@ gr(function () {
     GM.addTimetable(2, function () { Audios.countdown.play(); });
     GM.addTimetable(1, function () { Audios.countdown.play(); });
 
+    GM.onchangeSecond = function () {
+        console.log(`commbo:${GM.commbo}`);
+    }
     GM.onChangeTime = function (t, l) {
         const time = t / 1000 / this.timeLimit;
         const colors = [
@@ -70,8 +73,15 @@ gr(function () {
         }
     }
     GM.addOnEndGameHandler(function () {
-        console.log("end"); //TODO:do something on gameover.
-        GM.gameStart(); //TODO:remove
+        console.log("game end");
+        console.log(GM.takenItems);
+        var params = []
+        for (var key in GM.takenItems) {
+            params.push(`${key}=${GM.takenItems[key]}`);
+            // url += `${key}=${GM.takenItems[key]}`;
+        }
+        var url = './result.html?' + params.join("&");
+        window.location.href = url;
     })
 
     //init waves
