@@ -1,5 +1,7 @@
 const data = window.location.search;
 window.onload = function() {
+    var score;
+    var hina;
     data.substr(1).split("&").forEach(function(v) {
         const w = v.split('=');
         var p;
@@ -7,10 +9,17 @@ window.onload = function() {
             p.innerHTML = w[1];
         };
         if (w[0] === "hina") {
+            hina = w[1];
             const imageList = document.getElementsByClassName('seagull');
             for (var i = 0; i < w[1]; i++) {
                 imageList[i].style.visibility = 'visible';
             }
         }
+        if (w[0] === "score") {
+            score = w[1];
+        }
     });
+    const twitterText = document.getElementsByClassName('twitter-share-button')[0];
+    console.log(twitterText);
+    twitterText.setAttribute("data-text", `${hina} birds was hatched! I got ${score} pts!`);
 }
