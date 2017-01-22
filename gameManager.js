@@ -36,7 +36,7 @@ GameManager.prototype.addScore = function (scoreItem) {
         this.commbo = 0;
     }
     this.score = Math.max(0, score + this.score);
-    if (this.score >= this.maxScoreList[this.currentHina]) {
+    while (this.score >= this.maxScoreList[this.currentHina]) {
         this.score -= this.maxScoreList[this.currentHina];
         this.currentHina++;
         this.onHinaGrown(this.currentHina, this.currentHina === this.maxScoreList.length);
@@ -66,6 +66,7 @@ GameManager.prototype.init = function () {
     this.itemManager.register("turtle", 100);
     this.itemManager.register("carrot", 100);
     this.itemManager.register("oldman", 10);
+    this.itemManager.register("duck", 10);
 }
 GameManager.prototype.gameStart = function () {
     this.timer.reset();
