@@ -4,9 +4,9 @@ html,body{
 
 section.wide{
   width:100%;
-  height:480px;
   background-size: 100% 100%;
   display: flex;
+  flex-wrap: wrap;
 }
 
 .wide > .wide-child{
@@ -113,4 +113,30 @@ section.wide{
 
 .grimoire-link a{
   color:dimgray;
+}
+
+img.item{
+  width: 128px;
+  height: 128px;
+}
+
+img.item{
+  float:left;
+}
+
+.item-container p{
+  clear:both;
+}
+
+div.item-list{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.point-text{
+  font-size:32px;
+  font-weight: bold;
+  color:white;
+  text-shadow: 1px 1px 1px #000;
 }
