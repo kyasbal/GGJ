@@ -143,13 +143,13 @@ gr.registerComponent("Item", {
         }
     },
 
-    $mount: function() {
+    $mount: function () {
         this.getAttributeRaw("hasPenalty").boundTo("hasPenalty");
         this.getAttributeRaw("hitX").boundTo("hitX");
         this.getAttributeRaw("hitY").boundTo("hitY");
         this.getAttributeRaw("hitZ").boundTo("hitZ");
     },
-    $update: function() {
+    $update: function () {
         const pos = this.node.getAttribute("position");
         const cameraPos = Camera.getAttribute("position");
         const dZ = Math.abs(pos.Z - (cameraPos.Z - C.cameraHitDistance));
@@ -241,7 +241,7 @@ gr.registerComponent("MoveCameraForward", {
         this.currentSpeed = this.getAttribute("speed");
         this.resetTime = Date.now();
     },
-    execPenalty: function() {
+    execPenalty: function () {
         const p = this._transform.getAttribute("position");
         $("html,body").animate({
             scrollTop: 300
@@ -323,7 +323,7 @@ gr.registerNode("turtle", ["Wave", "Item"], {
 gr.registerNode("oldman", ["Wave", "Item"], {
     texture: "./img/ojiisan.png",
     score: 200,
-    yOffset: 1.2,
+    yOffset: 1.9,
     smallWave: 0.2,
     sounds: "oji"
 }, "mesh");
